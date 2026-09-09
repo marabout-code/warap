@@ -2,6 +2,8 @@
 /node_modules
 /.pnp
 .pnp.js
+# windows-generated lockfile breaks Vercel (linux) npm install (EBADPLATFORM on @next/swc-win32-x64-msvc); let Vercel generate its own
+package-lock.json
 
 # testing
 /coverage

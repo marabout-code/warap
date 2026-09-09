@@ -1,56 +1,32 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
-import { useForm } from "react-hook-form";
-import { registerSchema, type RegisterInput } from "@/lib/validations";
+import PinInput from "@/components/pin-input";
 import AuthShell from "@/components/auth-shell";
+import { registerUser } from "@/lib/actions/auth";
 
 export default function RegisterPage() {
+  const [pin, setPin] = useState("");
+  const [confirmPin, setConfirmPin] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const supabase = createClient();
+  const [isPending, setIsPending] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<RegisterInput>({
-    resolver: async (data) => {
-      try {
-        const validated = await registerSchema.parseAsync(data);
-        return { values: validated, errors: {} };
-      } catch (err: any) {
-        return { values: {}, errors: err.formErrors?.fieldErrors || {} };
-      }
-    },
-  });
+  const isFormValid = pin.length === 6 && confirmPin.length === 6 && pin === confirmPin;
 
-  const onSubmit = async (data: RegisterInput) => {
-    setLoading(true);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    formData.set("pin", pin);
+    formData.set("confirmPin", confirmPin);
+    setIsPending(true);
     setError(null);
 
-    const { error: authError } = await supabase.auth.signUp({
-      email: data.email,
-      password: data.password,
-      options: {
-        data: {
-          full_name: data.fullName,
-        },
-      },
-    });
-
-    if (authError) {
-      setError(authError.message);
-      setLoading(false);
-      return;
+    const result = await registerUser(null, formData);
+    if (result && "error" in result) {
+      setError(result.error);
+      setIsPending(false);
     }
-
-    router.push("/dashboard");
-    router.refresh();
   };
 
   return (
@@ -68,7 +44,7 @@ export default function RegisterPage() {
         </>
       }
     >
-      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-6" onSubmit={handleSubmit}>
         {error && (
           <div className="animate-fade-in rounded-xl border border-rose-200/70 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
             {error}
@@ -94,83 +70,48 @@ export default function RegisterPage() {
               />
             </svg>
             <input
-              {...register("fullName")}
+              name="fullName"
               type="text"
               autoComplete="name"
+              required
               className="input-field pl-11"
               placeholder="John Doe"
             />
           </div>
-          {errors.fullName && (
-            <p className="form-error">{errors.fullName.message}</p>
+        </div>
+
+        <div className="space-y-3">
+          <label className="input-label block text-center">
+            Set your 6-digit PIN
+          </label>
+          <PinInput
+            name="pin"
+            value={pin}
+            onChange={setPin}
+            autoFocus
+          />
+        </div>
+
+        <div className="space-y-3">
+          <label className="input-label block text-center">
+            Confirm your PIN
+          </label>
+          <PinInput
+            name="confirmPin"
+            value={confirmPin}
+            onChange={setConfirmPin}
+          />
+          {pin && confirmPin && pin !== confirmPin && (
+            <p className="text-center text-xs text-rose-500">PINs don&apos;t match</p>
           )}
         </div>
 
-        <div>
-          <label htmlFor="email" className="input-label">
-            Email address
-          </label>
-          <div className="relative">
-            <svg
-              className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.8"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-              />
-            </svg>
-            <input
-              {...register("email")}
-              type="email"
-              autoComplete="email"
-              className="input-field pl-11"
-              placeholder="you@example.com"
-            />
-          </div>
-          {errors.email && <p className="form-error">{errors.email.message}</p>}
-        </div>
-
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">
-          <div>
-            <label htmlFor="password" className="input-label">
-              Password
-            </label>
-            <input
-              {...register("password")}
-              type="password"
-              autoComplete="new-password"
-              className="input-field"
-              placeholder="••••••••"
-            />
-            {errors.password && (
-              <p className="form-error">{errors.password.message}</p>
-            )}
-          </div>
-
-          <div>
-            <label htmlFor="confirmPassword" className="input-label">
-              Confirm password
-            </label>
-            <input
-              {...register("confirmPassword")}
-              type="password"
-              autoComplete="new-password"
-              className="input-field"
-              placeholder="••••••••"
-            />
-            {errors.confirmPassword && (
-              <p className="form-error">{errors.confirmPassword.message}</p>
-            )}
-          </div>
-        </div>
-
-        <button type="submit" disabled={loading} className="btn-primary w-full py-3">
-          {loading ? (
+        <button
+          type="submit"
+          disabled={isPending || !isFormValid}
+          className="btn-primary w-full py-3"
+        >
+          {isPending ? (
             <>
               <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />

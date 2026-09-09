@@ -168,7 +168,7 @@ export default function AppLayout({
           <div className="flex items-center gap-3 rounded-2xl border border-white/10 bg-white/5 p-3.5 shadow-inner-soft backdrop-blur">
             <div className="relative">
               <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-gradient text-sm font-bold text-white">
-                {user?.email?.charAt(0).toUpperCase() || "?"}
+                {user?.user_metadata?.full_name?.charAt(0)?.toUpperCase() || "?"}
               </div>
               <span className="absolute -bottom-0.5 -right-0.5 flex h-3 w-3">
                 <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-60" />
@@ -177,12 +177,10 @@ export default function AppLayout({
             </div>
             <div className="min-w-0 flex-1">
               <p className="truncate text-sm font-semibold text-white">
-                {user?.email || "Loading..."}
+                {user?.user_metadata?.full_name || "PIN Account"}
               </p>
               <p className="truncate text-xs text-slate-400">
-                {user
-                  ? user.email?.split("@")[1] || "Signed in"
-                  : "Fetching session"}
+                {user ? "Signed in securely" : "Fetching session"}
               </p>
             </div>
             <button

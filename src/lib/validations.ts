@@ -1,18 +1,28 @@
 import { z } from "zod";
 
 export const loginSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
+  pin: z.string().length(6, "PIN must be exactly 6 digits").regex(/^\d+$/, "PIN must contain only numbers"),
 });
 
 export const registerSchema = z.object({
-  email: z.string().email("Invalid email address"),
-  password: z.string().min(6, "Password must be at least 6 characters"),
-  confirmPassword: z.string(),
   fullName: z.string().min(2, "Name must be at least 2 characters"),
-}).refine((data) => data.password === data.confirmPassword, {
-  message: "Passwords don't match",
-  path: ["confirmPassword"],
+  pin: z.string().length(6, "PIN must be exactly 6 digits").regex(/^\d+$/, "PIN must contain only numbers"),
+  confirmPin: z.string(),
+}).refine((data) => data.pin === data.confirmPin, {
+  message: "PINs don't match",
+  path: ["confirmPin"],
+});
+
+export const changePinSchema = z.object({
+  currentPin: z.string().length(6, "PIN must be exactly 6 digits").regex(/^\d+$/, "PIN must contain only numbers"),
+  newPin: z.string().length(6, "PIN must be exactly 6 digits").regex(/^\d+$/, "PIN must contain only numbers"),
+  confirmNewPin: z.string(),
+}).refine((data) => data.newPin === data.confirmNewPin, {
+  message: "PINs don't match",
+  path: ["confirmNewPin"],
+}).refine((data) => data.currentPin !== data.newPin, {
+  message: "New PIN must be different from current PIN",
+  path: ["newPin"],
 });
 
 export const jobSchema = z.object({
@@ -45,6 +55,7 @@ export const profileSchema = z.object({
 
 export type LoginInput = z.infer<typeof loginSchema>;
 export type RegisterInput = z.infer<typeof registerSchema>;
+export type ChangePinInput = z.infer<typeof changePinSchema>;
 export type JobInput = z.infer<typeof jobSchema>;
 export type TaskInput = z.infer<typeof taskSchema>;
 export type ProfileInput = z.infer<typeof profileSchema>;

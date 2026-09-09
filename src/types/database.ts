@@ -11,6 +11,9 @@ export interface Database {
           location: string | null;
           website: string | null;
           role: "admin" | "employer" | "jobseeker";
+          pin_hash: string | null;
+          pin_lookup: string | null;
+          supabase_auth_secret: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -23,6 +26,9 @@ export interface Database {
           location?: string | null;
           website?: string | null;
           role?: "admin" | "employer" | "jobseeker";
+          pin_hash?: string | null;
+          pin_lookup?: string | null;
+          supabase_auth_secret?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -35,6 +41,9 @@ export interface Database {
           location?: string | null;
           website?: string | null;
           role?: "admin" | "employer" | "jobseeker";
+          pin_hash?: string | null;
+          pin_lookup?: string | null;
+          supabase_auth_secret?: string | null;
           created_at?: string;
           updated_at?: string;
         };

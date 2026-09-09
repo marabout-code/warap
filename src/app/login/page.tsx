@@ -1,51 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { createClient } from "@/lib/supabase/client";
-import { useForm } from "react-hook-form";
-import { loginSchema, type LoginInput } from "@/lib/validations";
+import PinInput from "@/components/pin-input";
 import AuthShell from "@/components/auth-shell";
+import { loginUser } from "@/lib/actions/auth";
 
 export default function LoginPage() {
+  const [pin, setPin] = useState("");
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
-  const router = useRouter();
-  const supabase = createClient();
+  const [isPending, setIsPending] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginInput>({
-    resolver: async (data) => {
-      try {
-        const validated = await loginSchema.parseAsync(data);
-        return { values: validated, errors: {} };
-      } catch (err: any) {
-        return { values: {}, errors: err.formErrors?.fieldErrors || {} };
-      }
-    },
-  });
-
-  const onSubmit = async (data: LoginInput) => {
-    setLoading(true);
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    formData.set("pin", pin);
+    setIsPending(true);
     setError(null);
 
-    const { error: authError } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
-    });
-
-    if (authError) {
-      setError(authError.message);
-      setLoading(false);
-      return;
+    const result = await loginUser(null, formData);
+    if (result && "error" in result) {
+      setError(result.error);
+      setIsPending(false);
     }
-
-    router.push("/dashboard");
-    router.refresh();
   };
 
   return (
@@ -63,83 +40,31 @@ export default function LoginPage() {
         </>
       }
     >
-      <form className="space-y-5" onSubmit={handleSubmit(onSubmit)}>
+      <form className="space-y-6" onSubmit={handleSubmit}>
         {error && (
           <div className="animate-fade-in rounded-xl border border-rose-200/70 bg-rose-50 px-4 py-3 text-sm font-medium text-rose-700">
             {error}
           </div>
         )}
 
-        <div>
-          <label htmlFor="email" className="input-label">
-            Email address
+        <div className="space-y-3">
+          <label className="input-label block text-center">
+            Enter your 6-digit PIN
           </label>
-          <div className="relative">
-            <svg
-              className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.8"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
-              />
-            </svg>
-            <input
-              {...register("email")}
-              type="email"
-              autoComplete="email"
-              className="input-field pl-11"
-              placeholder="you@example.com"
-            />
-          </div>
-          {errors.email && <p className="form-error">{errors.email.message}</p>}
+          <PinInput
+            name="pin"
+            value={pin}
+            onChange={setPin}
+            autoFocus
+          />
         </div>
 
-        <div>
-          <div className="flex items-center justify-between">
-            <label htmlFor="password" className="input-label">
-              Password
-            </label>
-            <button
-              type="button"
-              className="mb-1.5 text-xs font-semibold text-primary-600 transition-colors hover:text-primary-500"
-            >
-              Forgot password?
-            </button>
-          </div>
-          <div className="relative">
-            <svg
-              className="pointer-events-none absolute left-3.5 top-1/2 h-5 w-5 -translate-y-1/2 text-slate-400"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.8"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z"
-              />
-            </svg>
-            <input
-              {...register("password")}
-              type="password"
-              autoComplete="current-password"
-              className="input-field pl-11"
-              placeholder="••••••••"
-            />
-          </div>
-          {errors.password && (
-            <p className="form-error">{errors.password.message}</p>
-          )}
-        </div>
-
-        <button type="submit" disabled={loading} className="btn-primary w-full py-3">
-          {loading ? (
+        <button
+          type="submit"
+          disabled={isPending || pin.length !== 6}
+          className="btn-primary w-full py-3"
+        >
+          {isPending ? (
             <>
               <svg className="h-4 w-4 animate-spin" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
@@ -148,7 +73,7 @@ export default function LoginPage() {
               Signing in...
             </>
           ) : (
-            "Sign in"
+            "Sign in with PIN"
           )}
         </button>
       </form>

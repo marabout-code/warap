@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
+import { tableLabels } from "@/lib/status-labels";
 
 interface Toast {
   id: number;
@@ -23,14 +24,14 @@ export default function ToastNotifications() {
         { event: "INSERT", schema: "public", table: "jobs" },
         (payload) => {
           const record = payload.new as any;
-          addToast("jobs", "INSERT", `New job posted: ${record.title}`);
+          addToast("jobs", "INSERT", `Nouvelle offre publiée : ${record.title}`);
         }
       )
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "applications" },
         (payload) => {
-          addToast("applications", "INSERT", "New job application received");
+          addToast("applications", "INSERT", "Nouvelle candidature reçue");
         }
       )
       .subscribe();
@@ -59,7 +60,7 @@ export default function ToastNotifications() {
         >
           <div className="flex-1">
             <p className="text-sm font-medium text-gray-900">{toast.message}</p>
-            <p className="mt-0.5 text-xs text-gray-500 capitalize">{toast.table}</p>
+            <p className="mt-0.5 text-xs text-gray-500">{tableLabels[toast.table] || toast.table}</p>
           </div>
           <button
             onClick={() =>

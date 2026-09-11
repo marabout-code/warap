@@ -1,3 +1,5 @@
+import { statusLabel } from "@/lib/status-labels";
+
 export function EmptyState({
   title,
   description,
@@ -48,7 +50,7 @@ export function StatusBadge({ status }: { status: string }) {
   return (
     <span className={styles[status] || "badge-neutral"}>
       <span className="badge-dot" />
-      {status.replace("_", " ")}
+      {statusLabel(status)}
     </span>
   );
 }

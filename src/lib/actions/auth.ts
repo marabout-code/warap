@@ -20,7 +20,7 @@ export async function registerUser(
 
   const parsed = registerSchema.safeParse(raw);
   if (!parsed.success) {
-    return { error: parsed.error.flatten().fieldErrors.confirmPin?.[0] || "Invalid input" };
+    return { error: parsed.error.flatten().fieldErrors.confirmPin?.[0] || "Entrée invalide" };
   }
 
   const { fullName, pin } = parsed.data;
@@ -43,7 +43,7 @@ export async function registerUser(
   }
 
   if (!signUpData.user) {
-    return { error: "Registration failed. Please try again." };
+    return { error: "L'inscription a échoué. Veuillez réessayer." };
   }
 
   const userId = signUpData.user.id;
@@ -54,7 +54,7 @@ export async function registerUser(
     .eq("id", userId);
 
   if (updateError) {
-    return { error: "Failed to set up PIN. Please try again." };
+    return { error: "Échec de la configuration du PIN. Veuillez réessayer." };
   }
 
   redirect("/dashboard");
@@ -70,7 +70,7 @@ export async function loginUser(
 
   const parsed = loginSchema.safeParse(raw);
   if (!parsed.success) {
-    return { error: "Invalid PIN format." };
+    return { error: "Format de PIN invalide." };
   }
 
   const { pin } = parsed.data;
@@ -87,20 +87,20 @@ export async function loginUser(
     .maybeSingle();
 
   if (lookupError) {
-    return { error: "Multiple accounts use this PIN. Please use a different PIN." };
+    return { error: "Plusieurs comptes utilisent ce PIN. Veuillez utiliser un autre PIN." };
   }
 
   if (!profile) {
-    return { error: "No account found with this PIN." };
+    return { error: "Aucun compte trouvé avec ce PIN." };
   }
 
   if (!profile.pin_hash || !profile.supabase_auth_secret) {
-    return { error: "Account not fully set up. Please register again." };
+    return { error: "Compte incomplet. Veuillez vous inscrire à nouveau." };
   }
 
   const valid = await verifyPin(pin, profile.pin_hash);
   if (!valid) {
-    return { error: "Incorrect PIN. Please try again." };
+    return { error: "PIN incorrect. Veuillez réessayer." };
   }
 
   const supabase = await createClient();
@@ -110,7 +110,7 @@ export async function loginUser(
   });
 
   if (signInError) {
-    return { error: "Login failed. Please try again." };
+    return { error: "La connexion a échoué. Veuillez réessayer." };
   }
 
   redirect("/dashboard");
@@ -129,7 +129,7 @@ export async function changePin(
   const parsed = changePinSchema.safeParse(raw);
   if (!parsed.success) {
     const errors = parsed.error.flatten().fieldErrors;
-    return { error: errors.newPin?.[0] || errors.confirmNewPin?.[0] || errors.currentPin?.[0] || "Invalid input" };
+    return { error: errors.newPin?.[0] || errors.confirmNewPin?.[0] || errors.currentPin?.[0] || "Entrée invalide" };
   }
 
   const supabase = await createClient();
@@ -137,7 +137,7 @@ export async function changePin(
 
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) {
-    return { error: "Not authenticated." };
+    return { error: "Non authentifié." };
   }
 
   const { data: profile, error: lookupError } = await admin
@@ -147,12 +147,12 @@ export async function changePin(
     .single();
 
   if (lookupError || !profile?.pin_hash) {
-    return { error: "Could not verify current PIN." };
+    return { error: "Impossible de vérifier le PIN actuel." };
   }
 
   const valid = await verifyPin(parsed.data.currentPin, profile.pin_hash);
   if (!valid) {
-    return { error: "Current PIN is incorrect." };
+    return { error: "Le PIN actuel est incorrect." };
   }
 
   const newPinHash = await hashPin(parsed.data.newPin);
@@ -163,7 +163,7 @@ export async function changePin(
     .eq("id", user.id);
 
   if (updateError) {
-    return { error: "Failed to update PIN. Please try again." };
+    return { error: "Échec de la mise à jour du PIN. Veuillez réessayer." };
   }
 
   return { success: true };

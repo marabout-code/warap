@@ -5,8 +5,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Job Center - Find Your Dream Job",
-  description: "A modern job center platform for managing jobs, tasks, and applications",
+  title: "Job Center - Trouvez l'emploi de vos rêves",
+  description: "Une plateforme moderne de centre d'emploi pour gérer offres d'emploi, tâches et candidatures",
 };
 
 export default function RootLayout({
@@ -15,7 +15,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="fr">
       <body className={inter.className}>{children}</body>
     </html>
   );

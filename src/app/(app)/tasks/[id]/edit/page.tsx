@@ -108,8 +108,8 @@ export default function EditTaskPage() {
           </svg>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Edit Task</h1>
-          <p className="mt-1 text-sm text-slate-500">Update task details and progress.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Modifier la tâche</h1>
+          <p className="mt-1 text-sm text-slate-500">Mettez à jour les détails et l&apos;avancement de la tâche.</p>
         </div>
       </div>
 
@@ -121,7 +121,7 @@ export default function EditTaskPage() {
         )}
 
         <div>
-          <label className="input-label">Task Title *</label>
+          <label className="input-label">Titre de la tâche *</label>
           <input {...register("title")} type="text" className="input-field" />
           {errors.title && <p className="form-error">{errors.title.message}</p>}
         </div>
@@ -134,9 +134,9 @@ export default function EditTaskPage() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label className="input-label">Related Job *</label>
+            <label className="input-label">Offre associée *</label>
             <select {...register("job_id")} className="input-field">
-              <option value="">Select a job...</option>
+              <option value="">Sélectionnez une offre...</option>
               {jobs.map((job) => (
                 <option key={job.id} value={job.id}>{job.title}</option>
               ))}
@@ -144,41 +144,41 @@ export default function EditTaskPage() {
             {errors.job_id && <p className="form-error">{errors.job_id.message}</p>}
           </div>
           <div>
-            <label className="input-label">Assign To</label>
+            <label className="input-label">Assigner à</label>
             <select {...register("assigned_to")} className="input-field">
-              <option value="">Unassigned</option>
+              <option value="">Non assigné</option>
               {profiles.map((profile) => (
                 <option key={profile.id} value={profile.id}>{profile.full_name}</option>
               ))}
             </select>
           </div>
           <div>
-            <label className="input-label">Priority</label>
+            <label className="input-label">Priorité</label>
             <select {...register("priority")} className="input-field">
-              <option value="low">Low</option>
-              <option value="medium">Medium</option>
-              <option value="high">High</option>
+              <option value="low">Faible</option>
+              <option value="medium">Moyen</option>
+              <option value="high">Élevé</option>
               <option value="urgent">Urgent</option>
             </select>
           </div>
           <div>
-            <label className="input-label">Due Date</label>
+            <label className="input-label">Échéance</label>
             <input {...register("due_date")} type="date" className="input-field" />
           </div>
         </div>
 
         <div>
-          <label className="input-label">Status</label>
+          <label className="input-label">Statut</label>
           <select {...register("status")} className="input-field">
-            <option value="todo">To Do</option>
-            <option value="in_progress">In Progress</option>
-            <option value="review">Review</option>
-            <option value="done">Done</option>
+            <option value="todo">À faire</option>
+            <option value="in_progress">En cours</option>
+            <option value="review">En revue</option>
+            <option value="done">Terminée</option>
           </select>
         </div>
 
         <div className="flex items-center justify-end gap-3 pt-2">
-          <Link href={`/tasks/${taskId}`} className="btn-secondary">Cancel</Link>
+          <Link href={`/tasks/${taskId}`} className="btn-secondary">Annuler</Link>
           <button type="submit" disabled={saving} className="btn-primary">
             {saving ? (
               <>
@@ -186,10 +186,10 @@ export default function EditTaskPage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Saving...
+                Enregistrement...
               </>
             ) : (
-              "Save Changes"
+              "Enregistrer les modifications"
             )}
           </button>
         </div>

@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import type { Job, Task } from "@/types";
+import { statusLabel, employmentTypeLabels, priorityLabels } from "@/lib/status-labels";
 
 export default function JobDetailPage() {
   const params = useParams();
@@ -29,7 +30,7 @@ export default function JobDetailPage() {
   }, [jobId, supabase]);
 
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this job?")) return;
+    if (!confirm("Voulez-vous vraiment supprimer cette offre ?")) return;
     await supabase.from("jobs").delete().eq("id", jobId);
     router.push("/jobs");
     router.refresh();
@@ -55,9 +56,9 @@ export default function JobDetailPage() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
           </svg>
         </div>
-        <p className="mt-4 text-sm font-semibold text-slate-700">Job not found</p>
+        <p className="mt-4 text-sm font-semibold text-slate-700">Offre introuvable</p>
         <Link href="/jobs" className="btn-primary mt-4">
-          Back to jobs
+          Retour aux offres
         </Link>
       </div>
     );
@@ -66,11 +67,11 @@ export default function JobDetailPage() {
   const getStatusBadge = (status: string) => {
     switch (status) {
       case "open":
-        return <span className="badge-success"><span className="badge-dot" />Open</span>;
+        return <span className="badge-success"><span className="badge-dot" />Ouvert</span>;
       case "closed":
-        return <span className="badge-danger"><span className="badge-dot" />Closed</span>;
+        return <span className="badge-danger"><span className="badge-dot" />Fermé</span>;
       default:
-        return <span className="badge-neutral"><span className="badge-dot" />Draft</span>;
+        return <span className="badge-neutral"><span className="badge-dot" />Brouillon</span>;
     }
   };
 
@@ -81,7 +82,7 @@ export default function JobDetailPage() {
       review: "badge-warning",
       done: "badge-success",
     };
-    return <span className={`badge ${styles[status] || "badge-neutral"}`}><span className="badge-dot" />{status.replace("_", " ")}</span>;
+    return <span className={`badge ${styles[status] || "badge-neutral"}`}><span className="badge-dot" />{statusLabel(status)}</span>;
   };
 
   return (
@@ -109,10 +110,10 @@ export default function JobDetailPage() {
         </div>
         <div className="flex gap-3 shrink-0">
           <Link href={`/jobs/${job.id}/edit`} className="btn-secondary">
-            Edit
+            Modifier
           </Link>
           <button onClick={handleDelete} className="btn-danger">
-            Delete
+            Supprimer
           </button>
         </div>
       </div>
@@ -134,7 +135,7 @@ export default function JobDetailPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
-                <h2 className="text-base font-bold tracking-tight text-slate-900">Tasks</h2>
+                <h2 className="text-base font-bold tracking-tight text-slate-900">Tâches</h2>
               </div>
               <Link
                 href={`/tasks/new?job_id=${job.id}`}
@@ -143,13 +144,13 @@ export default function JobDetailPage() {
                 <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
                 </svg>
-                Add Task
+                Ajouter une tâche
               </Link>
             </div>
             <div className="mt-4 space-y-3">
               {tasks.length === 0 ? (
                 <div className="rounded-xl border border-dashed border-slate-200 p-6 text-center">
-                  <p className="text-sm text-slate-500">No tasks associated with this job yet.</p>
+                  <p className="text-sm text-slate-500">Aucune tâche associée à cette offre pour le moment.</p>
                 </div>
               ) : (
                 tasks.map((task) => (
@@ -166,7 +167,7 @@ export default function JobDetailPage() {
                     </div>
                     <div className="flex shrink-0 items-center gap-2">
                       <span className={`badge ${task.priority === "urgent" ? "badge-danger" : task.priority === "high" ? "badge-warning" : "badge-neutral"}`}>
-                        <span className="badge-dot" />{task.priority}
+                        <span className="badge-dot" />{priorityLabels[task.priority] || task.priority}
                       </span>
                       {getTaskStatusBadge(task.status)}
                     </div>
@@ -182,18 +183,18 @@ export default function JobDetailPage() {
           <div className="card">
             <div className="flex items-center gap-2.5">
               <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
-              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">Job Details</h2>
+              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">Détails de l&apos;offre</h2>
             </div>
             <dl className="mt-5 space-y-4">
               {[
-                { label: "Employment Type", value: job.employment_type.replace("-", " ") },
-                { label: "Salary Range", value: job.salary_min && job.salary_max ? `$${job.salary_min.toLocaleString()} – $${job.salary_max.toLocaleString()}` : "Not specified" },
-                { label: "Posted On", value: new Date(job.created_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) },
-                { label: "Last Updated", value: new Date(job.updated_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) },
+                { label: "Type d'emploi", value: employmentTypeLabels[job.employment_type] || job.employment_type.replace("-", " ") },
+                { label: "Fourchette salariale", value: job.salary_min && job.salary_max ? `$${job.salary_min.toLocaleString()} – $${job.salary_max.toLocaleString()}` : "Non spécifié" },
+                { label: "Publiée le", value: new Date(job.created_at).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" }) },
+                { label: "Mise à jour", value: new Date(job.updated_at).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" }) },
               ].map((item) => (
                 <div key={item.label} className="rounded-xl bg-slate-50/70 px-4 py-3">
                   <dt className="text-xs font-medium uppercase tracking-wider text-slate-400">{item.label}</dt>
-                  <dd className="mt-0.5 text-sm font-semibold capitalize text-slate-900">{item.value}</dd>
+                  <dd className="mt-0.5 text-sm font-semibold text-slate-900">{item.value}</dd>
                 </div>
               ))}
             </dl>

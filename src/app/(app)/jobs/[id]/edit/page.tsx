@@ -101,8 +101,8 @@ export default function EditJobPage() {
           </svg>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Edit Job</h1>
-          <p className="mt-1 text-sm text-slate-500">Update your job listing details.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Modifier l&apos;offre</h1>
+          <p className="mt-1 text-sm text-slate-500">Mettez à jour les détails de votre offre.</p>
         </div>
       </div>
 
@@ -115,58 +115,58 @@ export default function EditJobPage() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label className="input-label">Job Title *</label>
+            <label className="input-label">Intitulé du poste *</label>
             <input {...register("title")} type="text" className="input-field" />
             {errors.title && <p className="form-error">{errors.title.message}</p>}
           </div>
           <div>
-            <label className="input-label">Company *</label>
+            <label className="input-label">Entreprise *</label>
             <input {...register("company")} type="text" className="input-field" />
             {errors.company && <p className="form-error">{errors.company.message}</p>}
           </div>
           <div>
-            <label className="input-label">Location *</label>
+            <label className="input-label">Lieu *</label>
             <input {...register("location")} type="text" className="input-field" />
             {errors.location && <p className="form-error">{errors.location.message}</p>}
           </div>
           <div>
-            <label className="input-label">Employment Type *</label>
+            <label className="input-label">Type d&apos;emploi *</label>
             <select {...register("employment_type")} className="input-field">
-              <option value="full-time">Full Time</option>
-              <option value="part-time">Part Time</option>
-              <option value="contract">Contract</option>
-              <option value="internship">Internship</option>
-              <option value="remote">Remote</option>
+              <option value="full-time">Temps plein</option>
+              <option value="part-time">Temps partiel</option>
+              <option value="contract">Contrat</option>
+              <option value="internship">Stage</option>
+              <option value="remote">À distance</option>
             </select>
           </div>
           <div>
-            <label className="input-label">Minimum Salary</label>
+            <label className="input-label">Salaire minimum</label>
             <input {...register("salary_min", { valueAsNumber: true })} type="number" min="0" className="input-field" />
           </div>
           <div>
-            <label className="input-label">Maximum Salary</label>
+            <label className="input-label">Salaire maximum</label>
             <input {...register("salary_max", { valueAsNumber: true })} type="number" min="0" className="input-field" />
           </div>
         </div>
 
         <div>
-          <label className="input-label">Job Description *</label>
+          <label className="input-label">Description du poste *</label>
           <textarea {...register("description")} rows={6} className="input-field" />
           {errors.description && <p className="form-error">{errors.description.message}</p>}
         </div>
 
         <div>
-          <label className="input-label">Status</label>
+          <label className="input-label">Statut</label>
           <select {...register("status")} className="input-field">
-            <option value="open">Open</option>
-            <option value="draft">Draft</option>
-            <option value="closed">Closed</option>
+            <option value="open">Ouvert</option>
+            <option value="draft">Brouillon</option>
+            <option value="closed">Fermé</option>
           </select>
         </div>
 
         <div className="flex items-center justify-end gap-3 pt-2">
           <Link href={`/jobs/${jobId}`} className="btn-secondary">
-            Cancel
+            Annuler
           </Link>
           <button type="submit" disabled={saving} className="btn-primary">
             {saving ? (
@@ -175,10 +175,10 @@ export default function EditJobPage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Saving...
+                Enregistrement...
               </>
             ) : (
-              "Save Changes"
+              "Enregistrer les modifications"
             )}
           </button>
         </div>

@@ -31,15 +31,15 @@ export default function RegisterPage() {
 
   return (
     <AuthShell
-      title="Create your account"
+      title="Créer votre compte"
       subtitle={
         <>
-          Already have an account?{" "}
+          Vous avez déjà un compte ?{" "}
           <Link
             href="/login"
             className="font-semibold text-primary-600 transition-colors hover:text-primary-500"
           >
-            Sign in
+            Se connecter
           </Link>
         </>
       }
@@ -53,7 +53,7 @@ export default function RegisterPage() {
 
         <div>
           <label htmlFor="fullName" className="input-label">
-            Full name
+            Nom complet
           </label>
           <div className="relative">
             <svg
@@ -75,14 +75,14 @@ export default function RegisterPage() {
               autoComplete="name"
               required
               className="input-field pl-11"
-              placeholder="John Doe"
+              placeholder="Jean Dupont"
             />
           </div>
         </div>
 
         <div className="space-y-3">
           <label className="input-label block text-center">
-            Set your 6-digit PIN
+            Définissez votre code PIN à 6 chiffres
           </label>
           <PinInput
             name="pin"
@@ -94,7 +94,7 @@ export default function RegisterPage() {
 
         <div className="space-y-3">
           <label className="input-label block text-center">
-            Confirm your PIN
+            Confirmez votre PIN
           </label>
           <PinInput
             name="confirmPin"
@@ -102,7 +102,7 @@ export default function RegisterPage() {
             onChange={setConfirmPin}
           />
           {pin && confirmPin && pin !== confirmPin && (
-            <p className="text-center text-xs text-rose-500">PINs don&apos;t match</p>
+            <p className="text-center text-xs text-rose-500">Les PIN ne correspondent pas</p>
           )}
         </div>
 
@@ -117,10 +117,10 @@ export default function RegisterPage() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              Creating account...
+              Création du compte...
             </>
           ) : (
-            "Create account"
+            "Créer le compte"
           )}
         </button>
       </form>

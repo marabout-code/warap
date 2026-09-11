@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { tableLabels } from "@/lib/status-labels";
 
 interface RealtimeEvent {
   id: string;
@@ -21,9 +22,9 @@ interface RealtimeUpdatesProps {
 
 export default function RealtimeUpdates({
   channels = [
-    { table: "jobs", label: "Job" },
-    { table: "tasks", label: "Task" },
-    { table: "applications", label: "Application" },
+    { table: "jobs", label: "Offre" },
+    { table: "tasks", label: "Tâche" },
+    { table: "applications", label: "Candidature" },
   ],
 }: RealtimeUpdatesProps) {
   const [events, setEvents] = useState<RealtimeEvent[]>([]);
@@ -65,23 +66,23 @@ export default function RealtimeUpdates({
   }, [channels, supabase]);
 
   const formatMessage = (table: string, eventType: string, record: any) => {
-    const tableLabels: Record<string, string> = {
-      jobs: "Job",
-      tasks: "Task",
-      applications: "Application",
+    const labels: Record<string, string> = {
+      jobs: "Offre",
+      tasks: "Tâche",
+      applications: "Candidature",
     };
-    const label = tableLabels[table] || table;
+    const label = labels[table] || table;
     const title = record?.title || "";
 
     switch (eventType) {
       case "INSERT":
-        return `${label} "${title}" was created`;
+        return `${label} « ${title} » a été créée`;
       case "UPDATE":
-        return `${label} "${title}" was updated`;
+        return `${label} « ${title} » a été mise à jour`;
       case "DELETE":
-        return `${label} was deleted`;
+        return `${label} a été supprimée`;
       default:
-        return `${label} changed`;
+        return `${label} modifiée`;
     }
   };
 
@@ -127,7 +128,7 @@ export default function RealtimeUpdates({
         <div className="flex items-center gap-2.5">
           <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
           <h2 className="text-base font-bold tracking-tight text-slate-900">
-            Live Updates
+            Mises à jour en direct
           </h2>
         </div>
         <div className="flex items-center gap-2">
@@ -137,7 +138,7 @@ export default function RealtimeUpdates({
             }`}
           />
           <span className="text-xs font-medium text-slate-500">
-            {isConnected ? "Connected" : "Disconnected"}
+            {isConnected ? "Connecté" : "Déconnecté"}
           </span>
         </div>
       </div>
@@ -152,10 +153,11 @@ export default function RealtimeUpdates({
               </span>
             </div>
             <p className="mt-4 text-sm text-slate-500">
-              Waiting for real-time updates...
+              En attente de mises à jour en temps réel...
             </p>
             <p className="mt-1 text-xs text-slate-400">
-              Changes to jobs, tasks, and applications appear here instantly.
+              Les modifications des offres, tâches et candidatures apparaissent ici
+              instantanément.
             </p>
           </div>
         ) : (
@@ -168,7 +170,7 @@ export default function RealtimeUpdates({
               <div className="min-w-0 flex-1">
                 <p className="text-sm font-medium text-slate-800">{event.message}</p>
                 <p className="mt-0.5 text-xs text-slate-500">
-                  <span className="capitalize">{event.table}</span>
+                  {tableLabels[event.table] || event.table}
                 </p>
               </div>
               <span className="shrink-0 text-xs tabular-nums text-slate-400">

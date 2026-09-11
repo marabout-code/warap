@@ -136,8 +136,8 @@ export default function ProfilePage() {
             {profile?.full_name?.charAt(0) || "?"}
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-white">{profile?.full_name || "Your Profile"}</h1>
-            <p className="mt-0.5 text-sm text-white/80">PIN-protected account</p>
+            <h1 className="text-2xl font-bold tracking-tight text-white">{profile?.full_name || "Votre profil"}</h1>
+            <p className="mt-0.5 text-sm text-white/80">Compte protégé par PIN</p>
           </div>
         </div>
       </div>
@@ -146,7 +146,7 @@ export default function ProfilePage() {
       <form className="card-glass space-y-6 rounded-2xl border-white/60 p-6" onSubmit={handleSubmit(onSubmit)}>
         <div className="flex items-center gap-2.5">
           <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
-          <h2 className="text-base font-bold tracking-tight text-slate-900">Personal Information</h2>
+          <h2 className="text-base font-bold tracking-tight text-slate-900">Informations personnelles</h2>
         </div>
 
         {error && (
@@ -156,31 +156,31 @@ export default function ProfilePage() {
         )}
         {success && (
           <div className="animate-fade-in rounded-xl border border-emerald-200/70 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
-            Profile updated successfully!
+            Profil mis à jour avec succès !
           </div>
         )}
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div className="md:col-span-2">
-            <label className="input-label">Full Name *</label>
+            <label className="input-label">Nom complet *</label>
             <input {...register("full_name")} type="text" className="input-field" />
             {errors.full_name && <p className="form-error">{errors.full_name.message}</p>}
           </div>
           <div>
-            <label className="input-label">Location</label>
-            <input {...register("location")} type="text" className="input-field" placeholder="New York, NY" />
+            <label className="input-label">Localisation</label>
+            <input {...register("location")} type="text" className="input-field" placeholder="Paris, France" />
             {errors.location && <p className="form-error">{errors.location.message}</p>}
           </div>
           <div>
-            <label className="input-label">Website</label>
+            <label className="input-label">Site web</label>
             <input {...register("website")} type="url" className="input-field" placeholder="https://example.com" />
             {errors.website && <p className="form-error">{errors.website.message}</p>}
           </div>
         </div>
 
         <div>
-          <label className="input-label">Bio</label>
-          <textarea {...register("bio")} rows={4} className="input-field" placeholder="Tell us about yourself..." />
+          <label className="input-label">Biographie</label>
+          <textarea {...register("bio")} rows={4} className="input-field" placeholder="Parlez-nous de vous..." />
           {errors.bio && <p className="form-error">{errors.bio.message}</p>}
         </div>
 
@@ -192,10 +192,10 @@ export default function ProfilePage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Saving...
+                Enregistrement...
               </>
             ) : (
-              "Save Changes"
+              "Enregistrer les modifications"
             )}
           </button>
         </div>
@@ -205,7 +205,7 @@ export default function ProfilePage() {
       <form className="card-glass space-y-6 rounded-2xl border-white/60 p-6" onSubmit={handlePinSubmit}>
         <div className="flex items-center gap-2.5">
           <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
-          <h2 className="text-base font-bold tracking-tight text-slate-900">Change PIN</h2>
+          <h2 className="text-base font-bold tracking-tight text-slate-900">Changer le PIN</h2>
         </div>
 
         {pinError && (
@@ -215,12 +215,12 @@ export default function ProfilePage() {
         )}
         {pinSuccess && (
           <div className="animate-fade-in rounded-xl border border-emerald-200/70 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
-            PIN changed successfully!
+            PIN modifié avec succès !
           </div>
         )}
 
         <div className="space-y-3">
-          <label className="input-label block text-center">Current PIN</label>
+          <label className="input-label block text-center">PIN actuel</label>
           <div className="flex justify-center">
             <input
               value={currentPin}
@@ -237,7 +237,7 @@ export default function ProfilePage() {
         </div>
 
         <div className="space-y-3">
-          <label className="input-label block text-center">New PIN</label>
+          <label className="input-label block text-center">Nouveau PIN</label>
           <PinInput
             name="newPin"
             value={newPin}
@@ -246,14 +246,14 @@ export default function ProfilePage() {
         </div>
 
         <div className="space-y-3">
-          <label className="input-label block text-center">Confirm New PIN</label>
+          <label className="input-label block text-center">Confirmer le nouveau PIN</label>
           <PinInput
             name="confirmNewPin"
             value={confirmNewPin}
             onChange={setConfirmNewPin}
           />
           {newPin && confirmNewPin && newPin !== confirmNewPin && (
-            <p className="text-center text-xs text-rose-500">PINs don&apos;t match</p>
+            <p className="text-center text-xs text-rose-500">Les PIN ne correspondent pas</p>
           )}
         </div>
 
@@ -269,10 +269,10 @@ export default function ProfilePage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Updating...
+                Mise à jour...
               </>
             ) : (
-              "Change PIN"
+              "Changer le PIN"
             )}
           </button>
         </div>

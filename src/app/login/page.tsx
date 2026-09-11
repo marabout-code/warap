@@ -27,15 +27,15 @@ export default function LoginPage() {
 
   return (
     <AuthShell
-      title="Welcome back"
+      title="Bon retour"
       subtitle={
         <>
-          New to JobCenter?{" "}
+          Nouveau sur JobCenter ?{" "}
           <Link
             href="/register"
             className="font-semibold text-primary-600 transition-colors hover:text-primary-500"
           >
-            Create an account
+            Créer un compte
           </Link>
         </>
       }
@@ -49,7 +49,7 @@ export default function LoginPage() {
 
         <div className="space-y-3">
           <label className="input-label block text-center">
-            Enter your 6-digit PIN
+            Saisissez votre code PIN à 6 chiffres
           </label>
           <PinInput
             name="pin"
@@ -70,10 +70,10 @@ export default function LoginPage() {
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
               </svg>
-              Signing in...
+              Connexion en cours...
             </>
           ) : (
-            "Sign in with PIN"
+            "Se connecter avec le PIN"
           )}
         </button>
       </form>

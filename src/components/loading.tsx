@@ -2,7 +2,7 @@ interface LoadingProps {
   text?: string;
 }
 
-export default function Loading({ text = "Loading..." }: LoadingProps) {
+export default function Loading({ text = "Chargement..." }: LoadingProps) {
   return (
     <div className="flex h-64 items-center justify-center">
       <div className="text-center">

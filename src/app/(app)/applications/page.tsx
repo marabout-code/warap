@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import type { Application, Job } from "@/types";
+import { applicationStatusLabels } from "@/lib/status-labels";
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState<
@@ -79,7 +80,7 @@ export default function ApplicationsPage() {
     return (
       <span className={`badge ${styles[status] || "badge-neutral"}`}>
         <span className="badge-dot" />
-        {status}
+        {applicationStatusLabels[status] || status}
       </span>
     );
   };
@@ -98,10 +99,10 @@ export default function ApplicationsPage() {
       {/* Header */}
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-          Applications
+          Candidatures
         </h1>
         <p className="mt-1 text-sm text-slate-500">
-          Track and manage job applications.
+          Suivez et gérez les candidatures.
         </p>
       </div>
 
@@ -111,10 +112,10 @@ export default function ApplicationsPage() {
           <table className="card-table w-full">
             <thead>
               <tr>
-                <th className="th">Job</th>
-                <th className="th">Applied</th>
-                <th className="th">Status</th>
-                <th className="th">Cover Letter</th>
+                <th className="th">Offre</th>
+                <th className="th">Candidature</th>
+                <th className="th">Statut</th>
+                <th className="th">Lettre de motivation</th>
               </tr>
             </thead>
             <tbody>
@@ -128,10 +129,10 @@ export default function ApplicationsPage() {
                         </svg>
                       </div>
                       <p className="mt-4 text-sm font-semibold text-slate-700">
-                        No applications yet
+                        Aucune candidature pour le moment
                       </p>
                       <p className="mt-1 text-xs text-slate-500">
-                        Applications will appear here once candidates start applying.
+                        Les candidatures apparaîtront ici dès que les candidats commenceront à postuler.
                       </p>
                     </div>
                   </td>
@@ -141,14 +142,14 @@ export default function ApplicationsPage() {
                   <tr key={app.id} className="tr-hover">
                     <td className="td">
                       <p className="font-semibold text-slate-900">
-                        {app.job?.title || "Unknown Job"}
+                        {app.job?.title || "Offre inconnue"}
                       </p>
                       <p className="mt-0.5 text-xs text-slate-500">
                         {app.job?.company}
                       </p>
                     </td>
                     <td className="td text-sm tabular-nums text-slate-500">
-                      {new Date(app.created_at).toLocaleDateString()}
+                      {new Date(app.created_at).toLocaleDateString("fr-FR")}
                     </td>
                     <td className="td">
                       <select
@@ -156,17 +157,17 @@ export default function ApplicationsPage() {
                         onChange={(e) => updateStatus(app.id, e.target.value)}
                         className="input-field w-36 py-1.5 text-xs"
                       >
-                        <option value="pending">Pending</option>
-                        <option value="reviewed">Reviewed</option>
-                        <option value="shortlisted">Shortlisted</option>
-                        <option value="rejected">Rejected</option>
-                        <option value="accepted">Accepted</option>
+                        <option value="pending">En attente</option>
+                        <option value="reviewed">Examinée</option>
+                        <option value="shortlisted">Présélectionnée</option>
+                        <option value="rejected">Rejetée</option>
+                        <option value="accepted">Acceptée</option>
                       </select>
                     </td>
                     <td className="td max-w-xs">
                       <p className="truncate text-sm text-slate-600">
                         {app.cover_letter || (
-                          <span className="text-slate-400">No cover letter</span>
+                          <span className="text-slate-400">Pas de lettre de motivation</span>
                         )}
                       </p>
                     </td>

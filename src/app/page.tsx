@@ -2,32 +2,32 @@ import Link from "next/link";
 
 const features = [
   {
-    title: "Job Management",
+    title: "Gestion des offres",
     description:
-      "Create, manage, and track job listings with powerful filtering and search capabilities.",
+      "Créez, gérez et suivez vos offres d'emploi grâce à des filtres et une recherche puissants.",
     icon: "M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z",
     gradient: "from-primary-500 to-indigo-600",
   },
   {
-    title: "Task Tracking",
+    title: "Suivi des tâches",
     description:
-      "Organize tasks within jobs, assign team members, and track progress in real-time.",
+      "Organisez les tâches de vos offres, assignez des membres d'équipe et suivez l'avancement en temps réel.",
     icon: "M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
     gradient: "from-accent-500 to-fuchsia-600",
   },
   {
-    title: "Real-time Updates",
+    title: "Mises à jour en temps réel",
     description:
-      "Get instant notifications for job status changes, new applications, and task updates.",
+      "Recevez des notifications instantanées pour les changements de statut, nouvelles candidatures et mises à jour des tâches.",
     icon: "M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605",
     gradient: "from-sky-500 to-cyan-500",
   },
 ];
 
 const stats = [
-  { value: "10K+", label: "Active Jobs" },
-  { value: "5K+", label: "Registered Companies" },
-  { value: "99%", label: "Satisfaction Rate" },
+  { value: "10K+", label: "Offres actives" },
+  { value: "5K+", label: "Entreprises inscrites" },
+  { value: "99%", label: "Taux de satisfaction" },
 ];
 
 export default function Home() {
@@ -53,13 +53,13 @@ export default function Home() {
 
           <nav className="hidden items-center gap-8 md:flex">
             <a href="#features" className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
-              Features
+              Fonctionnalités
             </a>
             <a href="#how-it-works" className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
-              How it works
+              Comment ça marche
             </a>
             <a href="#stats" className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
-              About
+              À propos
             </a>
           </nav>
 
@@ -68,10 +68,10 @@ export default function Home() {
               href="/login"
               className="hidden text-sm font-semibold text-slate-700 transition-colors hover:text-primary-600 sm:block"
             >
-              Sign in
+              Se connecter
             </Link>
             <Link href="/register" className="btn-primary">
-              Get Started
+              Commencer
             </Link>
           </div>
         </div>
@@ -90,23 +90,23 @@ export default function Home() {
             <div className="mx-auto max-w-3xl text-center">
               <div className="animate-fade-in-up inline-flex items-center gap-2 rounded-full border border-primary-200/70 bg-white/70 px-4 py-1.5 text-xs font-semibold text-primary-700 shadow-sm backdrop-blur">
                 <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
-                The all-in-one job center platform
+                La plateforme emploi tout-en-un
               </div>
 
               <h1 className="animate-fade-in-up mt-6 text-5xl font-bold leading-[1.05] tracking-tight text-slate-900 [animation-delay:0.1s] sm:text-6xl lg:text-7xl">
-                Find Your Next{" "}
-                <span className="gradient-text">Dream Job</span>
+                Trouvez votre{" "}
+                <span className="gradient-text">emploi de rêve</span>
               </h1>
 
               <p className="animate-fade-in-up mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-slate-600 [animation-delay:0.2s]">
-                A comprehensive job center platform connecting employers with
-                talented professionals. Manage jobs, track tasks, and streamline
-                your entire hiring workflow in one beautiful place.
+                Une plateforme complète qui connecte employeurs et talents.
+                Gérez vos offres, suivez vos tâches et simplifiez tout votre
+                processus de recrutement en un seul endroit élégant.
               </p>
 
               <div className="animate-fade-in-up mt-10 flex flex-col items-center justify-center gap-4 sm:flex-row [animation-delay:0.3s]">
                 <Link href="/register" className="btn-primary w-full px-8 py-3.5 text-base sm:w-auto">
-                  Start Hiring
+                  Commencer à recruter
                   <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                   </svg>
@@ -115,7 +115,7 @@ export default function Home() {
                   href="/login"
                   className="btn-secondary w-full px-8 py-3.5 text-base sm:w-auto"
                 >
-                  Browse Jobs
+                  Voir les offres
                 </Link>
               </div>
 
@@ -140,15 +140,15 @@ export default function Home() {
         <section id="features" className="mx-auto max-w-7xl px-4 py-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary-600">
-              Features
+              Fonctionnalités
             </p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-              Everything you need to{" "}
-              <span className="gradient-text">hire smarter</span>
+              Tout ce qu&apos;il vous faut pour{" "}
+              <span className="gradient-text">recruter plus intelligemment</span>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600">
-              Powerful tools designed to keep your hiring pipeline organized,
-              collaborative, and moving fast.
+              Des outils puissants conçus pour garder votre pipeline de recrutement
+              organisé, collaboratif et rapide.
             </p>
           </div>
 
@@ -187,10 +187,10 @@ export default function Home() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="mx-auto max-w-2xl text-center">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent-400">
-                How it works
+                Comment ça marche
               </p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                From posting to hiring in three steps
+                De la publication à l&apos;embauche en trois étapes
               </h2>
             </div>
 
@@ -198,18 +198,18 @@ export default function Home() {
               {[
                 {
                   step: "01",
-                  title: "Create your profile",
-                  desc: "Sign up and build a professional profile employers can see and trust.",
+                  title: "Créez votre profil",
+                  desc: "Inscrivez-vous et créez un profil professionnel visible et fiable pour les employeurs.",
                 },
                 {
                   step: "02",
-                  title: "Post & manage jobs",
-                  desc: "Publish job listings, organize tasks, and track every application.",
+                  title: "Publiez et gérez vos offres",
+                  desc: "Publiez vos offres d'emploi, organisez les tâches et suivez toutes les candidatures.",
                 },
                 {
                   step: "03",
-                  title: "Hire in real-time",
-                  desc: "Review candidates, update statuses, and collaborate with live updates.",
+                  title: "Recrutez en temps réel",
+                  desc: "Évaluez les candidats, mettez à jour les statuts et collaborez en direct.",
                 },
               ].map((item) => (
                 <div
@@ -229,7 +229,7 @@ export default function Home() {
 
             <div className="mt-16 text-center">
               <Link href="/register" className="btn-primary px-8 py-3.5 text-base">
-                Get started today — it&apos;s free
+                Commencez dès aujourd&apos;hui — c&apos;est gratuit
               </Link>
             </div>
           </div>
@@ -253,7 +253,7 @@ export default function Home() {
               <span className="font-bold tracking-tight text-slate-900">JobCenter</span>
             </div>
             <p className="text-sm text-slate-500">
-              &copy; 2026 JobCenter. All rights reserved.
+              &copy; 2026 JobCenter. Tous droits réservés.
             </p>
           </div>
         </div>

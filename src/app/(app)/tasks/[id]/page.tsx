@@ -5,6 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import type { Task, Job, Profile } from "@/types";
+import { statusLabel, priorityLabels } from "@/lib/status-labels";
 
 export default function TaskDetailPage() {
   const params = useParams();
@@ -44,7 +45,7 @@ export default function TaskDetailPage() {
   };
 
   const handleDelete = async () => {
-    if (!confirm("Are you sure you want to delete this task?")) return;
+    if (!confirm("Voulez-vous vraiment supprimer cette tâche ?")) return;
     await supabase.from("tasks").delete().eq("id", taskId);
     router.push("/tasks");
     router.refresh();
@@ -70,8 +71,8 @@ export default function TaskDetailPage() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
           </svg>
         </div>
-        <p className="mt-4 text-sm font-semibold text-slate-700">Task not found</p>
-        <Link href="/tasks" className="btn-primary mt-4">Back to tasks</Link>
+        <p className="mt-4 text-sm font-semibold text-slate-700">Tâche introuvable</p>
+        <Link href="/tasks" className="btn-primary mt-4">Retour aux tâches</Link>
       </div>
     );
   }
@@ -82,7 +83,7 @@ export default function TaskDetailPage() {
     const styles: Record<string, string> = {
       low: "badge-neutral", medium: "badge-info", high: "badge-warning", urgent: "badge-danger",
     };
-    return <span className={`badge ${styles[priority] || "badge-neutral"}`}><span className="badge-dot" />{priority}</span>;
+    return <span className={`badge ${styles[priority] || "badge-neutral"}`}><span className="badge-dot" />{priorityLabels[priority] || priority}</span>;
   };
 
   return (
@@ -100,12 +101,12 @@ export default function TaskDetailPage() {
               <h1 className="text-2xl font-bold tracking-tight text-slate-900">{task.title}</h1>
               {getPriorityBadge(task.priority)}
             </div>
-            <p className="mt-1 text-sm text-slate-500">{job ? job.title : "Unknown Job"}</p>
+            <p className="mt-1 text-sm text-slate-500">{job ? job.title : "Offre inconnue"}</p>
           </div>
         </div>
         <div className="flex gap-3 shrink-0">
-          <Link href={`/tasks/${task.id}/edit`} className="btn-secondary">Edit</Link>
-          <button onClick={handleDelete} className="btn-danger">Delete</button>
+          <Link href={`/tasks/${task.id}/edit`} className="btn-secondary">Modifier</Link>
+          <button onClick={handleDelete} className="btn-danger">Supprimer</button>
         </div>
       </div>
 
@@ -127,7 +128,7 @@ export default function TaskDetailPage() {
           <div className="card">
             <div className="flex items-center gap-2.5">
               <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
-              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">Status</h2>
+              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">Statut</h2>
             </div>
             <div className="mt-4 space-y-2">
               {statusOptions.map((status) => (
@@ -142,7 +143,7 @@ export default function TaskDetailPage() {
                   }`}
                 >
                   <span className="flex items-center justify-between">
-                    {status === "in_progress" ? "In Progress" : status.charAt(0).toUpperCase() + status.slice(1)}
+                    {statusLabel(status)}
                     {task.status === status && (
                       <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2.5" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
@@ -158,14 +159,14 @@ export default function TaskDetailPage() {
           <div className="card">
             <div className="flex items-center gap-2.5">
               <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
-              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">Details</h2>
+              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">Détails</h2>
             </div>
             <dl className="mt-4 space-y-3">
               {[
-                { label: "Assigned To", value: assignee?.full_name || "Unassigned" },
-                { label: "Due Date", value: task.due_date ? new Date(task.due_date).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) : "No due date" },
-                { label: "Created", value: new Date(task.created_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) },
-                { label: "Last Updated", value: new Date(task.updated_at).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" }) },
+                { label: "Assigné à", value: assignee?.full_name || "Non assigné" },
+                { label: "Échéance", value: task.due_date ? new Date(task.due_date).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" }) : "Pas d'échéance" },
+                { label: "Créée le", value: new Date(task.created_at).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" }) },
+                { label: "Mise à jour", value: new Date(task.updated_at).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" }) },
               ].map((item) => (
                 <div key={item.label} className="rounded-xl bg-slate-50/70 px-4 py-3">
                   <dt className="text-xs font-medium uppercase tracking-wider text-slate-400">{item.label}</dt>
@@ -183,7 +184,7 @@ export default function TaskDetailPage() {
             >
               <div className="flex items-center gap-2.5">
                 <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
-                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">Related Job</h3>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">Offre associée</h3>
               </div>
               <p className="mt-3 text-sm font-semibold text-primary-700 group-hover:text-primary-500">{job.title}</p>
               <p className="mt-0.5 text-xs text-slate-500">{job.company}</p>

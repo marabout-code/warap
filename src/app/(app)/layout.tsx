@@ -50,7 +50,7 @@ const Logo = () => (
       </svg>
     </div>
     <div className="leading-tight">
-      <p className="text-sm font-bold tracking-tight text-white">JobCenter</p>
+      <p className="text-sm font-bold tracking-tight text-white">warap</p>
       <p className="text-[10px] font-medium uppercase tracking-widest text-slate-500">
         Task Suite
       </p>
@@ -91,7 +91,7 @@ export default function AppLayout({
       ? "Offres d'emploi"
       : pathname.startsWith("/tasks")
       ? "Tâches"
-      : "JobCenter");
+      : "warap");
 
   return (
     <div className="flex h-screen overflow-hidden bg-slate-50">

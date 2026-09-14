@@ -1,6 +1,6 @@
-# Job Center Task
+# warap
 
-A production-ready Job Center Task management application built with **Next.js 14** (App Router), **TypeScript**, and **Supabase** as the backend service.
+A production-ready warap management application built with **Next.js 14** (App Router), **TypeScript**, and **Supabase** as the backend service.
 
 ## Features
 

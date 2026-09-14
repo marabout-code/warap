@@ -47,7 +47,7 @@ export default function Home() {
               </svg>
             </div>
             <span className="text-lg font-bold tracking-tight text-slate-900">
-              JobCenter
+              warap
             </span>
           </Link>
 
@@ -250,10 +250,10 @@ export default function Home() {
                   />
                 </svg>
               </div>
-              <span className="font-bold tracking-tight text-slate-900">JobCenter</span>
+              <span className="font-bold tracking-tight text-slate-900">warap</span>
             </div>
             <p className="text-sm text-slate-500">
-              &copy; 2026 JobCenter. Tous droits réservés.
+              &copy; 2026 warap. Tous droits réservés.
             </p>
           </div>
         </div>

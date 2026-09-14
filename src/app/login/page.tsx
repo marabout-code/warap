@@ -30,7 +30,7 @@ export default function LoginPage() {
       title="Bon retour"
       subtitle={
         <>
-          Nouveau sur JobCenter ?{" "}
+          Nouveau sur warap ?{" "}
           <Link
             href="/register"
             className="font-semibold text-primary-600 transition-colors hover:text-primary-500"

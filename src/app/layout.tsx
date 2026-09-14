@@ -5,7 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "Job Center - Trouvez l'emploi de vos rêves",
+  title: "warap - Trouvez l'emploi de vos rêves",
   description: "Une plateforme moderne de centre d'emploi pour gérer offres d'emploi, tâches et candidatures",
 };
 

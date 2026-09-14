@@ -30,7 +30,7 @@ export default function AuthShell({
               </svg>
             </div>
             <span className="text-2xl font-bold tracking-tight text-slate-900">
-              JobCenter
+              warap
             </span>
           </Link>
         </div>

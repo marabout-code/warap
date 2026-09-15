@@ -4,7 +4,7 @@ A production-ready warap management application built with **Next.js 14** (App R
 
 ## Features
 
-- **Authentication** - Email/password signup & login with session management via Supabase Auth
+- **Authentication** - PIN-based login (no email/password) with session management via Supabase Auth
   - Protected routes via Next.js middleware
   - Role-based access (admin, employer, jobseeker)
   - Automatic profile creation on signup
@@ -79,6 +79,25 @@ npm run dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000).
+
+## Sample Data (Cameroun)
+
+Reusable demo data (companies, jobs, tasks, applications) with a fully loggable user set.
+
+- `supabase/seed_cameroon.sql` — seeds realistic Cameroonian data. Run it in the Supabase SQL Editor (SQL Editor → New query → paste → Run). Re-runnable: uses fixed IDs with `ON CONFLICT DO NOTHING`.
+- `supabase/reset_cameroon.sql` — wipes all seeded data (cascading deletes). Run it, then re-run `seed_cameroon.sql` to reinitialize.
+
+Demo accounts — log in with the 6-digit PIN:
+
+| Name                | Email               | Role       | PIN      |
+| ------------------- | ------------------- | ---------- | -------- |
+| Dinah Nkong         | `dinah@warap.demo`  | employer   | `123456` |
+| Jean-Claude Mbarga  | `jeanclaude@warap.demo` | employer | `234567` |
+| Aïcha Ngono         | `aicha@warap.demo`  | jobseeker  | `345678` |
+| Brice Mballa        | `brice@warap.demo`  | jobseeker  | `567890` |
+| Ella Tchouta        | `ella@warap.demo`   | admin      | `456789` |
+
+Locations and salaries are expressed for Cameroon (Douala, Yaoundé, Limbé, Bafoussam; FCFA ranges).
 
 ## Project Structure
 

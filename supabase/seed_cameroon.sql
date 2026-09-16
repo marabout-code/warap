@@ -419,6 +419,110 @@ INSERT INTO tasks (id, title, description, priority, status, due_date, job_id, a
   )
 ON CONFLICT (id) DO NOTHING;
 
+-- Tâches supplémentaires (numéros 11 à 20)
+INSERT INTO tasks (id, title, description, priority, status, due_date, job_id, assigned_to, created_by, created_at, updated_at) VALUES
+  (
+    'cccccccc-0000-4000-8000-000000000011',
+    'Contacter les partenaires CNPS',
+    'Régulariser les déclarations du trimestre et mettre à jour les contrats des nouveaux collaborateurs.',
+    'medium', 'todo', NOW() + INTERVAL '6 days',
+    'bbbbbb01-0000-4000-8000-000000000004',
+    NULL,
+    '11111111-1111-4111-8111-111111111111',
+    NOW() - INTERVAL '4 days', NOW() - INTERVAL '4 days'
+  ),
+  (
+    'cccccccc-0000-4000-8000-000000000012',
+    'Préparer la charte graphique du recrutement',
+    'Créer les visuels des annonces pour les réseaux sociaux (LinkedIn, emplois.cm, réseaux locaux).',
+    'low', 'done', NOW() - INTERVAL '3 days',
+    'bbbbbb01-0000-4000-8000-000000000001',
+    '33333333-3333-4333-8333-333333333333',
+    '11111111-1111-4111-8111-111111111111',
+    NOW() - INTERVAL '9 days', NOW() - INTERVAL '3 days'
+  ),
+  (
+    'cccccccc-0000-4000-8000-000000000013',
+    'Vérifier les candidatures Coordinateur Logistique',
+    'Présélectionner les profils ayant une expérience en supply chain et en gestion d''entrepôt.',
+    'medium', 'in_progress', NOW() + INTERVAL '2 days',
+    'bbbbbb01-0000-4000-8000-000000000006',
+    '44444444-4444-4444-8444-444444444444',
+    '22222222-2222-4222-8222-222222222222',
+    NOW() - INTERVAL '5 days', NOW() - INTERVAL '1 day'
+  ),
+  (
+    'cccccccc-0000-4000-8000-000000000014',
+    'Établir la liste des fournisseurs de matériaux',
+    'Comparer les devis ciment, fer et agrégats auprès des fournisseurs de Douala et Limbé.',
+    'high', 'in_progress', NOW() + INTERVAL '4 days',
+    'bbbbbb01-0000-4000-8000-000000000007',
+    NULL,
+    '22222222-2222-4222-8222-222222222222',
+    NOW() - INTERVAL '11 days', NOW() - INTERVAL '3 days'
+  ),
+  (
+    'cccccccc-0000-4000-8000-000000000015',
+    'Mettre à jour le site carrières',
+    'Publier les deux nouveaux postes de CFAO Technologies et corriger les salaires affichés.',
+    'low', 'todo', NOW() + INTERVAL '8 days',
+    'bbbbbb01-0000-4000-8000-000000000002',
+    '44444444-4444-4444-8444-444444444444',
+    '11111111-1111-4111-8111-111111111111',
+    NOW() - INTERVAL '2 days', NOW() - INTERVAL '2 days'
+  ),
+  (
+    'cccccccc-0000-4000-8000-000000000016',
+    'Organiser la journée portes ouvertes de Douala',
+    'Préparer le stand Yango Logistics pour le salon Emploi & Carrières de Douala.',
+    'high', 'review', NOW() + INTERVAL '8 days',
+    'bbbbbb01-0000-4000-8000-000000000005',
+    NULL,
+    '22222222-2222-4222-8222-222222222222',
+    NOW() - INTERVAL '6 days', NOW() - INTERVAL '1 day'
+  ),
+  (
+    'cccccccc-0000-4000-8000-000000000017',
+    'Recueillir les besoins en formation',
+    'Sonder les collaborateurs sur les formations souhaitées et établir le plan annuel.',
+    'medium', 'todo', NOW() + INTERVAL '11 days',
+    'bbbbbb01-0000-4000-8000-000000000004',
+    NULL,
+    '11111111-1111-4111-8111-111111111111',
+    NOW() - INTERVAL '3 days', NOW() - INTERVAL '3 days'
+  ),
+  (
+    'cccccccc-0000-4000-8000-000000000018',
+    'Planifier le point hebdomadaire avec l''équipe',
+    'Réserver la salle de réunion et préparer l''ordre du jour du lundi matin.',
+    'low', 'done', NOW() - INTERVAL '5 days',
+    'bbbbbb01-0000-4000-8000-000000000006',
+    '33333333-3333-4333-8333-333333333333',
+    '22222222-2222-4222-8222-222222222222',
+    NOW() - INTERVAL '14 days', NOW() - INTERVAL '5 days'
+  ),
+  (
+    'cccccccc-0000-4000-8000-000000000019',
+    'Archiver les CV reçus',
+    'Classer les candidatures traitées pour les services de garde et préparer les documents de délégation.',
+    'low', 'todo', NOW() + INTERVAL '12 days',
+    'bbbbbb01-0000-4000-8000-000000000003',
+    '44444444-4444-4444-8444-444444444444',
+    '11111111-1111-4111-8111-111111111111',
+    NOW() - INTERVAL '2 days', NOW() - INTERVAL '2 days'
+  ),
+  (
+    'cccccccc-0000-4000-8000-000000000020',
+    'Réceptionner les matériels du chantier de Limbé',
+    'Contrôler la livraison des matériaux et vérifier le bon de commande transmis par le fournisseur.',
+    'urgent', 'in_progress', NOW() + INTERVAL '1 day',
+    'bbbbbb01-0000-4000-8000-000000000007',
+    NULL,
+    '22222222-2222-4222-8222-222222222222',
+    NOW() - INTERVAL '1 day', NOW() - INTERVAL '1 day'
+  )
+ON CONFLICT (id) DO NOTHING;
+
 -- =====================================================================
 -- 6. Candidatures
 -- =====================================================================

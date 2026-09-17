@@ -87,7 +87,27 @@ Reusable demo data (companies, jobs, tasks, applications) with a fully loggable 
 - `supabase/seed_cameroon.sql` — seeds realistic Cameroonian data. Run it in the Supabase SQL Editor (SQL Editor → New query → paste → Run). Re-runnable: uses fixed IDs with `ON CONFLICT DO NOTHING`.
 - `supabase/reset_cameroon.sql` — wipes all seeded data (cascading deletes). Run it, then re-run `seed_cameroon.sql` to reinitialize.
 
+### Domestic worker hiring (diaspora)
+
+Schema extension for hiring maids/helpers from abroad:
+
+- `supabase/migrations/003_domestic_hiring.sql` — adds the `agent` role, a `verification_status` enum (`unverified`, `in_review`, `verified`, `rejected`), a per-application verification pack (`documents` JSONB, `verified_by`, `verification_notes`, `verified_at`), WhatsApp `contact_phone` on profiles/jobs/applications, and RLS policies letting agents verify applications.
+- `supabase/seed_domestic_workers.sql` — tailored sample: diaspora employers (Paris/London), a local verification agent, maids/nanny/governess/driver candidates, and onboarding/verification tasks. Run this **after** migrations 001, 002, and 003.
+- `supabase/reset_domestic_workers.sql` — wipes only this tailored dataset; re-run the seed to reinitialize.
+
 Demo accounts — log in with the 6-digit PIN:
+
+| Name               | Email                        | Role               | PIN      |
+| ------------------ | ---------------------------- | ------------------ | -------- |
+| Mireille Kouam     | `mireille.kouam@warap.demo`  | employer (Paris)   | `111222` |
+| Charles Ngo Bakai  | `charles.ngobakai@warap.demo`| employer (London)  | `222333` |
+| Yannick Fokou      | `yannick.fokou@warap.demo`   | agent (Douala)     | `333444` |
+| Solange Andela     | `solange.andela@warap.demo`  | jobseeker (maid)   | `444555` |
+| Marthe Tchoupo     | `marthe.tchoupo@warap.demo`  | jobseeker (nanny)  | `555666` |
+| Honorine Nana      | `honorine.nana@warap.demo`   | jobseeker (housekeep.) | `666777` |
+| Serge Ekambi       | `serge.ekambi@warap.demo`    | jobseeker (driver) | `777888` |
+
+### General sample data
 
 | Name                | Email               | Role       | PIN      |
 | ------------------- | ------------------- | ---------- | -------- |

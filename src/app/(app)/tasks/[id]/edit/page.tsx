@@ -134,9 +134,9 @@ export default function EditTaskPage() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label className="input-label">Offre associée *</label>
+            <label className="input-label">Annonce associée *</label>
             <select {...register("job_id")} className="input-field">
-              <option value="">Sélectionnez une offre...</option>
+              <option value="">Sélectionnez une annonce...</option>
               {jobs.map((job) => (
                 <option key={job.id} value={job.id}>{job.title}</option>
               ))}

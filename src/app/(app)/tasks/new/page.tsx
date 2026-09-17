@@ -98,7 +98,7 @@ function NewTaskContent() {
         </Link>
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Créer une tâche</h1>
-          <p className="mt-1 text-sm text-slate-500">Ajoutez une nouvelle tâche pour suivre l&apos;avancement du travail.</p>
+          <p className="mt-1 text-sm text-slate-500">Planifiez une vérification ou une étape d&apos;onboarding pour une annonce.</p>
         </div>
       </div>
 
@@ -111,21 +111,21 @@ function NewTaskContent() {
 
         <div>
           <label className="input-label">Titre de la tâche *</label>
-          <input {...register("title")} type="text" className="input-field" placeholder="Terminer l'intégration" />
+          <input {...register("title")} type="text" className="input-field" placeholder="Vérifier les références de la candidate" />
           {errors.title && <p className="form-error">{errors.title.message}</p>}
         </div>
 
         <div>
           <label className="input-label">Description *</label>
-          <textarea {...register("description")} rows={4} className="input-field" placeholder="Décrivez ce qui doit être fait..." />
+          <textarea {...register("description")} rows={4} className="input-field" placeholder="Précisez l'étape : entretien, visite du domicile, contrôle des pièces..." />
           {errors.description && <p className="form-error">{errors.description.message}</p>}
         </div>
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label className="input-label">Offre associée *</label>
+            <label className="input-label">Annonce associée *</label>
             <select {...register("job_id")} className="input-field">
-              <option value="">Sélectionnez une offre...</option>
+              <option value="">Sélectionnez une annonce...</option>
               {jobs.map((job) => (
                 <option key={job.id} value={job.id}>{job.title}</option>
               ))}

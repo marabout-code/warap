@@ -113,9 +113,9 @@ export default function TasksPage() {
       {/* Header */}
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Tâches</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Tâches &amp; onboarding</h1>
           <p className="mt-1 text-sm text-slate-500">
-            Suivez et gérez les tâches de toutes les offres.
+            Suivez les étapes de vérification et d&apos;onboarding liées à vos annonces.
           </p>
         </div>
         <Link href="/tasks/new" className="btn-primary shrink-0">
@@ -170,7 +170,7 @@ export default function TasksPage() {
             <thead>
               <tr>
                 <th className="th">Tâche</th>
-                <th className="th">Offre</th>
+                <th className="th">Annonce</th>
                 <th className="th">Priorité</th>
                 <th className="th">Statut</th>
                 <th className="th">Échéance</th>
@@ -188,7 +188,7 @@ export default function TasksPage() {
                         </svg>
                       </div>
                       <p className="mt-4 text-sm font-semibold text-slate-700">Aucune tâche trouvée</p>
-                      <p className="mt-1 text-xs text-slate-500">Créez une tâche pour commencer.</p>
+                      <p className="mt-1 text-xs text-slate-500">Planifiez une vérification ou une étape d&apos;onboarding.</p>
                       <Link href="/tasks/new" className="btn-primary mt-5">
                         Créer une tâche
                       </Link>

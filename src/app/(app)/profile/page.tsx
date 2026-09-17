@@ -8,6 +8,7 @@ import { changePin } from "@/lib/actions/auth";
 import PinInput from "@/components/pin-input";
 import type { Profile } from "@/types";
 import { userRoleLabels } from "@/lib/status-labels";
+import { roleMeta, type UserRole } from "@/lib/roles";
 
 const roleBadgeStyles: Record<string, string> = {
   admin: "bg-white/25 text-white",
@@ -63,7 +64,6 @@ export default function ProfilePage() {
           full_name: profileData.full_name,
           bio: profileData.bio || "",
           location: profileData.location || "",
-          website: profileData.website || "",
           phone: profileData.phone || "",
         });
       }
@@ -84,7 +84,6 @@ export default function ProfilePage() {
         full_name: data.full_name,
         bio: data.bio || null,
         location: data.location || null,
-        website: data.website || null,
         phone: data.phone || null,
       })
       .eq("id", profile.id);
@@ -155,7 +154,11 @@ export default function ProfilePage() {
                 </span>
               )}
             </div>
-            <p className="mt-0.5 text-sm text-white/80">Compte protégé par PIN</p>
+            <p className="mt-0.5 text-sm text-white/80">
+              {profile?.role
+                ? `${roleMeta[profile.role as UserRole]?.tagline} · Compte protégé par PIN`
+                : "Compte protégé par PIN"}
+            </p>
           </div>
         </div>
       </div>
@@ -186,7 +189,7 @@ export default function ProfilePage() {
           </div>
           <div>
             <label className="input-label">Localisation</label>
-            <input {...register("location")} type="text" className="input-field" placeholder="Douala, Cameroun" />
+            <input {...register("location")} type="text" className="input-field" placeholder="Douala (Bonapriso), Cameroun" />
             {errors.location && <p className="form-error">{errors.location.message}</p>}
           </div>
           <div>
@@ -194,16 +197,11 @@ export default function ProfilePage() {
             <input {...register("phone")} type="tel" className="input-field" placeholder="+237 6 00 00 00 00" />
             {errors.phone && <p className="form-error">{errors.phone.message}</p>}
           </div>
-          <div className="md:col-span-2">
-            <label className="input-label">Site web</label>
-            <input {...register("website")} type="url" className="input-field" placeholder="https://example.com" />
-            {errors.website && <p className="form-error">{errors.website.message}</p>}
-          </div>
         </div>
 
         <div>
           <label className="input-label">Biographie</label>
-          <textarea {...register("bio")} rows={4} className="input-field" placeholder="Parlez-nous de vous..." />
+          <textarea {...register("bio")} rows={4} className="input-field" placeholder="Décrivez votre expérience, vos références et vos disponibilités..." />
           {errors.bio && <p className="form-error">{errors.bio.message}</p>}
         </div>
 

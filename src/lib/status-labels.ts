@@ -43,14 +43,14 @@ export const verificationStatusLabels: Record<string, string> = {
 
 export const userRoleLabels: Record<string, string> = {
   admin: "Administrateur",
-  employer: "Employeur",
+  employer: "Famille / Employeur",
   jobseeker: "Candidat",
-  agent: "Agent local",
+  agent: "Agent vérificateur",
 };
 
 export const tableLabels: Record<string, string> = {
-  jobs: "Offres d'emploi",
-  tasks: "Tâches",
+  jobs: "Annonces",
+  tasks: "Tâches & onboarding",
   applications: "Candidatures",
 };
 
@@ -76,4 +76,8 @@ export function formatSalary(min: number | null, max: number | null): string {
     return `Jusqu'à ${max.toLocaleString("fr-FR")} FCFA`;
   }
   return "Non spécifié";
+}
+
+export function whatsappHref(phone: string): string {
+  return `https://wa.me/${phone.replace(/[^\d]/g, "")}`;
 }

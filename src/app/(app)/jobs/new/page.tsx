@@ -77,9 +77,9 @@ export default function NewJobPage() {
           </svg>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Publier une offre</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Publier une annonce</h1>
           <p className="mt-1 text-sm text-slate-500">
-            Remplissez les détails ci-dessous pour créer une nouvelle offre d&apos;emploi.
+            Décrivez le poste à pourvoir au Cameroun et le profil recherché.
           </p>
         </div>
       </div>
@@ -93,22 +93,22 @@ export default function NewJobPage() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label className="input-label">Intitulé du poste *</label>
-            <input {...register("title")} type="text" className="input-field" placeholder="Développeur Frontend Senior" />
+            <label className="input-label">Poste recherché *</label>
+            <input {...register("title")} type="text" className="input-field" placeholder="Aide ménagère à domicile" />
             {errors.title && <p className="form-error">{errors.title.message}</p>}
           </div>
           <div>
-            <label className="input-label">Entreprise *</label>
-            <input {...register("company")} type="text" className="input-field" placeholder="Acme Inc." />
+            <label className="input-label">Famille / Employeur *</label>
+            <input {...register("company")} type="text" className="input-field" placeholder="Particulier – Famille Kouam" />
             {errors.company && <p className="form-error">{errors.company.message}</p>}
           </div>
           <div>
-            <label className="input-label">Lieu *</label>
-            <input {...register("location")} type="text" className="input-field" placeholder="Paris, France" />
+            <label className="input-label">Lieu (ville / quartier) *</label>
+            <input {...register("location")} type="text" className="input-field" placeholder="Douala (Bonapriso), Cameroun" />
             {errors.location && <p className="form-error">{errors.location.message}</p>}
           </div>
           <div>
-            <label className="input-label">Type d&apos;emploi *</label>
+            <label className="input-label">Type de contrat *</label>
             <select {...register("employment_type")} className="input-field">
               <option value="full-time">Temps plein</option>
               <option value="part-time">Temps partiel</option>
@@ -119,12 +119,12 @@ export default function NewJobPage() {
             {errors.employment_type && <p className="form-error">{errors.employment_type.message}</p>}
           </div>
           <div>
-            <label className="input-label">Salaire minimum</label>
+            <label className="input-label">Salaire minimum (FCFA / mois)</label>
             <input {...register("salary_min", { valueAsNumber: true })} type="number" min="0" className="input-field" placeholder="50000" />
             {errors.salary_min && <p className="form-error">{errors.salary_min.message}</p>}
           </div>
           <div>
-            <label className="input-label">Salaire maximum</label>
+            <label className="input-label">Salaire maximum (FCFA / mois)</label>
             <input {...register("salary_max", { valueAsNumber: true })} type="number" min="0" className="input-field" placeholder="80000" />
             {errors.salary_max && <p className="form-error">{errors.salary_max.message}</p>}
           </div>
@@ -138,7 +138,7 @@ export default function NewJobPage() {
 
         <div>
           <label className="input-label">Description du poste *</label>
-          <textarea {...register("description")} rows={6} className="input-field" placeholder="Décrivez le rôle, les responsabilités et les exigences..." />
+          <textarea {...register("description")} rows={6} className="input-field" placeholder="Décrivez les tâches, les horaires, l'hébergement éventuel et les références demandées..." />
           {errors.description && <p className="form-error">{errors.description.message}</p>}
         </div>
 
@@ -165,7 +165,7 @@ export default function NewJobPage() {
                 Publication...
               </>
             ) : (
-              "Publier l&apos;offre"
+              "Publier l'annonce"
             )}
           </button>
         </div>

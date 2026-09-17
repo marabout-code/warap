@@ -101,7 +101,7 @@ export default function TaskDetailPage() {
               <h1 className="text-2xl font-bold tracking-tight text-slate-900">{task.title}</h1>
               {getPriorityBadge(task.priority)}
             </div>
-            <p className="mt-1 text-sm text-slate-500">{job ? job.title : "Offre inconnue"}</p>
+            <p className="mt-1 text-sm text-slate-500">{job ? job.title : "Annonce inconnue"}</p>
           </div>
         </div>
         <div className="flex gap-3 shrink-0">
@@ -184,7 +184,7 @@ export default function TaskDetailPage() {
             >
               <div className="flex items-center gap-2.5">
                 <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
-                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">Offre associée</h3>
+                <h3 className="text-sm font-bold uppercase tracking-wider text-slate-900">Annonce associée</h3>
               </div>
               <p className="mt-3 text-sm font-semibold text-primary-700 group-hover:text-primary-500">{job.title}</p>
               <p className="mt-0.5 text-xs text-slate-500">{job.company}</p>

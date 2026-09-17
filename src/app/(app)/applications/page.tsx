@@ -6,6 +6,7 @@ import type { Application, Job, Profile } from "@/types";
 import {
   applicationStatusLabels,
   verificationStatusLabels,
+  whatsappHref,
 } from "@/lib/status-labels";
 
 type AppRow = Application & {
@@ -224,10 +225,10 @@ export default function ApplicationsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            Candidatures
+            Candidatures &amp; vérifications
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Suivez, examinez et vérifiez les candidatures.
+            Suivez, examinez et vérifiez chaque candidature avant l&apos;embauche.
           </p>
         </div>
         {canVerify && (
@@ -245,7 +246,7 @@ export default function ApplicationsPage() {
             <thead>
               <tr>
                 <th className="th">Candidat</th>
-                <th className="th">Offre</th>
+                <th className="th">Annonce</th>
                 <th className="th">Statut</th>
                 <th className="th">Vérification</th>
                 <th className="th text-right">
@@ -288,14 +289,25 @@ export default function ApplicationsPage() {
                                 {app.applicant?.full_name || "Candidat inconnu"}
                               </p>
                               <p className="truncate text-xs text-slate-500">
-                                {app.contact_phone || app.applicant?.phone || "—"}
+                                {app.contact_phone || app.applicant?.phone ? (
+                                  <a
+                                    href={whatsappHref((app.contact_phone || app.applicant?.phone)!)}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="transition-colors hover:text-primary-600"
+                                  >
+                                    {app.contact_phone || app.applicant?.phone}
+                                  </a>
+                                ) : (
+                                  "—"
+                                )}
                               </p>
                             </div>
                           </div>
                         </td>
                         <td className="td">
                           <p className="max-w-[14rem] truncate font-semibold text-slate-900">
-                            {app.job?.title || "Offre inconnue"}
+                            {app.job?.title || "Annonce inconnue"}
                           </p>
                           <p className="mt-0.5 truncate text-xs text-slate-500">
                             {app.job?.company}
@@ -370,9 +382,18 @@ export default function ApplicationsPage() {
                                   </p>
                                   <p>
                                     Contact :{" "}
-                                    <span className="font-semibold text-slate-900">
-                                      {app.contact_phone || "—"}
-                                    </span>
+                                    {app.contact_phone ? (
+                                      <a
+                                        href={whatsappHref(app.contact_phone)}
+                                        target="_blank"
+                                        rel="noopener noreferrer"
+                                        className="font-semibold text-primary-600 transition-colors hover:text-primary-500"
+                                      >
+                                        {app.contact_phone}
+                                      </a>
+                                    ) : (
+                                      <span className="font-semibold text-slate-900">—</span>
+                                    )}
                                   </p>
                                   {app.resume_url && (
                                     <a
@@ -392,7 +413,7 @@ export default function ApplicationsPage() {
 
                               <div className="space-y-3">
                                 <p className="text-xs font-bold uppercase tracking-wider text-slate-400">
-                                  Documents fournis
+                                  Pièces du dossier
                                 </p>
                                 {app.documents && app.documents.length > 0 ? (
                                   <ul className="space-y-1.5">
@@ -428,7 +449,7 @@ export default function ApplicationsPage() {
                                   <p className="text-sm text-slate-600">
                                     Vérifiée par{" "}
                                     <span className="font-semibold text-slate-900">
-                                      {app.verifier?.full_name || "Agent"}
+                                      {app.verifier?.full_name || "Agent vérificateur"}
                                     </span>
                                     {app.verified_at && (
                                       <span className="text-slate-400">

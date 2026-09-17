@@ -51,7 +51,6 @@ export const profileSchema = z.object({
   full_name: z.string().min(2, "Le nom doit contenir au moins 2 caractères"),
   bio: z.string().max(500, "La biographie doit contenir moins de 500 caractères").optional(),
   location: z.string().optional(),
-  website: z.string().url().optional().or(z.literal("")),
   phone: z.string().optional().or(z.literal("")),
 });
 

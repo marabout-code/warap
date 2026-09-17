@@ -75,7 +75,7 @@ export default function RegisterPage() {
               autoComplete="name"
               required
               className="input-field pl-11"
-              placeholder="Jean Dupont"
+              placeholder="Aïcha Mbarga"
             />
           </div>
         </div>

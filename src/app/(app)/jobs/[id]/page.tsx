@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import type { Job, Task } from "@/types";
-import { statusLabel, employmentTypeLabels, priorityLabels, formatSalary } from "@/lib/status-labels";
+import { statusLabel, employmentTypeLabels, priorityLabels, formatSalary, whatsappHref } from "@/lib/status-labels";
 
 export default function JobDetailPage() {
   const params = useParams();
@@ -30,7 +30,7 @@ export default function JobDetailPage() {
   }, [jobId, supabase]);
 
   const handleDelete = async () => {
-    if (!confirm("Voulez-vous vraiment supprimer cette offre ?")) return;
+    if (!confirm("Voulez-vous vraiment supprimer cette annonce ?")) return;
     await supabase.from("jobs").delete().eq("id", jobId);
     router.push("/jobs");
     router.refresh();
@@ -56,9 +56,9 @@ export default function JobDetailPage() {
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
           </svg>
         </div>
-        <p className="mt-4 text-sm font-semibold text-slate-700">Offre introuvable</p>
+        <p className="mt-4 text-sm font-semibold text-slate-700">Annonce introuvable</p>
         <Link href="/jobs" className="btn-primary mt-4">
-          Retour aux offres
+          Retour aux annonces
         </Link>
       </div>
     );
@@ -150,7 +150,7 @@ export default function JobDetailPage() {
             <div className="mt-4 space-y-3">
               {tasks.length === 0 ? (
                 <div className="rounded-xl border border-dashed border-slate-200 p-6 text-center">
-                  <p className="text-sm text-slate-500">Aucune tâche associée à cette offre pour le moment.</p>
+                  <p className="text-sm text-slate-500">Aucune tâche associée à cette annonce pour le moment.</p>
                 </div>
               ) : (
                 tasks.map((task) => (
@@ -183,11 +183,11 @@ export default function JobDetailPage() {
           <div className="card">
             <div className="flex items-center gap-2.5">
               <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
-              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">Détails de l&apos;offre</h2>
+              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">Détails de l&apos;annonce</h2>
             </div>
             <dl className="mt-5 space-y-4">
               {[
-                { label: "Type d'emploi", value: employmentTypeLabels[job.employment_type] || job.employment_type.replace("-", " ") },
+                { label: "Type de contrat", value: employmentTypeLabels[job.employment_type] || job.employment_type.replace("-", " ") },
                 { label: "Salaire", value: formatSalary(job.salary_min, job.salary_max) },
                 { label: "Contact (WhatsApp)", value: job.contact_phone || "Non spécifié" },
                 { label: "Publiée le", value: new Date(job.created_at).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" }) },
@@ -198,7 +198,9 @@ export default function JobDetailPage() {
                   <dd className="mt-0.5 text-sm font-semibold text-slate-900">
                     {item.label === "Contact (WhatsApp)" && item.value !== "Non spécifié" ? (
                       <a
-                        href={`tel:${item.value.replace(/\s/g, "")}`}
+                        href={whatsappHref(item.value)}
+                        target="_blank"
+                        rel="noopener noreferrer"
                         className="inline-flex items-center gap-1.5 text-primary-600 transition-colors hover:text-primary-500"
                       >
                         <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor">

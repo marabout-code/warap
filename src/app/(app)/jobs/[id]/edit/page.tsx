@@ -103,8 +103,8 @@ export default function EditJobPage() {
           </svg>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Modifier l&apos;offre</h1>
-          <p className="mt-1 text-sm text-slate-500">Mettez à jour les détails de votre offre.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Modifier l&apos;annonce</h1>
+          <p className="mt-1 text-sm text-slate-500">Mettez à jour les détails de votre annonce.</p>
         </div>
       </div>
 
@@ -117,22 +117,22 @@ export default function EditJobPage() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label className="input-label">Intitulé du poste *</label>
+            <label className="input-label">Poste recherché *</label>
             <input {...register("title")} type="text" className="input-field" />
             {errors.title && <p className="form-error">{errors.title.message}</p>}
           </div>
           <div>
-            <label className="input-label">Entreprise *</label>
+            <label className="input-label">Famille / Employeur *</label>
             <input {...register("company")} type="text" className="input-field" />
             {errors.company && <p className="form-error">{errors.company.message}</p>}
           </div>
           <div>
-            <label className="input-label">Lieu *</label>
+            <label className="input-label">Lieu (ville / quartier) *</label>
             <input {...register("location")} type="text" className="input-field" />
             {errors.location && <p className="form-error">{errors.location.message}</p>}
           </div>
           <div>
-            <label className="input-label">Type d&apos;emploi *</label>
+            <label className="input-label">Type de contrat *</label>
             <select {...register("employment_type")} className="input-field">
               <option value="full-time">Temps plein</option>
               <option value="part-time">Temps partiel</option>
@@ -142,11 +142,11 @@ export default function EditJobPage() {
             </select>
           </div>
           <div>
-            <label className="input-label">Salaire minimum</label>
+            <label className="input-label">Salaire minimum (FCFA / mois)</label>
             <input {...register("salary_min", { valueAsNumber: true })} type="number" min="0" className="input-field" />
           </div>
           <div>
-            <label className="input-label">Salaire maximum</label>
+            <label className="input-label">Salaire maximum (FCFA / mois)</label>
             <input {...register("salary_max", { valueAsNumber: true })} type="number" min="0" className="input-field" />
           </div>
         </div>

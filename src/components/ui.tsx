@@ -45,6 +45,9 @@ export function StatusBadge({ status }: { status: string }) {
     medium: "badge-info",
     high: "badge-warning",
     urgent: "badge-danger",
+    unverified: "badge-neutral",
+    in_review: "badge-warning",
+    verified: "badge-success",
   };
 
   return (

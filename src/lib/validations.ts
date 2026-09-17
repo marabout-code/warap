@@ -30,6 +30,7 @@ export const jobSchema = z.object({
   description: z.string().min(10, "La description doit contenir au moins 10 caractères"),
   company: z.string().min(2, "Le nom de l'entreprise est requis"),
   location: z.string().min(2, "Le lieu est requis"),
+  contact_phone: z.string().optional().or(z.literal("")),
   salary_min: z.number().min(0, "Le salaire doit être positif").optional(),
   salary_max: z.number().min(0, "Le salaire doit être positif").optional(),
   employment_type: z.enum(["full-time", "part-time", "contract", "internship", "remote"]),
@@ -51,6 +52,7 @@ export const profileSchema = z.object({
   bio: z.string().max(500, "La biographie doit contenir moins de 500 caractères").optional(),
   location: z.string().optional(),
   website: z.string().url().optional().or(z.literal("")),
+  phone: z.string().optional().or(z.literal("")),
 });
 
 export type LoginInput = z.infer<typeof loginSchema>;

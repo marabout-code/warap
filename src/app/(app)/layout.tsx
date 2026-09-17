@@ -52,7 +52,7 @@ const Logo = () => (
     <div className="leading-tight">
       <p className="text-sm font-bold tracking-tight text-white">warap</p>
       <p className="text-[10px] font-medium uppercase tracking-widest text-slate-500">
-        Task Suite
+        Recrutement &amp; Emploi
       </p>
     </div>
   </div>

@@ -45,6 +45,7 @@ export default function EditJobPage() {
           salary_max: data.salary_max || undefined,
           employment_type: data.employment_type,
           status: data.status,
+          contact_phone: data.contact_phone || "",
         });
       }
       setLoading(false);
@@ -67,6 +68,7 @@ export default function EditJobPage() {
         salary_max: data.salary_max || null,
         employment_type: data.employment_type,
         status: data.status,
+        contact_phone: data.contact_phone || null,
       })
       .eq("id", jobId);
 
@@ -147,6 +149,11 @@ export default function EditJobPage() {
             <label className="input-label">Salaire maximum</label>
             <input {...register("salary_max", { valueAsNumber: true })} type="number" min="0" className="input-field" />
           </div>
+        </div>
+
+        <div>
+          <label className="input-label">Téléphone de contact (WhatsApp)</label>
+          <input {...register("contact_phone")} type="tel" className="input-field" placeholder="+237 6 00 00 00 00" />
         </div>
 
         <div>

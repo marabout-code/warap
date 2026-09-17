@@ -3,7 +3,7 @@
 --           domestique au Cameroun depuis l'étranger (diaspora)
 -- ---------------------------------------------------------------------
 -- À exécuter dans le SQL Editor du dashboard Supabase, APRÈS avoir
--- exécuté les migrations 001, 002 et 003.
+-- exécuté les migrations 001, 002, 003 et 004.
 --
 -- Réexécutable (UUID fixes + ON CONFLICT DO NOTHING).
 -- Pour REINITIALISER : exécuter reset_domestic_workers.sql, puis ce
@@ -477,7 +477,7 @@ ON CONFLICT (id) DO NOTHING;
 -- =====================================================================
 SELECT 'offres domestiques' AS section, COUNT(*) AS total FROM jobs WHERE company_id IS NULL
 UNION ALL
-SELECT 'candidatures', COUNT(*) FROM applications WHERE job_id LIKE 'bbbbbb02%'
+SELECT 'candidatures', COUNT(*) FROM applications WHERE job_id::text LIKE 'bbbbbb02%'
 UNION ALL
 SELECT 'taches verification', COUNT(*) FROM tasks WHERE assigned_to = '66666663-3333-4333-8333-666666666663'
 UNION ALL

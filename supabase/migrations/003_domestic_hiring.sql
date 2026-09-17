@@ -8,11 +8,17 @@
 --     vérificateur, dates)
 --   * téléphones de contact (WhatsApp) sur profils / offres / candidatures
 --
+-- Attention : l'enum user_role reçoit la valeur 'agent' ici, mais CELA
+-- NE PEUT PAS être utilisée dans le même script (même transaction).
+-- Les politiques RLS faisant référence à 'agent' sont donc dans la
+-- migration 004_agent_rls.sql, à exécuter APRES celle-ci.
+--
 -- Réexécutable : toutes les instructions sont protégées (IF NOT EXISTS).
 -- =====================================================================
 
 -- ---------------------------------------------------------------------
 -- 1. Rôle "agent" dans l'enum user_role
+--    (ajout isolé : aucune utilisation de la valeur dans ce script)
 -- ---------------------------------------------------------------------
 ALTER TYPE public.user_role ADD VALUE IF NOT EXISTS 'agent';
 
@@ -68,25 +74,7 @@ CREATE INDEX IF NOT EXISTS idx_jobs_contact_phone
   ON public.jobs(contact_phone);
 
 -- ---------------------------------------------------------------------
--- 5. Politiques RLS pour le rôle agent
---    (les politiques SELECT sont de type permissif : elles s'additionnent
---     aux politiques existantes de la migration 001)
+-- 5. Politiques RLS pour le rôle agent : voir 004_agent_rls.sql
+--    (doit être exécuté après ce script, dès que la valeur 'agent'
+--     de l'enum est engagée)
 -- ---------------------------------------------------------------------
-
--- Un agent peut consulter toutes les candidatures (pour les vérifier)
-DROP POLICY IF EXISTS "Agents can view applications" ON public.applications;
-CREATE POLICY "Agents can view applications" ON public.applications
-  FOR SELECT USING (
-    EXISTS (SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role = 'agent')
-  );
-
--- Un agent ou un admin peut mettre à jour une candidature
--- (statut de vérification, notes, documents). À restreindre par colonne
--- si on souhaite interdire la modification du statut du recrutement.
-DROP POLICY IF EXISTS "Agents and admins can update applications" ON public.applications;
-CREATE POLICY "Agents and admins can update applications" ON public.applications
-  FOR UPDATE USING (
-    EXISTS (
-      SELECT 1 FROM public.profiles WHERE id = auth.uid() AND role IN ('agent', 'admin')
-    )
-  );

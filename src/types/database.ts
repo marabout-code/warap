@@ -10,7 +10,8 @@ export interface Database {
           bio: string | null;
           location: string | null;
           website: string | null;
-          role: "admin" | "employer" | "jobseeker";
+          role: "admin" | "employer" | "jobseeker" | "agent";
+          phone: string | null;
           pin_hash: string | null;
           pin_lookup: string | null;
           supabase_auth_secret: string | null;
@@ -25,7 +26,8 @@ export interface Database {
           bio?: string | null;
           location?: string | null;
           website?: string | null;
-          role?: "admin" | "employer" | "jobseeker";
+          role?: "admin" | "employer" | "jobseeker" | "agent";
+          phone?: string | null;
           pin_hash?: string | null;
           pin_lookup?: string | null;
           supabase_auth_secret?: string | null;
@@ -40,7 +42,8 @@ export interface Database {
           bio?: string | null;
           location?: string | null;
           website?: string | null;
-          role?: "admin" | "employer" | "jobseeker";
+          role?: "admin" | "employer" | "jobseeker" | "agent";
+          phone?: string | null;
           pin_hash?: string | null;
           pin_lookup?: string | null;
           supabase_auth_secret?: string | null;
@@ -102,6 +105,7 @@ export interface Database {
           status: "open" | "closed" | "draft";
           posted_by: string;
           company_id: string | null;
+          contact_phone: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -117,6 +121,7 @@ export interface Database {
           status?: "open" | "closed" | "draft";
           posted_by: string;
           company_id?: string | null;
+          contact_phone?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -132,6 +137,7 @@ export interface Database {
           status?: "open" | "closed" | "draft";
           posted_by?: string;
           company_id?: string | null;
+          contact_phone?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -185,6 +191,12 @@ export interface Database {
           cover_letter: string | null;
           resume_url: string | null;
           status: "pending" | "reviewed" | "shortlisted" | "rejected" | "accepted";
+          contact_phone: string | null;
+          documents: { name: string; type: string; url: string }[];
+          verification_status: "unverified" | "in_review" | "verified" | "rejected";
+          verified_by: string | null;
+          verification_notes: string | null;
+          verified_at: string | null;
           created_at: string;
           updated_at: string;
         };
@@ -195,6 +207,12 @@ export interface Database {
           cover_letter?: string | null;
           resume_url?: string | null;
           status?: "pending" | "reviewed" | "shortlisted" | "rejected" | "accepted";
+          contact_phone?: string | null;
+          documents?: { name: string; type: string; url: string }[];
+          verification_status?: "unverified" | "in_review" | "verified" | "rejected";
+          verified_by?: string | null;
+          verification_notes?: string | null;
+          verified_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -205,6 +223,12 @@ export interface Database {
           cover_letter?: string | null;
           resume_url?: string | null;
           status?: "pending" | "reviewed" | "shortlisted" | "rejected" | "accepted";
+          contact_phone?: string | null;
+          documents?: { name: string; type: string; url: string }[];
+          verification_status?: "unverified" | "in_review" | "verified" | "rejected";
+          verified_by?: string | null;
+          verification_notes?: string | null;
+          verified_at?: string | null;
           created_at?: string;
           updated_at?: string;
         };
@@ -222,7 +246,8 @@ export interface Database {
       task_priority: "low" | "medium" | "high" | "urgent";
       task_status: "todo" | "in_progress" | "review" | "done";
       application_status: "pending" | "reviewed" | "shortlisted" | "rejected" | "accepted";
-      user_role: "admin" | "employer" | "jobseeker";
+      user_role: "admin" | "employer" | "jobseeker" | "agent";
+      verification_status: "unverified" | "in_review" | "verified" | "rejected";
     };
   };
 }

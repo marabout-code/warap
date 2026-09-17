@@ -7,6 +7,14 @@ import { profileSchema, type ProfileInput } from "@/lib/validations";
 import { changePin } from "@/lib/actions/auth";
 import PinInput from "@/components/pin-input";
 import type { Profile } from "@/types";
+import { userRoleLabels } from "@/lib/status-labels";
+
+const roleBadgeStyles: Record<string, string> = {
+  admin: "bg-white/25 text-white",
+  employer: "bg-white/25 text-white",
+  jobseeker: "bg-white/25 text-white",
+  agent: "bg-amber-400/90 text-amber-950",
+};
 
 export default function ProfilePage() {
   const [profile, setProfile] = useState<Profile | null>(null);
@@ -56,6 +64,7 @@ export default function ProfilePage() {
           bio: profileData.bio || "",
           location: profileData.location || "",
           website: profileData.website || "",
+          phone: profileData.phone || "",
         });
       }
       setLoading(false);
@@ -76,6 +85,7 @@ export default function ProfilePage() {
         bio: data.bio || null,
         location: data.location || null,
         website: data.website || null,
+        phone: data.phone || null,
       })
       .eq("id", profile.id);
 
@@ -137,7 +147,14 @@ export default function ProfilePage() {
             {profile?.full_name?.charAt(0) || "?"}
           </div>
           <div>
-            <h1 className="text-2xl font-bold tracking-tight text-white">{profile?.full_name || "Votre profil"}</h1>
+            <div className="flex flex-wrap items-center gap-2.5">
+              <h1 className="text-2xl font-bold tracking-tight text-white">{profile?.full_name || "Votre profil"}</h1>
+              {profile?.role && (
+                <span className={`rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider backdrop-blur ${roleBadgeStyles[profile.role] || "bg-white/25 text-white"}`}>
+                  {userRoleLabels[profile.role] || profile.role}
+                </span>
+              )}
+            </div>
             <p className="mt-0.5 text-sm text-white/80">Compte protégé par PIN</p>
           </div>
         </div>
@@ -169,10 +186,15 @@ export default function ProfilePage() {
           </div>
           <div>
             <label className="input-label">Localisation</label>
-            <input {...register("location")} type="text" className="input-field" placeholder="Paris, France" />
+            <input {...register("location")} type="text" className="input-field" placeholder="Douala, Cameroun" />
             {errors.location && <p className="form-error">{errors.location.message}</p>}
           </div>
           <div>
+            <label className="input-label">Téléphone (WhatsApp)</label>
+            <input {...register("phone")} type="tel" className="input-field" placeholder="+237 6 00 00 00 00" />
+            {errors.phone && <p className="form-error">{errors.phone.message}</p>}
+          </div>
+          <div className="md:col-span-2">
             <label className="input-label">Site web</label>
             <input {...register("website")} type="url" className="input-field" placeholder="https://example.com" />
             {errors.website && <p className="form-error">{errors.website.message}</p>}

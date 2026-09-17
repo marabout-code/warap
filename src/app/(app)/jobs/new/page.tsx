@@ -51,6 +51,7 @@ export default function NewJobPage() {
       salary_max: data.salary_max || null,
       employment_type: data.employment_type,
       status: data.status,
+      contact_phone: data.contact_phone || null,
       posted_by: userId,
     });
 
@@ -127,6 +128,12 @@ export default function NewJobPage() {
             <input {...register("salary_max", { valueAsNumber: true })} type="number" min="0" className="input-field" placeholder="80000" />
             {errors.salary_max && <p className="form-error">{errors.salary_max.message}</p>}
           </div>
+        </div>
+
+        <div>
+          <label className="input-label">Téléphone de contact (WhatsApp)</label>
+          <input {...register("contact_phone")} type="tel" className="input-field" placeholder="+237 6 00 00 00 00" />
+          {errors.contact_phone && <p className="form-error">{errors.contact_phone.message}</p>}
         </div>
 
         <div>

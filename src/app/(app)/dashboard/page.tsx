@@ -11,6 +11,7 @@ interface DashboardStats {
   openJobs: number;
   totalTasks: number;
   pendingApplications: number;
+  pendingVerifications: number;
 }
 
 const statCards = [
@@ -46,6 +47,14 @@ const statCards = [
     gradient: "from-amber-500 to-orange-600",
     ring: "bg-amber-50",
   },
+  {
+    name: "Vérifications en attente",
+    key: "pendingVerifications" as const,
+    href: "/applications",
+    icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z",
+    gradient: "from-sky-500 to-indigo-600",
+    ring: "bg-sky-50",
+  },
 ];
 
 const quickActions = [
@@ -78,6 +87,7 @@ export default function DashboardPage() {
     openJobs: 0,
     totalTasks: 0,
     pendingApplications: 0,
+    pendingVerifications: 0,
   });
   const [recentJobs, setRecentJobs] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -90,12 +100,17 @@ export default function DashboardPage() {
         { count: openJobs },
         { count: totalTasks },
         { count: pendingApplications },
+        { count: pendingVerifications },
         { data: jobs },
       ] = await Promise.all([
         supabase.from("jobs").select("*", { count: "exact", head: true }),
         supabase.from("jobs").select("*", { count: "exact", head: true }).eq("status", "open"),
         supabase.from("tasks").select("*", { count: "exact", head: true }),
         supabase.from("applications").select("*", { count: "exact", head: true }).eq("status", "pending"),
+        supabase
+          .from("applications")
+          .select("*", { count: "exact", head: true })
+          .in("verification_status", ["unverified", "in_review"]),
         supabase.from("jobs").select("*").order("created_at", { ascending: false }).limit(5),
       ]);
 
@@ -104,6 +119,7 @@ export default function DashboardPage() {
         openJobs: openJobs || 0,
         totalTasks: totalTasks || 0,
         pendingApplications: pendingApplications || 0,
+        pendingVerifications: pendingVerifications || 0,
       });
       setRecentJobs(jobs || []);
       setLoading(false);
@@ -116,8 +132,8 @@ export default function DashboardPage() {
     return (
       <div className="space-y-6">
         <div className="skeleton h-44 rounded-2xl" />
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
-          {[...Array(4)].map((_, i) => (
+        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
+          {[...Array(5)].map((_, i) => (
             <div key={i} className="skeleton h-32 rounded-2xl" />
           ))}
         </div>
@@ -167,7 +183,7 @@ export default function DashboardPage() {
       </section>
 
       {/* Stat cards */}
-      <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
+      <section className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5">
         {statCards.map((stat, i) => (
           <Link
             key={stat.name}

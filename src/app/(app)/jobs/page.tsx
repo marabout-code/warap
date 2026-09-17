@@ -5,7 +5,7 @@ import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { Job } from "@/types";
-import { employmentTypeLabels } from "@/lib/status-labels";
+import { employmentTypeLabels, formatSalary } from "@/lib/status-labels";
 
 export default function JobsPage() {
   const [jobs, setJobs] = useState<Job[]>([]);
@@ -195,8 +195,8 @@ export default function JobsPage() {
                       {getEmploymentTypeBadge(job.employment_type)}
                     </td>
                     <td className="td text-sm text-slate-600">
-                      {job.salary_min && job.salary_max
-                        ? `$${job.salary_min.toLocaleString()} – $${job.salary_max.toLocaleString()}`
+                      {job.salary_min || job.salary_max
+                        ? formatSalary(job.salary_min, job.salary_max)
                         : <span className="text-slate-400">—</span>}
                     </td>
                     <td className="td">{getStatusBadge(job.status)}</td>

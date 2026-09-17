@@ -34,6 +34,20 @@ export const applicationStatusLabels: Record<string, string> = {
   accepted: "Acceptée",
 };
 
+export const verificationStatusLabels: Record<string, string> = {
+  unverified: "Non vérifiée",
+  in_review: "En vérification",
+  verified: "Vérifiée",
+  rejected: "Rejetée",
+};
+
+export const userRoleLabels: Record<string, string> = {
+  admin: "Administrateur",
+  employer: "Employeur",
+  jobseeker: "Candidat",
+  agent: "Agent local",
+};
+
 export const tableLabels: Record<string, string> = {
   jobs: "Offres d'emploi",
   tasks: "Tâches",
@@ -45,7 +59,21 @@ export function statusLabel(value: string): string {
     jobStatusLabels[value] ||
     taskStatusLabels[value] ||
     applicationStatusLabels[value] ||
+    verificationStatusLabels[value] ||
     priorityLabels[value] ||
     value.replace("_", " ")
   );
+}
+
+export function formatSalary(min: number | null, max: number | null): string {
+  if (min && max) {
+    return `${min.toLocaleString("fr-FR")} – ${max.toLocaleString("fr-FR")} FCFA`;
+  }
+  if (min) {
+    return `${min.toLocaleString("fr-FR")} FCFA minimum`;
+  }
+  if (max) {
+    return `Jusqu'à ${max.toLocaleString("fr-FR")} FCFA`;
+  }
+  return "Non spécifié";
 }

@@ -1,28 +1,31 @@
-# warap
+# warap — Personnel domestique vérifié au Cameroun
 
-A production-ready warap management application built with **Next.js 14** (App Router), **TypeScript**, and **Supabase** as the backend service.
+warap connecte les familles de la **diaspora camerounaise** aux aides ménagères,
+nounous, chauffeurs et gouvernantes au pays. Chaque candidat est **vérifié en
+personne par un agent local** avant l'embauche.
+
+Built with **Next.js 14** (App Router), **TypeScript**, and **Supabase**.
 
 ## Features
 
-- **Authentication** - PIN-based login (no email/password) with session management via Supabase Auth
-  - Protected routes via Next.js middleware
-  - Role-based access (admin, employer, jobseeker)
-  - Automatic profile creation on signup
-- **Job Management** - Full CRUD for job listings
-  - Search, filter by status, salary ranges, employment types
-- **Task Management** - Task tracking within jobs
-  - Priority levels, statuses, assignment, due dates
-- **Applications** - Track and manage job applications with status workflows
-- **Real-time Updates** - Live feeds for jobs/tasks/applications changes via Supabase Realtime
-- **Profiles** - User profile management
-- **Security** - Row Level Security (RLS) policies on all tables, server-side validation with Zod
-- **Performance** - Optimized DB indexes, client-side data fetching, static prerendering where safe
+- **Recrutement diaspora** — publier un poste depuis l'étranger, salaires en FCFA, contact WhatsApp direct.
+- **Tableau d'annonces public** (`/annonces`) — les candidats au Cameroun découvrent les offres ouvertes par ville et mot-clé, sans compte.
+- **Candidature avec dossier** — le candidat postule, téléverse ses pièces (CNI, références, casier judiciaire, diplômes…) ; les documents sont stockés dans un bucket Supabase Storage dédié.
+- **Revue par annonce** — la famille consulte, trie (examinée / présélectionnée / rejetée / acceptée) et lance une demande de vérification auprès d'un agent, avec création de tâche.
+- **Tableau de bord agent** (`/verifications`) — checklist terrain, notes, statut de vérification, rapport partagé avec la famille.
+- **Authentication par code PIN** — connexion à 6 chiffres, sans email / mot de passe, sessions via Supabase Auth.
+  - Routes protégées par middleware Next.js
+  - Rôles : `admin`, `employer` (famille), `agent` (vérificateur), `jobseeker` (candidat)
+  - Création automatique du profil à l'inscription (rôle par défaut : candidat)
+- **Gestion complète** — annonces (CRUD + recherche/filtres), tâches & onboarding, candidatures, profils.
+- **Mises à jour en temps réel** — flux live Supabase Realtime sur les annonces / tâches / candidatures.
+- **Sécurité** — Row Level Security sur toutes les tables + Storage, validation Zod.
 
 ## Tech Stack
 
 - Next.js 14.2 (App Router)
 - TypeScript
-- Supabase (Auth, Postgres, Realtime, RLS)
+- Supabase (Auth, Postgres, Realtime, RLS, Storage)
 - Tailwind CSS
 - React Hook Form + Zod (validation)
 
@@ -45,7 +48,7 @@ npm install
 cp .env.local.example .env.local
 ```
 
-Then edit `.env.local`:
+Edit `.env.local`:
 
 ```env
 NEXT_PUBLIC_SUPABASE_URL=https://<your-project-ref>.supabase.co
@@ -56,21 +59,15 @@ Get these from your Supabase project: **Settings → API**.
 
 ### 4. Set up the database
 
-Run the schema migration in the Supabase SQL Editor (or via CLI):
+Run the schema migrations **in order** in the Supabase SQL Editor:
 
-```bash
-supabase db push
-```
+1. `supabase/migrations/001_initial_schema.sql` — tables, enums, RLS, triggers, indexes
+2. `supabase/migrations/002_add_pin_to_profiles.sql` — PIN storage
+3. `supabase/migrations/003_domestic_hiring.sql` — rôle `agent`, enum `verification_status`, pack de vérification sur les candidatures (`documents`, `verified_by`, `verification_notes`, `verified_at`), `contact_phone`
+4. `supabase/migrations/004_agent_rls.sql` — politiques RLS du rôle agent
+5. `supabase/migrations/005_candidate_documents.sql` — bucket Storage `documents` + politiques, checklist de vérification (`verification_checklist`)
 
-Or paste the contents of `supabase/migrations/001_initial_schema.sql` into the Supabase SQL Editor and run it.
-
-This creates:
-- Tables: `profiles`, `companies`, `jobs`, `tasks`, `applications`
-- Enums: `user_role`, `employment_type`, `job_status`, `task_priority`, `task_status`, `application_status`
-- Row Level Security policies for all tables
-- Auto-profile-creation trigger on auth signup
-- `updated_at` timestamps triggers
-- Optimized database indexes
+Each migration is idempotent and safe to re-run.
 
 ### 5. Run the app
 
@@ -80,44 +77,22 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Sample Data (Cameroun)
+## Sample Data (domestic worker hiring)
 
-Reusable demo data (companies, jobs, tasks, applications) with a fully loggable user set.
-
-- `supabase/seed_cameroon.sql` — seeds realistic Cameroonian data. Run it in the Supabase SQL Editor (SQL Editor → New query → paste → Run). Re-runnable: uses fixed IDs with `ON CONFLICT DO NOTHING`.
-- `supabase/reset_cameroon.sql` — wipes all seeded data (cascading deletes). Run it, then re-run `seed_cameroon.sql` to reinitialize.
-
-### Domestic worker hiring (diaspora)
-
-Schema extension for hiring maids/helpers from abroad:
-
-- `supabase/migrations/003_domestic_hiring.sql` — adds the `agent` role, a `verification_status` enum (`unverified`, `in_review`, `verified`, `rejected`), a per-application verification pack (`documents` JSONB, `verified_by`, `verification_notes`, `verified_at`), WhatsApp `contact_phone` on profiles/jobs/applications, and RLS policies letting agents verify applications.
-- `supabase/seed_domestic_workers.sql` — tailored sample: diaspora employers (Paris/London), a local verification agent, maids/nanny/governess/driver candidates, and onboarding/verification tasks. Run this **after** migrations 001, 002, and 003.
-- `supabase/reset_domestic_workers.sql` — wipes only this tailored dataset; re-run the seed to reinitialize.
+- `supabase/seed_domestic_workers.sql` — diaspora employers (Paris/London), a local verification agent, maid/nanny/governess/driver candidates, jobs, applications and onboarding/verification tasks.
+- `supabase/reset_domestic_workers.sql` — wipes only this dataset; re-run the seed to reinitialize.
 
 Demo accounts — log in with the 6-digit PIN:
 
-| Name               | Email                        | Role               | PIN      |
-| ------------------ | ---------------------------- | ------------------ | -------- |
-| Mireille Kouam     | `mireille.kouam@warap.demo`  | employer (Paris)   | `111222` |
-| Charles Ngo Bakai  | `charles.ngobakai@warap.demo`| employer (London)  | `222333` |
-| Yannick Fokou      | `yannick.fokou@warap.demo`   | agent (Douala)     | `333444` |
-| Solange Andela     | `solange.andela@warap.demo`  | jobseeker (maid)   | `444555` |
-| Marthe Tchoupo     | `marthe.tchoupo@warap.demo`  | jobseeker (nanny)  | `555666` |
-| Honorine Nana      | `honorine.nana@warap.demo`   | jobseeker (housekeep.) | `666777` |
-| Serge Ekambi       | `serge.ekambi@warap.demo`    | jobseeker (driver) | `777888` |
-
-### General sample data
-
-| Name                | Email               | Role       | PIN      |
-| ------------------- | ------------------- | ---------- | -------- |
-| Dinah Nkong         | `dinah@warap.demo`  | employer   | `123456` |
-| Jean-Claude Mbarga  | `jeanclaude@warap.demo` | employer | `234567` |
-| Aïcha Ngono         | `aicha@warap.demo`  | jobseeker  | `345678` |
-| Brice Mballa        | `brice@warap.demo`  | jobseeker  | `567890` |
-| Ella Tchouta        | `ella@warap.demo`   | admin      | `456789` |
-
-Locations and salaries are expressed for Cameroon (Douala, Yaoundé, Limbé, Bafoussam; FCFA ranges).
+| Name               | Role               | PIN      |
+| ------------------ | ------------------ | -------- |
+| Mireille Kouam     | employer (Paris)   | `111222` |
+| Charles Ngo Bakai  | employer (London)  | `222333` |
+| Yannick Fokou      | agent (Douala)     | `333444` |
+| Solange Andela     | jobseeker (maid)   | `444555` |
+| Marthe Tchoupo     | jobseeker (nanny)  | `555666` |
+| Honorine Nana      | jobseeker (housekeep.) | `666777` |
+| Serge Ekambi       | jobseeker (driver) | `777888` |
 
 ## Project Structure
 
@@ -127,29 +102,33 @@ src/
 │   ├── (app)/                 # Protected route group (middleware-gated)
 │   │   ├── layout.tsx         # Dashboard shell: sidebar, header, auth
 │   │   ├── dashboard/         # Overview with stats & live updates
-│   │   ├── jobs/              # Job list, create, detail, edit
-│   │   ├── tasks/             # Task list, create, detail, edit
-│   │   ├── applications/      # Application tracking
-│   │   └── profile/           # User profile management
-│   ├── login/                 # Sign in
-│   ├── register/              # Sign up
+│   │   ├── jobs/              # Annonces: list, create, detail, edit, apply
+│   │   ├── applications/      # Candidatures & vérifications
+│   │   ├── verifications/     # Tableau de bord agent-vérificateur
+│   │   ├── tasks/             # Tâches & onboarding
+│   │   └── profile/           # Profil utilisateur
+│   ├── annonces/              # Tableau public des annonces (+ détail)
+│   ├── login/                 # Connexion PIN
+│   ├── register/              # Inscription
 │   ├── layout.tsx             # Root layout
 │   └── page.tsx               # Landing page
-├── components/                # Reusable UI components (realtime feed, toasts, UI kit)
+├── components/                # UI kit, logo, en-têtes/footers publics, feed temps réel, toasts
 ├── lib/
-│   └── supabase/              # Browser / server / middleware clients
-├── types/                     # Database & row types
-└── middleware.ts              # Auth route protection
+│   ├── roles.ts               # Navigation & libellés par rôle
+│   ├── status-labels.ts       # Libellés, salaires, WhatsApp, types de pièces
+│   └── supabase/              # Clients navigateur / serveur / middleware
+├── types/                     # Types base de données & lignes
+└── middleware.ts              # Protection des routes par session
 ```
 
 ## Security
 
-- **Row Level Security**: Every table enforces RLS. Policies restrict access by authenticated user ID and role:
+- **Row Level Security**: every table enforces RLS; the `documents` Storage bucket only allows uploads into the authenticated user's own folder.
   - Jobs: anyone can view; only employers/admins can create/update/delete their own
   - Tasks: creator, assignee, or admin
-  - Applications: applicant or the job poster
-- **Middleware**: Unauthenticated users are redirected away from protected routes; authenticated users are kept out of login/register.
-- **Server validation**: Zod schemas validate all form input on the client before submission; RLS enforces authorization server-side.
+  - Applications: applicant, job poster, or admin; agents can read/update for verification
+- **Middleware**: Unauthenticated users are redirected away from protected routes; `/annonces` stays public; authenticated users are kept out of login/register.
+- **Server validation**: Zod schemas validate form input before submission; RLS enforces authorization server-side.
 
 ## Scripts
 
@@ -159,7 +138,3 @@ src/
 | `npm run build`  | Production build + type check   |
 | `npm run start`  | Start the production server     |
 | `npm run lint`   | Run ESLint                      |
-
-## Database Migration
-
-The full schema with RLS policies lives in `supabase/migrations/001_initial_schema.sql`. Re-run this file anytime against a fresh Supabase project to bootstrap the backend.

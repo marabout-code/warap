@@ -1,29 +1,93 @@
 ﻿"use client";
 
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import type { Job, Task } from "@/types";
-import { statusLabel, employmentTypeLabels, priorityLabels, formatSalary, whatsappHref } from "@/lib/status-labels";
+import type { Application, Job, Profile, Task } from "@/types";
+import {
+  employmentTypeLabels,
+  priorityLabels,
+  applicationStatusLabels,
+  verificationStatusLabels,
+  formatSalary,
+  whatsappHref,
+} from "@/lib/status-labels";
+
+type AppRow = Application & { applicant?: Profile };
 
 export default function JobDetailPage() {
   const params = useParams();
   const router = useRouter();
   const jobId = params.id as string;
+
   const [job, setJob] = useState<Job | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [applications, setApplications] = useState<AppRow[]>([]);
+  const [agents, setAgents] = useState<Profile[]>([]);
+  const [selectedAgent, setSelectedAgent] = useState("");
+  const [canManage, setCanManage] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [actionError, setActionError] = useState<string | null>(null);
   const supabase = createClient();
 
   useEffect(() => {
     const fetchJobData = async () => {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
       const [{ data: jobData }, { data: tasksData }] = await Promise.all([
         supabase.from("jobs").select("*").eq("id", jobId).single(),
         supabase.from("tasks").select("*").eq("job_id", jobId).order("created_at", { ascending: false }),
       ]);
       setJob(jobData);
       setTasks(tasksData || []);
+
+      let canManageThis = false;
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+        canManageThis =
+          (jobData?.posted_by === user.id && profile?.role === "employer") ||
+          profile?.role === "admin";
+      }
+      setCanManage(canManageThis);
+
+      if (canManageThis && jobData) {
+        const { data: apps } = await supabase
+          .from("applications")
+          .select("*")
+          .eq("job_id", jobData.id)
+          .order("created_at", { ascending: false });
+
+        if (apps && apps.length > 0) {
+          const userIds = [...new Set(apps.map((a) => a.user_id))];
+          const { data: profilesData } = await supabase
+            .from("profiles")
+            .select("*")
+            .in("id", userIds);
+          const profileMap: Record<string, Profile> = {};
+          profilesData?.forEach((p) => {
+            profileMap[p.id] = p;
+          });
+          setApplications(
+            apps.map((app) => ({ ...app, applicant: profileMap[app.user_id] }))
+          );
+        } else {
+          setApplications(apps || []);
+        }
+
+        const { data: agentsData } = await supabase
+          .from("profiles")
+          .select("*")
+          .eq("role", "agent");
+        setAgents(agentsData || []);
+      }
+
       setLoading(false);
     };
     fetchJobData();
@@ -34,6 +98,67 @@ export default function JobDetailPage() {
     await supabase.from("jobs").delete().eq("id", jobId);
     router.push("/jobs");
     router.refresh();
+  };
+
+  const updateStatus = async (appId: string, newStatus: string) => {
+    const { error } = await supabase
+      .from("applications")
+      .update({ status: newStatus })
+      .eq("id", appId);
+    if (!error) {
+      setApplications(
+        applications.map((app) =>
+          app.id === appId ? { ...app, status: newStatus as Application["status"] } : app
+        )
+      );
+    }
+  };
+
+  const requestVerification = async (app: AppRow) => {
+    setActionError(null);
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+    if (!user) return;
+
+    const updates: Partial<Application> = { verification_status: "in_review" };
+    if (app.verification_status === "unverified") {
+      updates.verification_status = "in_review";
+    } else {
+      setActionError("Une vérification est déjà mentionnée sur cette candidature.");
+      return;
+    }
+
+    const { error: appError } = await supabase
+      .from("applications")
+      .update(updates)
+      .eq("id", app.id);
+    if (appError) {
+      setActionError("Impossible de lancer la vérification.");
+      return;
+    }
+
+    if (selectedAgent) {
+      const { error: taskError } = await supabase
+        .from("tasks")
+        .insert({
+          title: `Vérifier la candidature de ${app.applicant?.full_name ?? "le candidat"}`,
+          description: `Contrôle de l'identité, de l'adresse et des pièces du dossier pour l'annonce « ${job?.title} ».`,
+          priority: "high",
+          job_id: jobId,
+          assigned_to: selectedAgent,
+          created_by: user.id,
+        });
+      if (taskError) {
+        setActionError("Candidature marquée « en vérification », mais la tâche n'a pas pu être créée.");
+      }
+    }
+
+    setApplications(
+      applications.map((a) =>
+        a.id === app.id ? { ...a, verification_status: "in_review" } : a
+      )
+    );
   };
 
   if (loading) {
@@ -75,15 +200,28 @@ export default function JobDetailPage() {
     }
   };
 
-  const getTaskStatusBadge = (status: string) => {
+  const getVerificationBadge = (status: string) => {
     const styles: Record<string, string> = {
-      todo: "badge-neutral",
-      in_progress: "badge-info",
-      review: "badge-warning",
-      done: "badge-success",
+      unverified: "badge-neutral",
+      in_review: "badge-warning",
+      verified: "badge-success",
+      rejected: "badge-danger",
     };
-    return <span className={`badge ${styles[status] || "badge-neutral"}`}><span className="badge-dot" />{statusLabel(status)}</span>;
+    return (
+      <span className={`badge ${styles[status] || "badge-neutral"}`}>
+        <span className="badge-dot" />
+        {verificationStatusLabels[status] || status}
+      </span>
+    );
   };
+
+  const getInitials = (name?: string) =>
+    (name || "?")
+      .split(" ")
+      .map((p) => p.charAt(0))
+      .slice(0, 2)
+      .join("")
+      .toUpperCase();
 
   return (
     <div className="space-y-6">
@@ -109,12 +247,16 @@ export default function JobDetailPage() {
           </div>
         </div>
         <div className="flex gap-3 shrink-0">
-          <Link href={`/jobs/${job.id}/edit`} className="btn-secondary">
-            Modifier
-          </Link>
-          <button onClick={handleDelete} className="btn-danger">
-            Supprimer
-          </button>
+          {canManage && (
+            <Link href={`/jobs/${job.id}/edit`} className="btn-secondary">
+              Modifier
+            </Link>
+          )}
+          {canManage && (
+            <button onClick={handleDelete} className="btn-danger">
+              Supprimer
+            </button>
+          )}
         </div>
       </div>
 
@@ -131,21 +273,173 @@ export default function JobDetailPage() {
             </p>
           </div>
 
+          {/* Candidatures reçues */}
+          {canManage && (
+            <div className="card">
+              <div className="flex flex-wrap items-center justify-between gap-3">
+                <div className="flex items-center gap-2.5">
+                  <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
+                  <h2 className="text-base font-bold tracking-tight text-slate-900">
+                    Candidatures reçues
+                  </h2>
+                  <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-bold text-slate-600">
+                    {applications.length}
+                  </span>
+                </div>
+                <Link
+                  href="/applications"
+                  className="text-sm font-semibold text-primary-600 transition-colors hover:text-primary-500"
+                >
+                  Voir toutes mes candidatures
+                </Link>
+              </div>
+
+              {agents.length > 0 && (
+                <div className="mt-4 flex flex-col gap-2 rounded-xl border border-slate-200 bg-slate-50/60 p-3.5 sm:flex-row sm:items-center">
+                  <label htmlFor="verif-agent" className="text-xs font-semibold text-slate-600">
+                    Agent vérificateur :
+                  </label>
+                  <select
+                    id="verif-agent"
+                    value={selectedAgent}
+                    onChange={(e) => setSelectedAgent(e.target.value)}
+                    className="select-field flex-1 !py-1.5 text-xs"
+                  >
+                    <option value="">Choisir un agent…</option>
+                    {agents.map((agent) => (
+                      <option key={agent.id} value={agent.id}>
+                        {agent.full_name} {agent.location ? `· ${agent.location}` : ""}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              )}
+
+              {actionError && (
+                <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm text-amber-700">
+                  {actionError}
+                </div>
+              )}
+
+              {applications.length === 0 ? (
+                <div className="mt-5 rounded-xl border border-dashed border-slate-200 p-8 text-center">
+                  <p className="text-sm text-slate-500">
+                    Aucune candidature pour l&apos;instant. Partagez votre annonce
+                    pour recevoir les premiers dossiers.
+                  </p>
+                </div>
+              ) : (
+                <ul className="mt-5 space-y-3">
+                  {applications.map((app) => (
+                    <li
+                      key={app.id}
+                      className="rounded-xl border border-slate-200 bg-white p-4 transition-shadow hover:shadow-md"
+                    >
+                      <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                        <div className="flex min-w-0 items-start gap-3">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-primary-500 to-accent-500 text-xs font-bold text-white">
+                            {getInitials(app.applicant?.full_name)}
+                          </div>
+                          <div className="min-w-0">
+                            <p className="font-semibold text-slate-900">
+                              {app.applicant?.full_name || "Candidat inconnu"}
+                            </p>
+                            <p className="mt-0.5 text-xs text-slate-500">
+                              Postulée le{" "}
+                              {new Date(app.created_at).toLocaleDateString("fr-FR", {
+                                year: "numeric",
+                                month: "short",
+                                day: "numeric",
+                              })}
+                            </p>
+                            {(app.contact_phone || app.applicant?.phone) && (
+                              <a
+                                href={whatsappHref((app.contact_phone || app.applicant?.phone)!)}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="mt-0.5 inline-flex items-center gap-1 text-xs font-semibold text-primary-600 transition-colors hover:text-primary-500"
+                              >
+                                <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M20.25 8.511c.884.284 1.5 1.128 1.5 2.097v4.286c0 1.136-.847 2.1-1.98 2.193-.34.027-.68.052-1.02.072v3.091l-3-3c-1.354 0-2.694-.055-4.02-.163a2.115 2.115 0 01-.825-.242m9.345-8.334a2.126 2.126 0 00-.476-.095 48.64 48.64 0 00-8.048 0c-1.131.094-1.976 1.057-1.976 2.192v4.286c0 .837.46 1.58 1.155 1.951m9.345-8.334V6.637c0-1.621-1.152-3.026-2.76-3.235A48.455 48.455 0 0011.25 3c-2.115 0-4.198.137-6.24.402-1.608.209-2.76 1.614-2.76 3.235v6.226c0 1.621 1.152 3.026 2.76 3.235.577.075 1.157.14 1.74.194V21l4.155-4.155" />
+                                </svg>
+                                {app.contact_phone || app.applicant?.phone}
+                              </a>
+                            )}
+                          </div>
+                        </div>
+
+                        <div className="flex shrink-0 flex-wrap items-center gap-2">
+                          <select
+                            value={app.status}
+                            onChange={(e) => updateStatus(app.id, e.target.value)}
+                            className="input-field w-40 py-1.5 text-xs"
+                          >
+                            <option value="pending">En attente</option>
+                            <option value="reviewed">Examinée</option>
+                            <option value="shortlisted">Présélectionnée</option>
+                            <option value="rejected">Rejetée</option>
+                            <option value="accepted">Acceptée</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="mt-3 flex flex-wrap items-center justify-between gap-3 border-t border-slate-100 pt-3">
+                        <div className="flex flex-wrap items-center gap-2">
+                          {getVerificationBadge(app.verification_status)}
+                          {app.documents && app.documents.length > 0 && (
+                            <span className="doc-pill">
+                              {app.documents.length} pièce(s)
+                            </span>
+                          )}
+                          <span className="badge-neutral">
+                            {applicationStatusLabels[app.status] || app.status}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          {app.verification_status === "unverified" && (
+                            <button
+                              onClick={() => requestVerification(app)}
+                              className="btn-secondary !px-3 !py-1.5 !text-xs"
+                            >
+                              Demander la vérification
+                            </button>
+                          )}
+                          <Link
+                            href="/applications"
+                            className="flex items-center gap-1 rounded-xl px-3 py-1.5 text-xs font-bold text-primary-600 transition-colors hover:bg-primary-50"
+                          >
+                            Dossier complet
+                            <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+                            </svg>
+                          </Link>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          )}
+
+          {/* Tâches */}
           <div className="card">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2.5">
                 <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
                 <h2 className="text-base font-bold tracking-tight text-slate-900">Tâches</h2>
               </div>
-              <Link
-                href={`/tasks/new?job_id=${job.id}`}
-                className="inline-flex items-center gap-1 text-sm font-semibold text-primary-600 transition-colors hover:text-primary-500"
-              >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-                Ajouter une tâche
-              </Link>
+              {canManage && (
+                <Link
+                  href={`/tasks/new?job_id=${job.id}`}
+                  className="inline-flex items-center gap-1 text-sm font-semibold text-primary-600 transition-colors hover:text-primary-500"
+                >
+                  <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+                  </svg>
+                  Ajouter une tâche
+                </Link>
+              )}
             </div>
             <div className="mt-4 space-y-3">
               {tasks.length === 0 ? (
@@ -169,7 +463,12 @@ export default function JobDetailPage() {
                       <span className={`badge ${task.priority === "urgent" ? "badge-danger" : task.priority === "high" ? "badge-warning" : "badge-neutral"}`}>
                         <span className="badge-dot" />{priorityLabels[task.priority] || task.priority}
                       </span>
-                      {getTaskStatusBadge(task.status)}
+                      <span className={`badge ${
+                        task.status === "done" ? "badge-success" : task.status === "review" ? "badge-warning" : task.status === "in_progress" ? "badge-info" : "badge-neutral"
+                      }`}>
+                        <span className="badge-dot" />
+                        {task.status === "done" ? "Terminée" : task.status === "review" ? "En revue" : task.status === "in_progress" ? "En cours" : "À faire"}
+                      </span>
                     </div>
                   </Link>
                 ))
@@ -180,6 +479,28 @@ export default function JobDetailPage() {
 
         {/* Sidebar */}
         <div className="space-y-6">
+          {!canManage && (
+            <div className="card overflow-hidden border-0 bg-brand-gradient p-0">
+              <div className="p-6">
+                <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/70">
+                  Vous cherchez ce poste ?
+                </p>
+                <h2 className="mt-2 text-lg font-bold text-white">
+                  Postulez à cette annonce
+                </h2>
+                <p className="mt-2 text-sm leading-relaxed text-white/80">
+                  Envoyez votre motivation et vos pièces. Un agent local les
+                  vérifie avant l&apos;embauche.
+                </p>
+                <Link
+                  href={`/jobs/${job.id}/apply`}
+                  className="btn-accent mt-5 w-full !py-3"
+                >
+                  Postuler maintenant
+                </Link>
+              </div>
+            </div>
+          )}
           <div className="card">
             <div className="flex items-center gap-2.5">
               <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />

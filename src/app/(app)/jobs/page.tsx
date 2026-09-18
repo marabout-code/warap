@@ -143,6 +143,32 @@ export default function JobsPage() {
         </div>
       </div>
 
+      {/* Public board banner */}
+      <div className="flex flex-col gap-3 rounded-2xl border border-primary-200/70 bg-primary-50/60 px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex items-center gap-3">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-brand-gradient shadow-glow">
+            <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
+            </svg>
+          </div>
+          <div>
+            <p className="text-sm font-bold text-slate-900">Annonces publiques</p>
+            <p className="text-xs text-slate-500">
+              Les candidats au Cameroun consultent vos offres sur le site public.
+            </p>
+          </div>
+        </div>
+        <Link
+          href="/annonces"
+          className="inline-flex shrink-0 items-center justify-center gap-1.5 rounded-xl border border-primary-200 bg-white px-3.5 py-2 text-xs font-bold text-primary-700 shadow-sm transition-all hover:border-primary-300 hover:shadow"
+        >
+          Voir le tableau public
+          <svg className="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+          </svg>
+        </Link>
+      </div>
+
       {/* Table */}
       <div className="card overflow-hidden p-0">
         <div className="overflow-x-auto">

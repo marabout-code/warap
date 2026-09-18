@@ -28,6 +28,7 @@ export default function ApplicationsPage() {
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [currentUserId, setCurrentUserId] = useState<string | null>(null);
   const [canVerify, setCanVerify] = useState(false);
+  const [role, setRole] = useState<string | null>(null);
   const supabase = createClient();
 
   useEffect(() => {
@@ -47,6 +48,7 @@ export default function ApplicationsPage() {
         .select("role")
         .eq("id", user.id)
         .single();
+      setRole(roleRes.data?.role ?? null);
       setCanVerify(
         roleRes.data?.role === "agent" || roleRes.data?.role === "admin"
       );
@@ -314,17 +316,21 @@ export default function ApplicationsPage() {
                           </p>
                         </td>
                         <td className="td">
-                          <select
-                            value={app.status}
-                            onChange={(e) => updateStatus(app.id, e.target.value)}
-                            className="input-field w-36 py-1.5 text-xs"
-                          >
-                            <option value="pending">En attente</option>
-                            <option value="reviewed">Examinée</option>
-                            <option value="shortlisted">Présélectionnée</option>
-                            <option value="rejected">Rejetée</option>
-                            <option value="accepted">Acceptée</option>
-                          </select>
+                          {role === "jobseeker" ? (
+                            getStatusBadge(app.status)
+                          ) : (
+                            <select
+                              value={app.status}
+                              onChange={(e) => updateStatus(app.id, e.target.value)}
+                              className="input-field w-36 py-1.5 text-xs"
+                            >
+                              <option value="pending">En attente</option>
+                              <option value="reviewed">Examinée</option>
+                              <option value="shortlisted">Présélectionnée</option>
+                              <option value="rejected">Rejetée</option>
+                              <option value="accepted">Acceptée</option>
+                            </select>
+                          )}
                         </td>
                         <td className="td">
                           {canVerify ? (

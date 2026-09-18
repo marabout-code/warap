@@ -9,31 +9,33 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        // Confiance côté Cameroun : vert profond
         primary: {
-          50: "#eef2ff",
-          100: "#e0e7ff",
-          200: "#c7d2fe",
-          300: "#a5b4fc",
-          400: "#818cf8",
-          500: "#6366f1",
-          600: "#4f46e5",
-          700: "#4338ca",
-          800: "#3730a3",
-          900: "#312e81",
-          950: "#1e1b4b",
+          50: "#f0fdfa",
+          100: "#ccfbf1",
+          200: "#99f6e4",
+          300: "#5eead4",
+          400: "#2dd4bf",
+          500: "#14b8a6",
+          600: "#0d9488",
+          700: "#0f766e",
+          800: "#115e59",
+          900: "#134e4a",
+          950: "#042f2e",
         },
+        // Chaleur / or : accent diaspora
         accent: {
-          50: "#f5f3ff",
-          100: "#ede9fe",
-          200: "#ddd6fe",
-          300: "#c4b5fd",
-          400: "#a78bfa",
-          500: "#8b5cf6",
-          600: "#7c3aed",
-          700: "#6d28d9",
-          800: "#5b21b6",
-          900: "#4c1d95",
-          950: "#2e1065",
+          50: "#fffbeb",
+          100: "#fef3c7",
+          200: "#fde68a",
+          300: "#fcd34d",
+          400: "#fbbf24",
+          500: "#f59e0b",
+          600: "#d97706",
+          700: "#b45309",
+          800: "#92400e",
+          900: "#78350f",
+          950: "#451a03",
         },
         surface: {
           50: "#f8fafc",
@@ -53,18 +55,20 @@ const config: Config = {
         card: "0 1px 2px 0 rgb(15 23 42 / 0.04), 0 1px 3px 0 rgb(15 23 42 / 0.06)",
         "card-hover":
           "0 4px 6px -1px rgb(15 23 42 / 0.06), 0 10px 24px -4px rgb(15 23 42 / 0.10)",
-        glow: "0 0 0 1px rgb(99 102 241 / 0.15), 0 8px 30px -6px rgb(99 102 241 / 0.35)",
-        "glow-lg": "0 12px 40px -8px rgb(124 58 237 / 0.5)",
-        "inner-soft": "inset 0 1px 0 0 rgb(255 255 255 / 0.05)",
+        glow: "0 0 0 1px rgb(13 148 136 / 0.18), 0 8px 30px -6px rgb(13 148 136 / 0.35)",
+        "glow-lg": "0 12px 40px -8px rgb(13 148 136 / 0.45)",
+        "gold": "0 8px 30px -8px rgb(245 158 11 / 0.45)",
+        "inner-soft": "inset 0 1px 0 0 rgb(255 255 255 / 0.06)",
       },
       backgroundImage: {
-        "brand-gradient": "linear-gradient(135deg, #6366f1 0%, #8b5cf6 55%, #a855f7 100%)",
+        "brand-gradient":
+          "linear-gradient(135deg, #0f766e 0%, #0d9488 42%, #f59e0b 100%)",
         "brand-gradient-soft":
-          "linear-gradient(135deg, rgba(99,102,241,0.12) 0%, rgba(139,92,246,0.12) 100%)",
+          "linear-gradient(135deg, rgba(13,148,136,0.14) 0%, rgba(245,158,11,0.14) 100%)",
         "hero-mesh":
-          "radial-gradient(at 20% 20%, rgba(99,102,241,0.18) 0px, transparent 50%), radial-gradient(at 80% 0%, rgba(168,85,247,0.14) 0px, transparent 50%), radial-gradient(at 60% 60%, rgba(59,130,246,0.10) 0px, transparent 50%)",
+          "radial-gradient(at 15% 15%, rgba(13,148,136,0.20) 0px, transparent 52%), radial-gradient(at 85% 0%, rgba(245,158,11,0.16) 0px, transparent 50%), radial-gradient(at 60% 70%, rgba(20,184,166,0.10) 0px, transparent 55%)",
         "sidebar-mesh":
-          "radial-gradient(at 20% 0%, rgba(99,102,241,0.18) 0px, transparent 55%), radial-gradient(at 100% 100%, rgba(124,58,237,0.16) 0px, transparent 50%)",
+          "radial-gradient(at 10% 0%, rgba(13,148,136,0.30) 0px, transparent 55%), radial-gradient(at 100% 100%, rgba(245,158,11,0.14) 0px, transparent 50%)",
       },
       keyframes: {
         "fade-in": {

@@ -4,12 +4,10 @@
 
 @layer base {
   :root {
-    --background: 210 40% 98%;
+    --background: 180 20% 98%;
     --foreground: 222 47% 11%;
   }
-}
 
-@layer base {
   html {
     scroll-behavior: smooth;
   }
@@ -31,7 +29,11 @@
 @layer components {
   /* ---------- Buttons ---------- */
   .btn-primary {
-    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary-600 to-accent-600 px-4 py-2.5 text-sm font-semibold text-white shadow-glow transition-all duration-200 hover:-translate-y-0.5 hover:from-primary-500 hover:to-accent-500 hover:shadow-glow-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-glow;
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-primary-700 to-primary-500 px-4 py-2.5 text-sm font-semibold text-white shadow-glow transition-all duration-200 hover:-translate-y-0.5 hover:from-primary-600 hover:to-primary-400 hover:shadow-glow-lg focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0 disabled:hover:shadow-glow;
+  }
+
+  .btn-accent {
+    @apply inline-flex cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-accent-600 to-accent-400 px-4 py-2.5 text-sm font-semibold text-white shadow-gold transition-all duration-200 hover:-translate-y-0.5 hover:from-accent-500 hover:to-accent-300 focus:outline-none focus:ring-2 focus:ring-accent-500 focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0;
   }
 
   .btn-secondary {
@@ -140,9 +142,30 @@
     @apply whitespace-nowrap px-6 py-4 text-sm text-slate-600;
   }
 
-  /* ---------- Misc ---------- */
+  /* ---------- Typography helpers ---------- */
+  .eyebrow {
+    @apply text-xs font-bold uppercase tracking-[0.2em] text-primary-600;
+  }
+
   .gradient-text {
-    @apply bg-gradient-to-r from-primary-600 via-accent-600 to-fuchsia-500 bg-clip-text text-transparent;
+    @apply bg-gradient-to-r from-primary-700 via-primary-500 to-accent-500 bg-clip-text text-transparent;
+  }
+
+  .nav-link {
+    @apply text-sm font-medium text-slate-600 transition-colors hover:text-slate-900;
+  }
+
+  /* ---------- Misc ---------- */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-1 text-xs font-semibold text-slate-600 shadow-sm;
+  }
+
+  .doc-pill {
+    @apply inline-flex items-center gap-1.5 rounded-md border border-primary-200/70 bg-primary-50/70 px-2 py-0.5 text-[11px] font-semibold text-primary-700;
+  }
+
+  .stat-tile {
+    @apply rounded-2xl border border-white/60 bg-white/60 p-5 text-center shadow-card backdrop-blur;
   }
 
   .skeleton {

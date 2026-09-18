@@ -11,6 +11,7 @@ export default function NewJobPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
+  const [role, setRole] = useState<string | null>(null);
   const router = useRouter();
   const supabase = createClient();
 
@@ -33,9 +34,17 @@ export default function NewJobPage() {
     const getUser = async () => {
       const { data: { user } } = await supabase.auth.getUser();
       setUserId(user?.id || null);
+      if (user) {
+        const { data: profile } = await supabase
+          .from("profiles")
+          .select("role")
+          .eq("id", user.id)
+          .single();
+        setRole(profile?.role ?? null);
+      }
     };
     getUser();
-  }, [supabase.auth]);
+  }, [supabase]);
 
   const onSubmit = async (data: JobInput) => {
     if (!userId) return;
@@ -64,6 +73,35 @@ export default function NewJobPage() {
     router.push("/jobs");
     router.refresh();
   };
+
+  if (role === "jobseeker") {
+    return (
+      <div className="mx-auto max-w-lg">
+        <div className="card text-center">
+          <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-brand-gradient-soft">
+            <svg className="h-6 w-6 text-primary-600" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
+            </svg>
+          </div>
+          <h1 className="mt-4 text-lg font-bold text-slate-900">
+            Réservé aux familles employeuses
+          </h1>
+          <p className="mt-1 text-sm text-slate-500">
+            Ce formulaire permet de publier une offre. Pour postuler, parcourez
+            les annonces publiques ou votre espace candidat.
+          </p>
+          <div className="mt-5 flex justify-center gap-3">
+            <Link href="/annonces" className="btn-primary">
+              Voir les annonces publiques
+            </Link>
+            <Link href="/applications" className="btn-secondary">
+              Mes candidatures
+            </Link>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="mx-auto max-w-3xl space-y-6">

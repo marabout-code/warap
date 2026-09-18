@@ -196,6 +196,7 @@ export interface Database {
           verification_status: "unverified" | "in_review" | "verified" | "rejected";
           verified_by: string | null;
           verification_notes: string | null;
+          verification_checklist: Record<string, boolean>;
           verified_at: string | null;
           created_at: string;
           updated_at: string;
@@ -212,6 +213,7 @@ export interface Database {
           verification_status?: "unverified" | "in_review" | "verified" | "rejected";
           verified_by?: string | null;
           verification_notes?: string | null;
+          verification_checklist?: Record<string, boolean>;
           verified_at?: string | null;
           created_at?: string;
           updated_at?: string;
@@ -228,6 +230,7 @@ export interface Database {
           verification_status?: "unverified" | "in_review" | "verified" | "rejected";
           verified_by?: string | null;
           verification_notes?: string | null;
+          verification_checklist?: Record<string, boolean>;
           verified_at?: string | null;
           created_at?: string;
           updated_at?: string;

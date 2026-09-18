@@ -41,6 +41,28 @@ export const verificationStatusLabels: Record<string, string> = {
   rejected: "Rejetée",
 };
 
+export const documentTypeLabels: Record<string, string> = {
+  cni: "CNI / Passeport",
+  reference: "Lettre de référence",
+  casier: "Casier judiciaire",
+  diplome: "Diplôme / Attestation",
+  permis: "Permis de conduire",
+  certificat_medical: "Certificat médical",
+  autre: "Autre document",
+};
+
+export const documentTypeOptions: { value: string; label: string }[] = Object.entries(
+  documentTypeLabels
+).map(([value, label]) => ({ value, label }));
+
+export const verificationChecklist: { id: string; label: string }[] = [
+  { id: "identity", label: "Identité confirmée (CNI / passeport vu en personne)" },
+  { id: "address", label: "Adresse et quartier confirmés" },
+  { id: "experience", label: "Expérience et références vérifiées" },
+  { id: "interview", label: "Entretien mené par l'agent" },
+  { id: "casier", label: "Casier judiciaire consulté" },
+];
+
 export const userRoleLabels: Record<string, string> = {
   admin: "Administrateur",
   employer: "Famille / Employeur",
@@ -81,3 +103,27 @@ export function formatSalary(min: number | null, max: number | null): string {
 export function whatsappHref(phone: string): string {
   return `https://wa.me/${phone.replace(/[^\d]/g, "")}`;
 }
+
+export const domesticRoles = [
+  "Aide ménagère",
+  "Nounou",
+  "Gouvernante",
+  "Chauffeur",
+  "Cuisinier (ère)",
+  "Jardinier",
+  "Garde-malade",
+  "Majordome",
+];
+
+export const cameroonCities = [
+  "Douala",
+  "Yaoundé",
+  "Bafoussam",
+  "Bamenda",
+  "Garoua",
+  "Maroua",
+  "Buea",
+  "Limbe",
+  "Kribi",
+  "Ngaoundéré",
+];

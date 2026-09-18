@@ -62,9 +62,7 @@ export default function JobsPage() {
     const styles: Record<string, string> = {
       "full-time": "badge-info",
       "part-time": "badge-neutral",
-      contract: "badge-info",
-      internship: "badge-neutral",
-      remote: "badge-success",
+      contract: "badge-accent",
     };
     return (
       <span className={`badge ${styles[type] || "badge-neutral"}`}>

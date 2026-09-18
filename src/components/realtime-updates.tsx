@@ -153,7 +153,7 @@ export default function RealtimeUpdates({
               </span>
             </div>
             <p className="mt-4 text-sm text-slate-500">
-              En attente de mises à jour en temps réel...
+              En attente de mises à jour en temps réel…
             </p>
             <p className="mt-1 text-xs text-slate-400">
               Les modifications des offres, tâches et candidatures apparaissent ici

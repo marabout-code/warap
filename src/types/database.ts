@@ -11,6 +11,7 @@ export interface Database {
           location: string | null;
           website: string | null;
           role: "admin" | "employer" | "jobseeker" | "agent";
+          account_status: "active" | "disabled";
           phone: string | null;
           pin_hash: string | null;
           pin_lookup: string | null;
@@ -27,6 +28,7 @@ export interface Database {
           location?: string | null;
           website?: string | null;
           role?: "admin" | "employer" | "jobseeker" | "agent";
+          account_status?: "active" | "disabled";
           phone?: string | null;
           pin_hash?: string | null;
           pin_lookup?: string | null;
@@ -43,6 +45,7 @@ export interface Database {
           location?: string | null;
           website?: string | null;
           role?: "admin" | "employer" | "jobseeker" | "agent";
+          account_status?: "active" | "disabled";
           phone?: string | null;
           pin_hash?: string | null;
           pin_lookup?: string | null;
@@ -101,7 +104,7 @@ export interface Database {
           location: string;
           salary_min: number | null;
           salary_max: number | null;
-          employment_type: "full-time" | "part-time" | "contract" | "internship" | "remote";
+          employment_type: "full-time" | "part-time" | "contract";
           status: "open" | "closed" | "draft";
           posted_by: string;
           company_id: string | null;
@@ -117,7 +120,7 @@ export interface Database {
           location: string;
           salary_min?: number | null;
           salary_max?: number | null;
-          employment_type: "full-time" | "part-time" | "contract" | "internship" | "remote";
+          employment_type: "full-time" | "part-time" | "contract";
           status?: "open" | "closed" | "draft";
           posted_by: string;
           company_id?: string | null;
@@ -133,7 +136,7 @@ export interface Database {
           location?: string;
           salary_min?: number | null;
           salary_max?: number | null;
-          employment_type?: "full-time" | "part-time" | "contract" | "internship" | "remote";
+          employment_type?: "full-time" | "part-time" | "contract";
           status?: "open" | "closed" | "draft";
           posted_by?: string;
           company_id?: string | null;
@@ -244,7 +247,7 @@ export interface Database {
       [_ in never]: never;
     };
     Enums: {
-      employment_type: "full-time" | "part-time" | "contract" | "internship" | "remote";
+      employment_type: "full-time" | "part-time" | "contract";
       job_status: "open" | "closed" | "draft";
       task_priority: "low" | "medium" | "high" | "urgent";
       task_status: "todo" | "in_progress" | "review" | "done";

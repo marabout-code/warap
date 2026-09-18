@@ -53,7 +53,11 @@ function NewTaskContent() {
         await Promise.all([
           supabase.auth.getUser(),
           supabase.from("jobs").select("*").order("created_at", { ascending: false }),
-          supabase.from("profiles").select("*").order("full_name"),
+          supabase
+            .from("profiles")
+            .select("*")
+            .in("role", ["agent", "admin"])
+            .order("full_name"),
         ]);
       setUserId(user?.id || null);
       setJobs(jobsData || []);
@@ -117,7 +121,7 @@ function NewTaskContent() {
 
         <div>
           <label className="input-label">Description *</label>
-          <textarea {...register("description")} rows={4} className="input-field" placeholder="Précisez l'étape : entretien, visite du domicile, contrôle des pièces..." />
+          <textarea {...register("description")} rows={4} className="input-field" placeholder="Précisez l'étape : entretien, visite du domicile, contrôle des pièces…" />
           {errors.description && <p className="form-error">{errors.description.message}</p>}
         </div>
 
@@ -125,7 +129,7 @@ function NewTaskContent() {
           <div>
             <label className="input-label">Annonce associée *</label>
             <select {...register("job_id")} className="input-field">
-              <option value="">Sélectionnez une annonce...</option>
+              <option value="">Sélectionnez une annonce…</option>
               {jobs.map((job) => (
                 <option key={job.id} value={job.id}>{job.title}</option>
               ))}
@@ -175,7 +179,7 @@ function NewTaskContent() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Création...
+                Création…
               </>
             ) : (
               "Créer la tâche"

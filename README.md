@@ -13,11 +13,14 @@ Built with **Next.js 14** (App Router), **TypeScript**, and **Supabase**.
 - **Candidature avec dossier** — le candidat postule, téléverse ses pièces (CNI, références, casier judiciaire, diplômes…) ; les documents sont stockés dans un bucket Supabase Storage dédié.
 - **Revue par annonce** — la famille consulte, trie (examinée / présélectionnée / rejetée / acceptée) et lance une demande de vérification auprès d'un agent, avec création de tâche.
 - **Tableau de bord agent** (`/verifications`) — checklist terrain, notes, statut de vérification, rapport partagé avec la famille.
+- **Gestion des utilisateurs** (`/users`, réservé admin) — changer le rôle d'un compte (famille / candidat / agent / admin) et activer ou désactiver la connexion d'un utilisateur.
 - **Authentication par code PIN** — connexion à 6 chiffres, sans email / mot de passe, sessions via Supabase Auth.
   - Routes protégées par middleware Next.js
   - Rôles : `admin`, `employer` (famille), `agent` (vérificateur), `jobseeker` (candidat)
-  - Création automatique du profil à l'inscription (rôle par défaut : candidat)
+  - Création automatique du profil à l'inscription, avec choix du profil (famille employeuse, candidat ou agent)
 - **Gestion complète** — annonces (CRUD + recherche/filtres), tâches & onboarding, candidatures, profils.
+- **Tableau de bord par rôle** — statistiques, actions rapides et contenus adaptés à chaque profil (famille, candidat, agent, admin).
+- **Types de contrat** — seuls `full-time` (temps plein), `part-time` (temps partiel) et `contract` (contrat) sont proposés dans l'interface ; les valeurs héritées `internship` / `remote` sont conservées en base pour compatibilité avec les anciennes annonces.
 - **Mises à jour en temps réel** — flux live Supabase Realtime sur les annonces / tâches / candidatures.
 - **Sécurité** — Row Level Security sur toutes les tables + Storage, validation Zod.
 
@@ -66,6 +69,7 @@ Run the schema migrations **in order** in the Supabase SQL Editor:
 3. `supabase/migrations/003_domestic_hiring.sql` — rôle `agent`, enum `verification_status`, pack de vérification sur les candidatures (`documents`, `verified_by`, `verification_notes`, `verified_at`), `contact_phone`
 4. `supabase/migrations/004_agent_rls.sql` — politiques RLS du rôle agent
 5. `supabase/migrations/005_candidate_documents.sql` — bucket Storage `documents` + politiques, checklist de vérification (`verification_checklist`)
+6. `supabase/migrations/006_super_admin_user_management.sql` — statut de compte (`account_status`), politique RLS d'administration, compte super admin
 
 Each migration is idempotent and safe to re-run.
 
@@ -93,6 +97,11 @@ Demo accounts — log in with the 6-digit PIN:
 | Marthe Tchoupo     | jobseeker (nanny)  | `555666` |
 | Honorine Nana      | jobseeker (housekeep.) | `666777` |
 | Serge Ekambi       | jobseeker (driver) | `777888` |
+| Pondy Code         | admin (super-admin) | `130471` |
+
+Le super administrateur (`pondycode@gmail.com` / PIN `130471`) se connecte comme
+tous les comptes et accède à la page **Utilisateurs** (`/users`) pour attribuer les
+rôles et activer/désactiver les comptes.
 
 ## Project Structure
 
@@ -105,6 +114,7 @@ src/
 │   │   ├── jobs/              # Annonces: list, create, detail, edit, apply
 │   │   ├── applications/      # Candidatures & vérifications
 │   │   ├── verifications/     # Tableau de bord agent-vérificateur
+│   │   ├── users/             # Gestion des utilisateurs (admin : rôles & statuts)
 │   │   ├── tasks/             # Tâches & onboarding
 │   │   └── profile/           # Profil utilisateur
 │   ├── annonces/              # Tableau public des annonces (+ détail)
@@ -127,6 +137,7 @@ src/
   - Jobs: anyone can view; only employers/admins can create/update/delete their own
   - Tasks: creator, assignee, or admin
   - Applications: applicant, job poster, or admin; agents can read/update for verification
+  - Profiles: public read; user updates their own; admins can update any role/`account_status`
 - **Middleware**: Unauthenticated users are redirected away from protected routes; `/annonces` stays public; authenticated users are kept out of login/register.
 - **Server validation**: Zod schemas validate form input before submission; RLS enforces authorization server-side.
 

@@ -10,6 +10,7 @@ import {
   priorityLabels,
   applicationStatusLabels,
   verificationStatusLabels,
+  statusLabel,
   formatSalary,
   whatsappHref,
 } from "@/lib/status-labels";
@@ -27,6 +28,7 @@ export default function JobDetailPage() {
   const [agents, setAgents] = useState<Profile[]>([]);
   const [selectedAgent, setSelectedAgent] = useState("");
   const [canManage, setCanManage] = useState(false);
+  const [viewerRole, setViewerRole] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [actionError, setActionError] = useState<string | null>(null);
   const supabase = createClient();
@@ -51,6 +53,7 @@ export default function JobDetailPage() {
           .select("role")
           .eq("id", user.id)
           .single();
+        setViewerRole(profile?.role ?? null);
         canManageThis =
           (jobData?.posted_by === user.id && profile?.role === "employer") ||
           profile?.role === "admin";
@@ -456,7 +459,7 @@ export default function JobDetailPage() {
                     <div className="min-w-0">
                       <p className="truncate text-sm font-semibold text-slate-900 group-hover:text-primary-700">{task.title}</p>
                       <p className="mt-0.5 truncate text-xs text-slate-500">
-                        {task.description.length > 50 ? task.description.substring(0, 50) + "..." : task.description}
+                        {task.description.length > 50 ? task.description.substring(0, 50) + "…" : task.description}
                       </p>
                     </div>
                     <div className="flex shrink-0 items-center gap-2">
@@ -467,7 +470,7 @@ export default function JobDetailPage() {
                         task.status === "done" ? "badge-success" : task.status === "review" ? "badge-warning" : task.status === "in_progress" ? "badge-info" : "badge-neutral"
                       }`}>
                         <span className="badge-dot" />
-                        {task.status === "done" ? "Terminée" : task.status === "review" ? "En revue" : task.status === "in_progress" ? "En cours" : "À faire"}
+                        {statusLabel(task.status)}
                       </span>
                     </div>
                   </Link>
@@ -479,7 +482,7 @@ export default function JobDetailPage() {
 
         {/* Sidebar */}
         <div className="space-y-6">
-          {!canManage && (
+          {viewerRole === "jobseeker" && (
             <div className="card overflow-hidden border-0 bg-brand-gradient p-0">
               <div className="p-6">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/70">

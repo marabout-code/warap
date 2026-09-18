@@ -1,6 +1,7 @@
 ﻿"use client";
 
 import { Fragment, useEffect, useState } from "react";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import type { Application, Job, Profile } from "@/types";
 import {
@@ -227,10 +228,12 @@ export default function ApplicationsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            Candidatures &amp; vérifications
+            {role === "jobseeker" ? "Mes candidatures" : "Candidatures"}
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Suivez, examinez et vérifiez chaque candidature avant l&apos;embauche.
+            {role === "jobseeker"
+              ? "Suivez l&apos;avancement de vos candidatures et de la vérification de votre dossier."
+              : "Examinez les candidatures reçues et suivez la vérification de chaque dossier avant l&apos;embauche."}
           </p>
         </div>
         {canVerify && (
@@ -239,6 +242,34 @@ export default function ApplicationsPage() {
             Mode vérificateur actif
           </div>
         )}
+      </div>
+
+      {/* Stat tiles */}
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+        {[
+          { name: "Candidatures", value: applications.length, href: "/applications", gradient: "from-primary-600 to-primary-500", icon: "M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" },
+          { name: "En attente", value: applications.filter((a) => a.status === "pending").length, href: "/applications", gradient: "from-amber-500 to-orange-500", icon: "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" },
+          { name: "En vérification", value: applications.filter((a) => a.verification_status === "in_review").length, href: "/applications", gradient: "from-accent-600 to-accent-400", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" },
+          { name: "Vérifiées", value: applications.filter((a) => a.verification_status === "verified").length, href: "/applications", gradient: "from-emerald-500 to-emerald-600", icon: "M9 12l3 3 5-6" },
+          { name: "À re-vérifier", value: applications.filter((a) => a.verification_status === "rejected").length, href: "/applications", gradient: "from-rose-500 to-rose-600", icon: "M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" },
+        ].map((tile, i) => (
+          <Link
+            key={tile.name}
+            href={tile.href}
+            className="card card-hover animate-fade-in-up p-4 group"
+            style={{ animationDelay: `${i * 0.05}s` }}
+          >
+            <div className="flex items-center justify-between">
+              <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${tile.gradient} shadow-md transition-transform duration-300 group-hover:scale-110`}>
+                <svg className="h-5 w-5 text-white" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d={tile.icon} />
+                </svg>
+              </div>
+            </div>
+            <p className="mt-3 text-2xl font-bold tracking-tight text-slate-900">{tile.value}</p>
+            <p className="mt-0.5 text-xs font-medium text-slate-500">{tile.name}</p>
+          </Link>
+        ))}
       </div>
 
       {/* Table */}
@@ -261,7 +292,7 @@ export default function ApplicationsPage() {
                 <tr>
                   <td colSpan={5} className="td text-center py-14">
                     <div className="flex flex-col items-center">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-500 to-orange-500 shadow-glow">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-primary-500 to-accent-500 shadow-glow">
                         <svg className="h-6 w-6 text-white" fill="none" viewBox="0 0 24 24" strokeWidth="1.8" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
                         </svg>
@@ -401,19 +432,6 @@ export default function ApplicationsPage() {
                                       <span className="font-semibold text-slate-900">—</span>
                                     )}
                                   </p>
-                                  {app.resume_url && (
-                                    <a
-                                      href={app.resume_url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="inline-flex items-center gap-1 text-sm font-semibold text-primary-600 transition-colors hover:text-primary-500"
-                                    >
-                                      <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
-                                        <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25" />
-                                      </svg>
-                                      Voir le CV
-                                    </a>
-                                  )}
                                 </div>
                               </div>
 

@@ -368,7 +368,7 @@ export default function Home() {
                       <p className="text-xs font-bold text-slate-900">Yannick Fokou · Agent local</p>
                     </div>
                     <p className="mt-1.5 text-xs leading-relaxed text-slate-600">
-                      &laquo; CNI contrôlée à Bonapriso, références confirmées, casier vierge. Pret pour la visite médicale. &raquo;
+                      &laquo; CNI contrôlée à Bonapriso, références confirmées, casier vierge. Prêt pour la visite médicale. &raquo;
                     </p>
                     <div className="mt-2 flex flex-wrap gap-1.5">
                       {["Carte nationale", "Références", "Casier judiciaire"].map((doc) => (
@@ -424,7 +424,7 @@ export default function Home() {
               Un réseau de confiance, <span className="gradient-text">de la diaspora au Cameroun</span>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600">
-              Trois familles d&apos;acteurs collaborent sur une seule plateforme pour un recrutement simple et sûre.
+              Trois familles d&apos;acteurs collaborent sur une seule plateforme pour un recrutement simple et sûr.
             </p>
           </div>
 

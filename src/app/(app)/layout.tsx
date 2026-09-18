@@ -47,7 +47,7 @@ export default function AppLayout({
   };
 
   const navigation = getNavigation(role);
-  const currentTitle = resolvePageTitle(pathname);
+  const currentTitle = resolvePageTitle(pathname, role);
   const meta = role ? roleMeta[role] : null;
 
   return (

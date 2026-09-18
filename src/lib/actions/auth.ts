@@ -14,16 +14,25 @@ export async function registerUser(
 ): Promise<AuthResult> {
   const raw = {
     fullName: formData.get("fullName") as string,
+    role: formData.get("role") as string,
     pin: formData.get("pin") as string,
     confirmPin: formData.get("confirmPin") as string,
   };
 
   const parsed = registerSchema.safeParse(raw);
   if (!parsed.success) {
-    return { error: parsed.error.flatten().fieldErrors.confirmPin?.[0] || "Entrée invalide" };
+    const errors = parsed.error.flatten().fieldErrors;
+    return {
+      error:
+        errors.confirmPin?.[0] ||
+        errors.role?.[0] ||
+        errors.fullName?.[0] ||
+        errors.pin?.[0] ||
+        "Entrée invalide",
+    };
   }
 
-  const { fullName, pin } = parsed.data;
+  const { fullName, role, pin } = parsed.data;
   const secret = generateRandomPassword();
   const pinHash = await hashPin(pin);
   const lookup = pinLookup(pin);
@@ -50,7 +59,7 @@ export async function registerUser(
 
   const { error: updateError } = await admin
     .from("profiles")
-    .update({ pin_hash: pinHash, pin_lookup: lookup, supabase_auth_secret: secret })
+    .update({ role, pin_hash: pinHash, pin_lookup: lookup, supabase_auth_secret: secret })
     .eq("id", userId);
 
   if (updateError) {
@@ -82,7 +91,7 @@ export async function loginUser(
     error: lookupError,
   } = await admin
     .from("profiles")
-    .select("email, pin_hash, supabase_auth_secret")
+    .select("email, pin_hash, supabase_auth_secret, account_status")
     .eq("pin_lookup", lookup)
     .maybeSingle();
 
@@ -92,6 +101,12 @@ export async function loginUser(
 
   if (!profile) {
     return { error: "Aucun compte trouvé avec ce PIN." };
+  }
+
+  if (profile.account_status !== "active") {
+    return {
+      error: "Ce compte a été désactivé. Contactez un administrateur pour le réactiver.",
+    };
   }
 
   if (!profile.pin_hash || !profile.supabase_auth_secret) {

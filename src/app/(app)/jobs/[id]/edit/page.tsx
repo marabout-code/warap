@@ -35,23 +35,47 @@ export default function EditJobPage() {
   useEffect(() => {
     const fetchJob = async () => {
       const { data } = await supabase.from("jobs").select("*").eq("id", jobId).single();
-      if (data) {
-        reset({
-          title: data.title,
-          description: data.description,
-          company: data.company,
-          location: data.location,
-          salary_min: data.salary_min || undefined,
-          salary_max: data.salary_max || undefined,
-          employment_type: data.employment_type,
-          status: data.status,
-          contact_phone: data.contact_phone || "",
-        });
+      if (!data) {
+        setLoading(false);
+        return;
       }
+
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (!user) {
+        router.replace("/login");
+        return;
+      }
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", user.id)
+        .single();
+
+      const canManage =
+        profile?.role === "admin" ||
+        (profile?.role === "employer" && data.posted_by === user.id);
+      if (!canManage) {
+        router.replace("/dashboard");
+        return;
+      }
+
+      reset({
+        title: data.title,
+        description: data.description,
+        company: data.company,
+        location: data.location,
+        salary_min: data.salary_min || undefined,
+        salary_max: data.salary_max || undefined,
+        employment_type: data.employment_type,
+        status: data.status,
+        contact_phone: data.contact_phone || "",
+      });
       setLoading(false);
     };
     fetchJob();
-  }, [jobId, supabase, reset]);
+  }, [jobId, supabase, reset, router]);
 
   const onSubmit = async (data: JobInput) => {
     setSaving(true);
@@ -137,8 +161,6 @@ export default function EditJobPage() {
               <option value="full-time">Temps plein</option>
               <option value="part-time">Temps partiel</option>
               <option value="contract">Contrat</option>
-              <option value="internship">Stage</option>
-              <option value="remote">À distance</option>
             </select>
           </div>
           <div>
@@ -182,7 +204,7 @@ export default function EditJobPage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Enregistrement...
+                Enregistrement…
               </>
             ) : (
               "Enregistrer les modifications"

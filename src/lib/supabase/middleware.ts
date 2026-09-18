@@ -46,6 +46,7 @@ export async function updateSession(request: NextRequest) {
     "/profile",
     "/applications",
     "/verifications",
+    "/users",
   ];
   const authRoutes = ["/login", "/register"];
 

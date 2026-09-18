@@ -151,8 +151,6 @@ export default function NewJobPage() {
               <option value="full-time">Temps plein</option>
               <option value="part-time">Temps partiel</option>
               <option value="contract">Contrat</option>
-              <option value="internship">Stage</option>
-              <option value="remote">À distance</option>
             </select>
             {errors.employment_type && <p className="form-error">{errors.employment_type.message}</p>}
           </div>
@@ -200,7 +198,7 @@ export default function NewJobPage() {
                   <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                   <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
                 </svg>
-                Publication...
+                Publication…
               </>
             ) : (
               "Publier l'annonce"

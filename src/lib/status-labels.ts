@@ -70,6 +70,11 @@ export const userRoleLabels: Record<string, string> = {
   agent: "Agent vérificateur",
 };
 
+export const accountStatusLabels: Record<string, string> = {
+  active: "Actif",
+  disabled: "Désactivé",
+};
+
 export const tableLabels: Record<string, string> = {
   jobs: "Annonces",
   tasks: "Tâches & onboarding",

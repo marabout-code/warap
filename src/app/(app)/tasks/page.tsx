@@ -207,7 +207,7 @@ export default function TasksPage() {
                       </Link>
                       <p className="mt-0.5 max-w-xs truncate text-xs text-slate-500">
                         {task.description.length > 50
-                          ? task.description.substring(0, 50) + "..."
+                          ? task.description.substring(0, 50) + "…"
                           : task.description}
                       </p>
                     </td>

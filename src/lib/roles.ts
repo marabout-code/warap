@@ -27,32 +27,32 @@ export const roleMeta: Record<
   { label: string; tagline: string; greeting: string; intro: string }
 > = {
   employer: {
-    label: "Famille / Employeur",
-    tagline: "Diaspora",
-    greeting: "Vos recrutements avancent",
+    label: "Client",
+    tagline: "Bénéficiaire",
+    greeting: "Vos demandes de service",
     intro:
-      "Publiez vos annonces, suivez les candidatures et laissez un agent local vérifier chaque profil avant l'embauche.",
+      "Publiez vos annonces, recevez les candidatures et laissez un agent local vérifier chaque prestataire avant l'engagement.",
   },
   agent: {
     label: "Agent vérificateur",
     tagline: "Terrain",
     greeting: "Vos vérifications en cours",
     intro:
-      "Menez les entretiens en personne, contrôlez les pièces et partagez vos notes de vérification avec les familles.",
+      "Menez les entretiens en personne, contrôlez les pièces et partagez vos notes de vérification avec les clients.",
   },
   jobseeker: {
-    label: "Candidat",
+    label: "Prestataire",
     tagline: "Cameroun",
-    greeting: "Votre recherche d'emploi",
+    greeting: "Votre activité de service",
     intro:
-      "Complétez votre profil, ajoutez vos pièces et postulez aux annonces de votre ville en toute confiance.",
+      "Complétez votre profil, ajoutez vos pièces et répondez aux annonces de votre ville en toute confiance.",
   },
   admin: {
     label: "Administrateur",
     tagline: "warap",
     greeting: "Vue d'ensemble",
     intro:
-      "Suivez les annonces, les candidatures et les vérifications menées par les agents du réseau.",
+      "Suivez les offres, les candidatures et les vérifications menées par les agents du réseau.",
   },
 };
 
@@ -60,19 +60,19 @@ export function getNavigation(role: UserRole | null): NavItem[] {
   const r: UserRole = role ?? "jobseeker";
   const items: NavItem[] = [
     { name: "Tableau de bord", href: "/dashboard", icon: ICONS.dashboard },
-    { name: "Annonces", href: "/jobs", icon: ICONS.jobs },
+    { name: "Offres de service", href: "/jobs", icon: ICONS.jobs },
   ];
 
   if (r === "agent") {
     items.push({ name: "Vérifications", href: "/verifications", icon: ICONS.verifications });
   } else if (r === "jobseeker") {
     items.push({
-      name: "Mes candidatures",
+      name: "Mes réponses",
       href: "/applications",
       icon: ICONS.applications,
     });
   } else {
-    items.push({ name: "Candidatures", href: "/applications", icon: ICONS.applications });
+    items.push({ name: "Réponses", href: "/applications", icon: ICONS.applications });
   }
 
   if (r !== "jobseeker") {
@@ -90,24 +90,24 @@ export function getNavigation(role: UserRole | null): NavItem[] {
 
 export const pageTitles: Record<string, string> = {
   "/dashboard": "Tableau de bord",
-  "/jobs": "Annonces de recrutement",
+  "/jobs": "Offres de service",
   "/verifications": "Vérifications",
   "/tasks": "Tâches & onboarding",
-  "/applications": "Candidatures",
+  "/applications": "Réponses",
   "/users": "Gestion des utilisateurs",
   "/profile": "Profil",
 };
 
 export function resolvePageTitle(pathname: string, role?: UserRole | null): string {
   if (pathname === "/applications") {
-    return role === "jobseeker" ? "Mes candidatures" : "Candidatures";
+    return role === "jobseeker" ? "Mes réponses" : "Réponses";
   }
   if (pageTitles[pathname]) return pageTitles[pathname];
   if (pathname.startsWith("/verifications")) return "Vérifications";
   if (pathname.startsWith("/users")) return "Gestion des utilisateurs";
-  if (pathname.startsWith("/jobs")) return "Annonces de recrutement";
+  if (pathname.startsWith("/jobs")) return "Offres de service";
   if (pathname.startsWith("/tasks")) return "Tâches & onboarding";
-  if (pathname.startsWith("/applications")) return "Candidatures";
+  if (pathname.startsWith("/applications")) return "Réponses";
   if (pathname.startsWith("/profile")) return "Profil";
   return "warap";
 }

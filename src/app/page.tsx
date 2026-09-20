@@ -3,23 +3,23 @@ import Logo, { BrandMark } from "@/components/logo";
 
 const features = [
   {
-    title: "Offres & candidatures",
+    title: "Offres & réponses",
     description:
-      "Publiez votre annonce, définissez le salaire en FCFA et le lieu, puis recevez et classez les candidatures.",
+      "Publiez votre offre, définissez le tarif en FCFA et le lieu, puis recevez et classez les réponses.",
     icon: "M20.25 14.15v4.25c0 1.094-.787 2.036-1.872 2.18-2.087.277-4.216.42-6.378.42s-4.291-.143-6.378-.42c-1.085-.144-1.872-1.086-1.872-2.18v-4.25m16.5 0a2.18 2.18 0 00.75-1.661V8.706c0-1.081-.768-2.015-1.837-2.175a48.114 48.114 0 00-3.413-.387m4.5 8.006c-.194.165-.42.295-.673.38A23.978 23.978 0 0112 15.75c-2.648 0-5.195-.429-7.577-1.22a2.016 2.016 0 01-.673-.38m0 0A2.18 2.18 0 013 12.489V8.706c0-1.081.768-2.015 1.837-2.175a48.111 48.111 0 013.413-.387m7.5 0V5.25A2.25 2.25 0 0013.5 3h-3a2.25 2.25 0 00-2.25 2.25v.894m7.5 0a48.667 48.667 0 00-7.5 0M12 12.75h.008v.008H12v-.008z",
     gradient: "from-primary-600 to-primary-400",
   },
   {
     title: "Vérification par un agent local",
     description:
-      "CNI, références, casier judiciaire ou permis : un agent de confiance vérifie chaque profil en personne, à Douala ou à Yaoundé.",
+      "CNI, références, casier judiciaire ou diplômes : un agent de confiance vérifie chaque profil en personne, à Douala ou à Yaoundé.",
     icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z",
     gradient: "from-emerald-500 to-teal-600",
   },
   {
     title: "Contact WhatsApp direct",
     description:
-      "Chaque offre et candidature expose un numéro de contact. Organisez les entretiens par appel audio ou vidéo, où que vous soyez.",
+      "Chaque offre et chaque réponse expose un numéro de contact. Organisez les entretiens par appel audio ou vidéo, où que vous soyez.",
     icon: "M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z",
     gradient: "from-emerald-500 to-green-600",
   },
@@ -33,7 +33,7 @@ const features = [
   {
     title: "Mises à jour en temps réel",
     description:
-      "Suivez instantanément les nouvelles candidatures, les changements de statut et l'avancement de la vérification.",
+      "Suivez instantanément les nouvelles réponses, les changements de statut et l'avancement de la vérification.",
     icon: "M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605",
     gradient: "from-sky-500 to-cyan-600",
   },
@@ -48,11 +48,11 @@ const features = [
 
 const audiences = [
   {
-    title: "Familles de la diaspora",
+    title: "Clients",
     description:
-      "Vous vivez à Paris, Londres ou New York et souhaitez embaucher une aide à domicile, une nounou ou un chauffeur au Cameroun.",
-    points: ["Publication depuis l'étranger en quelques minutes", "Candidats présélectionnés et vérifiés", "Entretiens par WhatsApp, contrat préparé par un agent"],
-    badge: "Employeurs",
+      "Vous habitez au Cameroun ou à l&apos;étranger et souhaitez faire appel à un prestataire de service : aide à domicile, cours, conduite, bricolage et plus.",
+    points: ["Offres publiées en quelques minutes", "Prestataires présélectionnés et vérifiés", "Entretiens par WhatsApp, engagement préparé par un agent"],
+    badge: "Clients",
     icon: "M8.25 21v-4.875c0-.621.504-1.125 1.125-1.125h5.25c.621 0 1.125.504 1.125 1.125V21m0 0h4.5V3.545M12.75 21h7.5V10.75M2.25 21h1.5m18 0h-18M2.25 9l4.5-1.636M18.75 3l-1.5.545m0 6.205l3 1m1.5.5l-1.5-.5M6.75 7.364V3h-3v18m3-13.636l10.5-3.819",
     gradient: "from-primary-600 to-primary-500",
   },
@@ -60,17 +60,17 @@ const audiences = [
     title: "Agents vérificateurs",
     description:
       "Vous êtes une personne de confiance basée au Cameroun ? Menez les entretiens, contrôlez les documents et suivez les dossiers.",
-    points: ["Entretiens en personne et contrôle des pièces", "Suivi des tâches d'onboarding assignées", "Notes de vérification partagées avec l'employeur"],
+    points: ["Entretiens en personne et contrôle des pièces", "Suivi des tâches d'onboarding assignées", "Notes de vérification partagées avec le client"],
     badge: "Agents",
     icon: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z",
     gradient: "from-amber-500 to-orange-600",
   },
   {
-    title: "Candidats au Cameroun",
+    title: "Prestataires au Cameroun",
     description:
-      "Vous cherchez un emploi stable chez une famille au pays ? Présentez votre profil et vos documents, puis postulez en un clic.",
-    points: ["Postulez aux offres de votre ville", "Partagez CNI, références et casier judiciaire", "Salaires affichés en FCFA, sans ambiguïté"],
-    badge: "Candidats",
+      "Vous proposez un service au pays — ménage, garde d&apos;enfants, cours, conduite, soins, bricolage… Présentez votre profil et vos pièces, puis répondez aux offres d&apos;un clic.",
+    points: ["Répondez aux offres de votre ville", "Partagez CNI, références et diplômes", "Tarifs affichés en FCFA, sans ambiguïté"],
+    badge: "Prestataires",
     icon: "M15.75 3.75L18 6m0 0l2.25 2.25M18 6l2.25-2.25M18 6l-2.25 2.25M21 21H3m0 0l-0.75-8.25M3 21l8.25-8.25m0 0L7.5 8.25m3.75 4.5L17.25 6m0 0L15 3.75",
     gradient: "from-emerald-500 to-teal-600",
   },
@@ -79,28 +79,28 @@ const audiences = [
 const caseStudies = [
   {
     id: "case-diaspora",
-    label: "Famille diaspora",
+    label: "Client",
     initials: "PM",
     name: "Patience M.",
-    meta: "Famille à Paris · cherchait une gouvernante à Bonapriso",
+    meta: "Cliente à Paris · cherchait une aide à domicile à Bonapriso",
     gradient: "from-primary-500 to-accent-600",
     place: "Douala",
-    title: "De l&apos;annonce au contrat en 12 jours",
+    title: "De l&apos;offre à l&apos;engagement en 12 jours",
     steps: [
       {
         day: "Jour 1",
-        title: "Annonce publiée",
-        desc: "Poste de gouvernante à temps plein, 80 000 FCFA/mois, logée. Publication et partage au cercle des agents.",
+        title: "Offre publiée",
+        desc: "Offre d'aide à domicile à temps plein, 80 000 FCFA/mois. Publication et partage au cercle des agents.",
       },
       {
         day: "Jour 3",
-        title: "9 candidatures en 48 h",
+        title: "9 réponses en 48 h",
         desc: "L'agent Yannick pré-sélectionne 3 profils par appel téléphonique et met en avant les plus motivés.",
       },
       {
         day: "Jour 7",
         title: "Vérification terrain à Bonapriso",
-        desc: "Contrôle de la CNI, appel aux deux derniers employeurs, relevé du casier judiciaire, visite médicale programmée.",
+        desc: "Contrôle de la CNI, appel aux deux dernières références, relevé du casier judiciaire, visite médicale programmée.",
       },
       {
         day: "Jour 12",
@@ -108,38 +108,38 @@ const caseStudies = [
         desc: "Entretien WhatsApp avec Patience, notes de vérification partagées, contrat CNPS signé et période d'essai lancée.",
       },
     ],
-    dossierLabel: "Dossier du recrutement",
+    dossierLabel: "Dossier de la demande",
     stats: [
-      { value: "12 jours", label: "Annonce → contrat" },
-      { value: "9", label: "Candidatures reçues" },
+      { value: "12 jours", label: "Offre → engagement" },
+      { value: "9", label: "Réponses reçues" },
       { value: "3", label: "Présélectionnées" },
-      { value: "80 000 FCFA", label: "Salaire mensuel" },
+      { value: "80 000 FCFA", label: "Tarif mensuel" },
     ],
     verifiedLabel: "Documents vérifiés",
     verified: [
       "Carte nationale d'identité",
-      "Références d'emploi (x2)",
+      "Références de service (x2)",
       "Casier judiciaire vierge",
-      "Visite médicale de pré-embauche",
+      "Visite médicale de pré-engagement",
     ],
     quote:
       "Je ne pouvais pas me déplacer. Le dossier vérifié m'a donné la confiance pour signer à distance.",
-    quoteBy: "Patience M., famille à Paris",
+    quoteBy: "Patience M., cliente à Paris",
   },
   {
     id: "case-candidate",
-    label: "Candidate",
+    label: "Prestataire",
     initials: "BT",
     name: "Blandine T.",
-    meta: "Aide à domicile à Yaoundé · cherchait un poste à Bastos",
+    meta: "Aide à domicile à Yaoundé · proposait ses services à Bastos",
     gradient: "from-emerald-500 to-teal-600",
     place: "Yaoundé",
-    title: "Du profil vérifié au contrat signé en 10 jours",
+    title: "Du profil vérifié à l&apos;engagement en 10 jours",
     steps: [
       {
         day: "Jour 1",
         title: "Profil créé & documents ajoutés",
-        desc: "CNI, références des deux derniers employeurs et casier judiciaire téléchargés. Le profil passe en statut « En vérification ».",
+        desc: "CNI, références des deux dernières expériences et casier judiciaire téléchargés. Le profil passe en statut « En vérification ».",
       },
       {
         day: "Jour 3",
@@ -148,31 +148,31 @@ const caseStudies = [
       },
       {
         day: "Jour 6",
-        title: "Profil Vérifié & candidatures",
-        desc: "Blandine postule à 4 offres de Yaoundé ; 2 employeuses répondent dans les 24 h grâce au badge Vérifiée.",
+        title: "Profil Vérifié & réponses",
+        desc: "Blandine répond à 4 offres de Yaoundé ; 2 clients répondent dans les 24 h grâce au badge Vérifiée.",
       },
       {
         day: "Jour 10",
         title: "Entretien & signature",
-        desc: "Entretien WhatsApp avec la famille, visite médicale effectuée, contrat à 70 000 FCFA/mois signé à Bastos.",
+        desc: "Entretien WhatsApp avec la cliente, visite médicale effectuée, engagement à 70 000 FCFA/mois signé à Bastos.",
       },
     ],
-    dossierLabel: "Dossier de la candidate",
+    dossierLabel: "Dossier du prestataire",
     stats: [
       { value: "5 jours", label: "Pour être vérifiée" },
-      { value: "4", label: "Candidatures envoyées" },
+      { value: "4", label: "Réponses envoyées" },
       { value: "2", label: "Réponses en 24 h" },
-      { value: "70 000 FCFA", label: "Salaire signé" },
+      { value: "70 000 FCFA", label: "Tarif signé" },
     ],
     verifiedLabel: "Pièces du profil vérifié",
     verified: [
       "Carte nationale d'identité",
-      "Références d'emploi (x2)",
+      "Références de service (x2)",
       "Casier judiciaire vierge",
       "Disponibilités confirmées",
     ],
     quote:
-      "Le badge Vérifiée a fait la différence : deux familles m'ont répondu très vite.",
+      "Le badge Vérifiée a fait la différence : deux clients m'ont répondu très vite.",
     quoteBy: "Blandine T., aide à domicile à Yaoundé",
   },
   {
@@ -188,22 +188,22 @@ const caseStudies = [
       {
         day: "Jour 1",
         title: "Mission reçue",
-        desc: "La famille confie la vérification d'une candidate : contrôle des pièces, appels de références et visite médicale à programmer.",
+        desc: "La cliente confie la vérification d'une prestataire : contrôle des pièces, appels de références et visite médicale à programmer.",
       },
       {
         day: "Jour 2",
         title: "Planification terrain",
-        desc: "Séverine verrouille la checklist, appelle la candidate et fixe le rendez-vous au quartier Akwa.",
+        desc: "Séverine verrouille la checklist, appelle la prestataire et fixe le rendez-vous au quartier Akwa.",
       },
       {
         day: "Jour 4",
         title: "Contrôles en personne",
-        desc: "Entretien sur place, CNI vérifiée, appels aux deux anciens employeurs, notes de vérification saisies dans la plateforme.",
+        desc: "Entretien sur place, CNI vérifiée, appels aux deux dernières références, notes de vérification saisies dans la plateforme.",
       },
       {
         day: "Jour 5",
         title: "Rapport remis & mission clôturée",
-        desc: "Compte rendu complet partagé à la famille : la candidate est déclarée prête pour l'entretien WhatsApp.",
+        desc: "Compte rendu complet partagé au client : la prestataire est déclarée prête pour l'entretien WhatsApp.",
       },
     ],
     dossierLabel: "Mission de vérification",
@@ -221,7 +221,7 @@ const caseStudies = [
       "Rapport de vérification",
     ],
     quote:
-      "Chaque étape est tracée dans la plateforme : la famille sait exactement ce qui a été vérifié.",
+      "Chaque étape est tracée dans la plateforme : le client sait exactement ce qui a été vérifié.",
     quoteBy: "Séverine N., agent vérificateur à Douala",
   },
 ];
@@ -244,7 +244,7 @@ export default function Home() {
               Comment ça marche
             </a>
             <Link href="/annonces" className="text-sm font-medium text-primary-700 transition-colors hover:text-primary-600">
-              Annonces
+              Offres
             </Link>
             <a href="#testimonials" className="text-sm font-medium text-slate-600 transition-colors hover:text-slate-900">
               Avis
@@ -283,24 +283,24 @@ export default function Home() {
                     <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-emerald-400 opacity-70" />
                     <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-500" />
                   </span>
-                  Recrutement vérifié au Cameroun
+                  Services vérifiés au Cameroun
                 </div>
 
                 <h1 className="animate-fade-in-up mt-6 text-4xl font-bold leading-[1.08] tracking-tight text-slate-900 [animation-delay:0.1s] sm:text-5xl lg:text-6xl">
-                  Embauchez votre personnel de confiance,{" "}
+                  Trouvez vos prestataires de confiance,{" "}
                   <span className="gradient-text">où que vous soyez</span>
                 </h1>
 
                 <p className="animate-fade-in-up mt-6 max-w-xl text-lg leading-relaxed text-slate-600 [animation-delay:0.2s]">
-                  warap connecte les familles de la diaspora aux aides à
-                  domicile, nounous, chauffeurs et gouvernantes au Cameroun.
-                  Chaque candidat est vérifié en personne par un agent
-                  local avant recrutement.
+                  warap connecte les clients aux prestataires de services au
+                  Cameroun : aide à domicile, cours, conduite, bricolage et
+                  plus encore. Chaque prestataire est vérifié en personne par
+                  un agent local avant l&apos;engagement.
                 </p>
 
                 <div className="animate-fade-in-up mt-8 flex flex-col items-center gap-4 sm:flex-row [animation-delay:0.3s]">
                   <Link href="/register" className="btn-primary w-full px-8 py-3.5 text-base sm:w-auto">
-                    Recruter maintenant
+                    Trouver un prestataire
                     <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
                     </svg>
@@ -314,7 +314,7 @@ export default function Home() {
                   {[
                     { icon: "M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z", label: "Contact WhatsApp direct" },
                     { icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z", label: "Vérification CNI & références" },
-                    { icon: "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z", label: "Salaires en FCFA" },
+                    { icon: "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z", label: "Tarifs en FCFA" },
                   ].map((item) => (
                     <span key={item.label} className="inline-flex items-center gap-2 text-sm font-medium text-slate-600">
                       <span className="flex h-7 w-7 items-center justify-center rounded-lg bg-white shadow-sm">
@@ -340,7 +340,7 @@ export default function Home() {
                       </div>
                       <div>
                         <p className="text-sm font-bold text-slate-900">Solange Andela</p>
-                        <p className="text-xs text-slate-500">Aide ménagère · Douala</p>
+                        <p className="text-xs text-slate-500">Aide à domicile · Douala</p>
                       </div>
                     </div>
                     <span className="badge-success">
@@ -352,7 +352,7 @@ export default function Home() {
                   <div className="mt-4 rounded-xl border border-slate-100 bg-slate-50/70 p-3.5">
                     <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Offre</p>
                     <p className="mt-0.5 text-sm font-semibold text-slate-900">
-                      Aide ménagère à domicile · Bonapriso
+                      Aide à domicile · Bonapriso
                     </p>
                     <div className="mt-2 flex flex-wrap items-center gap-2">
                       <span className="badge-info">Temps plein</span>
@@ -393,7 +393,7 @@ export default function Home() {
                       Discuter avec l&apos;agent
                     </a>
                     <a href="#features" className="text-xs font-medium text-slate-400 transition-colors hover:text-slate-600">
-                      Exemple de candidature contrôlée
+                      Exemple de réponse contrôlée
                     </a>
                   </div>
                 </div>
@@ -403,9 +403,9 @@ export default function Home() {
             {/* Stats band */}
             <div id="stats" className="animate-fade-in-up mx-auto mt-16 grid max-w-3xl grid-cols-1 gap-4 sm:grid-cols-3 [animation-delay:0.5s]">
               {[
-                { value: "100%", label: "Candidats vérifiés en personne" },
+                { value: "100%", label: "Prestataires vérifiés en personne" },
                 { value: "2+", label: "Villes couvertes : Douala & Yaoundé" },
-                { value: "+237", label: "Contact direct avec la diaspora" },
+                { value: "+237", label: "Contact direct au Cameroun" },
               ].map((stat) => (
                 <div key={stat.label} className="rounded-2xl border border-white/60 bg-white/60 p-5 text-center shadow-card backdrop-blur">
                   <p className="gradient-text text-2xl font-bold">{stat.value}</p>
@@ -421,10 +421,10 @@ export default function Home() {
           <div className="mx-auto max-w-2xl text-center">
             <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary-600">Pour qui&nbsp;?</p>
             <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-              Un réseau de confiance, <span className="gradient-text">de la diaspora au Cameroun</span>
+              Un réseau de confiance, <span className="gradient-text">du client au prestataire</span>
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600">
-              Trois familles d&apos;acteurs collaborent sur une seule plateforme pour un recrutement simple et sûr.
+              Trois acteurs collaborent sur une seule plateforme pour un service simple et sûr.
             </p>
           </div>
 
@@ -471,10 +471,10 @@ export default function Home() {
             <div className="mx-auto max-w-2xl text-center">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-accent-400">Fonctionnalités</p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-                Tout ce qu&apos;il faut pour un recrutement serein
+                Tout ce qu&apos;il faut pour un engagement serein
               </h2>
               <p className="mt-4 text-base leading-relaxed text-slate-400">
-                De la publication de l&apos;annonce à la signature du contrat, chaque étape est pensée pour les familles et les agents.
+                De la publication de l&apos;offre à l&apos;engagement, chaque étape est pensée pour les clients, les prestataires et les agents.
               </p>
             </div>
 
@@ -503,7 +503,7 @@ export default function Home() {
             <div className="mx-auto max-w-2xl text-center">
               <p className="text-xs font-bold uppercase tracking-[0.2em] text-primary-600">Comment ça marche</p>
               <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
-                De Douala à votre salon, en trois étapes
+                De la demande au service vérifié, en trois étapes
               </h2>
             </div>
 
@@ -512,17 +512,17 @@ export default function Home() {
                 {
                   step: "01",
                   title: "Créez votre compte",
-                  desc: "Inscrivez-vous avec un simple code PIN et précisez votre profil : famille employeuse, agent local ou candidat.",
+                  desc: "Inscrivez-vous avec un simple code PIN et précisez votre profil : client, prestataire ou agent local.",
                 },
                 {
                   step: "02",
                   title: "Publiez et recevez",
-                  desc: "Publiez votre annonce en FCFA, recevez les candidatures et confiez la vérification des documents à votre agent.",
+                  desc: "Publiez votre offre en FCFA, recevez les réponses et confiez la vérification des documents à votre agent.",
                 },
                 {
                   step: "03",
-                  title: "Vérifiez et recrutez",
-                  desc: "Consultez les notes du vérificateur, lancez l'appel WhatsApp et suivez l'onboarding jusqu'au contrat.",
+                  title: "Vérifiez et engagez",
+                  desc: "Consultez les notes du vérificateur, lancez l'appel WhatsApp et suivez l'onboarding jusqu'à l'engagement.",
                 },
               ].map((item) => (
                 <div
@@ -553,21 +553,21 @@ export default function Home() {
             {[
               {
                 quote:
-                  "J'ai trouvé notre nounou en un week-end depuis Paris. L'agent a vérifié ses références et son diplôme avant l'entretien WhatsApp.",
+                  "J'ai trouvé une aide à domicile en un week-end depuis Paris. L'agent a vérifié ses références et son profil avant l'entretien WhatsApp.",
                 name: "Mireille K.",
-                role: "Famille à Paris",
+                role: "Cliente à Paris",
                 gradient: "from-primary-600 to-primary-400",
               },
               {
                 quote:
-                  "Je vérifie les documents, je fais les visites médicales et je prépare les contrats. Les familles savent exactement ce qui est fait.",
+                  "Je vérifie les documents, je fais les visites médicales et je prépare les engagements. Les clients savent exactement ce qui est fait.",
                 name: "Yannick F.",
                 role: "Agent vérificateur · Douala",
                 gradient: "from-amber-500 to-orange-600",
               },
               {
                 quote:
-                  "Tout est clair : le salaire en FCFA, la ville et les missions. Mon profil vérifié a rassuré ma nouvelle employeuse.",
+                  "Tout est clair : le tarif en FCFA, la ville et les missions. Mon profil vérifié a rassuré mon nouveau client.",
                 name: "Solange A.",
                 role: "Aide à domicile · Douala",
                 gradient: "from-emerald-500 to-teal-600",
@@ -605,7 +605,7 @@ export default function Home() {
               Trois parcours, un seul fil&nbsp;: la vérification
             </h2>
             <p className="mt-4 text-base leading-relaxed text-slate-600">
-              Famille, candidate et agent&nbsp;: trois regards sur un même parcours mené de bout en bout sur warap.
+              Client, prestataire et agent&nbsp;: trois regards sur un même parcours mené de bout en bout sur warap.
             </p>
           </div>
 
@@ -719,10 +719,10 @@ export default function Home() {
             <div className="relative flex flex-col items-center gap-8 text-center lg:flex-row lg:justify-between lg:text-left">
               <div>
                 <h2 className="text-2xl font-bold tracking-tight text-white sm:text-3xl">
-                  Prêt à recruter en toute confiance&nbsp;?
+                  Prêt à engager en toute confiance&nbsp;?
                 </h2>
                 <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/80">
-                  Créez votre compte gratuitement, publiez votre première annonce
+                  Créez votre compte gratuitement, publiez votre première offre
                   et laissez un agent local s&apos;occuper de la vérification.
                 </p>
               </div>
@@ -757,7 +757,7 @@ export default function Home() {
               <span className="font-bold tracking-tight text-slate-900">warap</span>
             </div>
             <p className="text-sm text-slate-500">
-              Recrutement vérifié au Cameroun · &copy; 2026 warap. Tous droits réservés.
+              Services vérifiés au Cameroun · &copy; 2026 warap. Tous droits réservés.
             </p>
           </div>
         </div>

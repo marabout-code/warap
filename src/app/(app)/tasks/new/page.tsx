@@ -102,7 +102,7 @@ function NewTaskContent() {
         </Link>
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Créer une tâche</h1>
-          <p className="mt-1 text-sm text-slate-500">Planifiez une vérification ou une étape d&apos;onboarding pour une annonce.</p>
+          <p className="mt-1 text-sm text-slate-500">Planifiez une vérification ou une étape d&apos;onboarding pour une offre.</p>
         </div>
       </div>
 
@@ -115,7 +115,7 @@ function NewTaskContent() {
 
         <div>
           <label className="input-label">Titre de la tâche *</label>
-          <input {...register("title")} type="text" className="input-field" placeholder="Vérifier les références de la candidate" />
+          <input {...register("title")} type="text" className="input-field" placeholder="Vérifier les références du prestataire" />
           {errors.title && <p className="form-error">{errors.title.message}</p>}
         </div>
 
@@ -129,7 +129,7 @@ function NewTaskContent() {
           <div>
             <label className="input-label">Annonce associée *</label>
             <select {...register("job_id")} className="input-field">
-              <option value="">Sélectionnez une annonce…</option>
+              <option value="">Sélectionnez une offre…</option>
               {jobs.map((job) => (
                 <option key={job.id} value={job.id}>{job.title}</option>
               ))}

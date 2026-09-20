@@ -192,7 +192,7 @@ export default function VerificationsPage() {
           </h1>
           <p className="mt-1 text-sm text-slate-500">
             Contrôlez les pièces, menez l&apos;entretien et partagez votre rapport
-            avec la famille.
+            avec le client.
           </p>
         </div>
         <div className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-semibold text-slate-600 shadow-sm">
@@ -243,8 +243,8 @@ export default function VerificationsPage() {
           </h2>
           <p className="mx-auto mt-1 max-w-sm text-sm text-slate-500">
             {tab === "unverified"
-              ? "Les nouvelles candidatures à vérifier apparaîtront ici."
-              : "Aucune candidature dans cette catégorie."}
+              ? "Les nouvelles réponses à vérifier apparaîtront ici."
+              : "Aucune réponse dans cette catégorie."}
           </p>
         </div>
       ) : (
@@ -369,7 +369,7 @@ export default function VerificationsPage() {
                       }))
                     }
                     rows={3}
-                    placeholder="Notes de vérification partagées avec la famille…"
+                    placeholder="Notes de vérification partagées avec le client…"
                     className="input-field mt-3 resize-y"
                   />
                 </div>

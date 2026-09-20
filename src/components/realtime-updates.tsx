@@ -156,7 +156,7 @@ export default function RealtimeUpdates({
               En attente de mises à jour en temps réel…
             </p>
             <p className="mt-1 text-xs text-slate-400">
-              Les modifications des offres, tâches et candidatures apparaissent ici
+              Les modifications des offres, tâches et réponses apparaissent ici
               instantanément.
             </p>
           </div>

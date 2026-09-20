@@ -140,7 +140,7 @@ export default function EditTaskPage() {
           <div>
             <label className="input-label">Annonce associée *</label>
             <select {...register("job_id")} className="input-field">
-              <option value="">Sélectionnez une annonce…</option>
+              <option value="">Sélectionnez une offre…</option>
               {jobs.map((job) => (
                 <option key={job.id} value={job.id}>{job.title}</option>
               ))}

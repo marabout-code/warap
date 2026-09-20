@@ -16,20 +16,20 @@ const ROLE_OPTIONS: {
 }[] = [
   {
     role: "employer",
-    title: "Famille employeuse",
-    description: "Je recrute depuis la diaspora un personnel de maison vérifié au Cameroun.",
+    title: "Client",
+    description: "Je publie des offres de service et recherche des prestataires vérifiés au Cameroun.",
     icon: "M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25",
   },
   {
     role: "jobseeker",
-    title: "Candidat",
-    description: "Je suis au Cameroun et je postule aux annonces de ma ville.",
+    title: "Prestataire",
+    description: "Je suis au Cameroun et je réponds aux offres de service de ma ville.",
     icon: "M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z",
   },
   {
     role: "agent",
     title: "Agent vérificateur",
-    description: "Je mène les vérifications terrain pour le compte des familles.",
+    description: "Je mène les vérifications terrain pour le compte des clients.",
     icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z",
   },
 ];

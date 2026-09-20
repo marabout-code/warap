@@ -68,52 +68,52 @@ const DASHBOARD_CONFIG: Record<
 > = {
   employer: {
     stats: [
-      { name: "Mes annonces", href: "/jobs", icon: ICONS.jobs, gradient: GRADIENTS.primary, ring: "bg-primary-50", },
-      { name: "Annonces ouvertes", href: "/jobs?status=open", icon: ICONS.open, gradient: GRADIENTS.emerald, ring: "bg-emerald-50", },
-      { name: "Candidatures reçues", href: "/applications", icon: ICONS.applications, gradient: GRADIENTS.amber, ring: "bg-amber-50", },
-      { name: "Candidatures en attente", href: "/applications", icon: ICONS.applications, gradient: GRADIENTS.accent, ring: "bg-accent-50", },
+      { name: "Mes offres de service", href: "/jobs", icon: ICONS.jobs, gradient: GRADIENTS.primary, ring: "bg-primary-50", },
+      { name: "Offres ouvertes", href: "/jobs?status=open", icon: ICONS.open, gradient: GRADIENTS.emerald, ring: "bg-emerald-50", },
+      { name: "Réponses reçues", href: "/applications", icon: ICONS.applications, gradient: GRADIENTS.amber, ring: "bg-amber-50", },
+      { name: "Réponses en attente", href: "/applications", icon: ICONS.applications, gradient: GRADIENTS.accent, ring: "bg-accent-50", },
       { name: "Vérifications en cours", href: "/applications", icon: ICONS.verifications, gradient: GRADIENTS.primary, ring: "bg-primary-50", },
     ],
     heroActions: [
-      { label: "Publier une annonce", href: "/jobs/new", primary: true },
+      { label: "Publier une offre", href: "/jobs/new", primary: true },
       { label: "Voir les tâches", href: "/tasks", primary: false },
     ],
     quickActions: [
-      { href: "/jobs/new", title: "Publier une annonce", desc: "Décrivez le poste, la ville et le salaire en FCFA", icon: ICONS.plus, gradient: GRADIENTS.primary },
-      { href: "/applications", title: "Examiner mes candidatures", desc: "Triez, présélectionnez et demandez la vérification", icon: ICONS.applications, gradient: GRADIENTS.emerald },
+      { href: "/jobs/new", title: "Publier une offre", desc: "Décrivez le service recherché, la ville et le tarif en FCFA", icon: ICONS.plus, gradient: GRADIENTS.primary },
+      { href: "/applications", title: "Examiner mes réponses", desc: "Triez, présélectionnez et demandez la vérification", icon: ICONS.applications, gradient: GRADIENTS.emerald },
       { href: "/tasks/new", title: "Créer une tâche", desc: "Planifiez une vérification ou une étape d'onboarding", icon: ICONS.tasks, gradient: GRADIENTS.accent },
     ],
     recent: {
-      title: "Mes annonces récentes",
+      title: "Mes offres récentes",
       allHref: "/jobs",
-      emptyText: "Aucune annonce publiée pour le moment.",
+      emptyText: "Aucune offre publiée pour le moment.",
       emptyHref: "/jobs/new",
-      emptyLabel: "Publiez votre première annonce →",
+      emptyLabel: "Publiez votre première offre →",
     },
   },
   jobseeker: {
     stats: [
-      { name: "Mes candidatures", href: "/applications", icon: ICONS.applications, gradient: GRADIENTS.primary, ring: "bg-primary-50", },
+      { name: "Mes réponses", href: "/applications", icon: ICONS.applications, gradient: GRADIENTS.primary, ring: "bg-primary-50", },
       { name: "En attente", href: "/applications", icon: ICONS.applications, gradient: GRADIENTS.amber, ring: "bg-amber-50", },
       { name: "En vérification", href: "/applications", icon: ICONS.verifications, gradient: GRADIENTS.accent, ring: "bg-accent-50", },
-      { name: "Candidatures vérifiées", href: "/applications", icon: ICONS.verifications, gradient: GRADIENTS.emerald, ring: "bg-emerald-50", },
-      { name: "Annonces ouvertes", href: "/jobs", icon: ICONS.open, gradient: GRADIENTS.primary, ring: "bg-primary-50", },
+      { name: "Réponses vérifiées", href: "/applications", icon: ICONS.verifications, gradient: GRADIENTS.emerald, ring: "bg-emerald-50", },
+      { name: "Offres ouvertes", href: "/jobs", icon: ICONS.open, gradient: GRADIENTS.primary, ring: "bg-primary-50", },
     ],
     heroActions: [
-      { label: "Voir les annonces", href: "/jobs", primary: true },
+      { label: "Voir les offres", href: "/jobs", primary: true },
       { label: "Tableau public", href: "/annonces", primary: false },
     ],
     quickActions: [
-      { href: "/jobs", title: "Parcourir les annonces", desc: "Trouvez les offres de votre ville et postulez", icon: ICONS.jobs, gradient: GRADIENTS.primary },
-      { href: "/applications", title: "Mes candidatures", desc: "Suivez l'avancement de vos dossiers", icon: ICONS.applications, gradient: GRADIENTS.emerald },
+      { href: "/jobs", title: "Parcourir les offres", desc: "Trouvez les offres de votre ville et répondez", icon: ICONS.jobs, gradient: GRADIENTS.primary },
+      { href: "/applications", title: "Mes réponses", desc: "Suivez l'avancement de vos dossiers", icon: ICONS.applications, gradient: GRADIENTS.emerald },
       { href: "/profile", title: "Compléter le profil", desc: "Ajoutez votre téléphone WhatsApp et votre zone", icon: ICONS.profile, gradient: GRADIENTS.accent },
     ],
     recent: {
-      title: "Annonces récentes",
+      title: "Offres récentes",
       allHref: "/jobs",
-      emptyText: "Aucune annonce ouverte pour le moment.",
+      emptyText: "Aucune offre ouverte pour le moment.",
       emptyHref: "/jobs",
-      emptyLabel: "Revenir aux annonces →",
+      emptyLabel: "Revenir aux offres →",
     },
   },
   agent: {
@@ -144,26 +144,26 @@ const DASHBOARD_CONFIG: Record<
   admin: {
     stats: [
       { name: "Utilisateurs", href: "/users", icon: ICONS.users, gradient: GRADIENTS.primary, ring: "bg-primary-50", },
-      { name: "Annonces publiées", href: "/jobs", icon: ICONS.jobs, gradient: GRADIENTS.emerald, ring: "bg-emerald-50", },
-      { name: "Candidatures", href: "/applications", icon: ICONS.applications, gradient: GRADIENTS.amber, ring: "bg-amber-50", },
+      { name: "Offres publiées", href: "/jobs", icon: ICONS.jobs, gradient: GRADIENTS.emerald, ring: "bg-emerald-50", },
+      { name: "Réponses", href: "/applications", icon: ICONS.applications, gradient: GRADIENTS.amber, ring: "bg-amber-50", },
       { name: "Vérifications à mener", href: "/verifications", icon: ICONS.verifications, gradient: GRADIENTS.accent, ring: "bg-accent-50", },
       { name: "Tâches en cours", href: "/tasks", icon: ICONS.tasks, gradient: GRADIENTS.primary, ring: "bg-primary-50", },
     ],
     heroActions: [
-      { label: "Publier une annonce", href: "/jobs/new", primary: true },
+      { label: "Publier une offre", href: "/jobs/new", primary: true },
       { label: "Gérer les utilisateurs", href: "/users", primary: false },
     ],
     quickActions: [
       { href: "/users", title: "Gérer les utilisateurs", desc: "Attribuez les rôles et activez les comptes", icon: ICONS.users, gradient: GRADIENTS.primary },
       { href: "/verifications", title: "Suivre les vérifications", desc: "Contrôlez l'avancement des rapports des agents", icon: ICONS.verifications, gradient: GRADIENTS.emerald },
-      { href: "/jobs/new", title: "Publier une annonce", desc: "Créez un poste de personnel domestique", icon: ICONS.plus, gradient: GRADIENTS.accent },
+      { href: "/jobs/new", title: "Publier une offre", desc: "Décrivez le service recherché", icon: ICONS.plus, gradient: GRADIENTS.accent },
     ],
     recent: {
-      title: "Annonces récentes",
+      title: "Offres récentes",
       allHref: "/jobs",
-      emptyText: "Aucune annonce publiée pour le moment.",
+      emptyText: "Aucune offre publiée pour le moment.",
       emptyHref: "/jobs/new",
-      emptyLabel: "Publier une annonce →",
+      emptyLabel: "Publier une offre →",
     },
   },
 };
@@ -391,7 +391,7 @@ export default function DashboardPage() {
               {meta ? meta.greeting : "Bon retour"} 👋
             </h1>
             <p className="mt-2 max-w-md text-sm leading-relaxed text-white/80">
-              {meta ? meta.intro : "Suivez votre activité de recrutement de personnel domestique."}
+              {meta ? meta.intro : "Suivez votre activité de service."}
             </p>
           </div>
           <div className="flex shrink-0 flex-wrap items-center gap-3">

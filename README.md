@@ -1,27 +1,28 @@
-# warap — Personnel domestique vérifié au Cameroun
+# warap — Services vérifiés au Cameroun
 
-warap connecte les familles de la **diaspora camerounaise** aux aides ménagères,
-nounous, chauffeurs et gouvernantes au pays. Chaque candidat est **vérifié en
-personne par un agent local** avant l'embauche.
+warap connecte les **clients** aux **prestataires de service** au Cameroun
+(aide à domicile, soins, cours, conduite, bricolage…). Chaque prestataire est
+**vérifié en personne par un agent local** avant l'engagement.
 
 Built with **Next.js 14** (App Router), **TypeScript**, and **Supabase**.
 
 ## Features
 
-- **Recrutement diaspora** — publier un poste depuis l'étranger, salaires en FCFA, contact WhatsApp direct.
-- **Tableau d'annonces public** (`/annonces`) — les candidats au Cameroun découvrent les offres ouvertes par ville et mot-clé, sans compte.
-- **Candidature avec dossier** — le candidat postule, téléverse ses pièces (CNI, références, casier judiciaire, diplômes…) ; les documents sont stockés dans un bucket Supabase Storage dédié.
-- **Revue par annonce** — la famille consulte, trie (examinée / présélectionnée / rejetée / acceptée) et lance une demande de vérification auprès d'un agent, avec création de tâche.
-- **Tableau de bord agent** (`/verifications`) — checklist terrain, notes, statut de vérification, rapport partagé avec la famille.
-- **Gestion des utilisateurs** (`/users`, réservé admin) — changer le rôle d'un compte (famille / candidat / agent / admin) et activer ou désactiver la connexion d'un utilisateur.
+- **Offres de service** — publier une offre de service, tarifs en FCFA, contact WhatsApp direct.
+- **Catégories de service** — chaque offre est classée dans une catégorie (domicile, garde d'enfants, soins, conduite, cuisine, cours, bricolage, jardinage, sécurité, autre…), filtrable sur le tableau public et dans l'espace client.
+- **Tableau d'offres public** (`/annonces`) — les prestataires au Cameroun découvrent les offres ouvertes par ville, catégorie et mot-clé, sans compte.
+- **Réponse avec dossier** — le prestataire répond à une offre et téléverse ses pièces (CNI, références, casier judiciaire, diplômes…) ; les documents sont stockés dans un bucket Supabase Storage dédié.
+- **Revue par offre** — le client consulte, trie (examinée / présélectionnée / rejetée / acceptée) et lance une demande de vérification auprès d'un agent, avec création de tâche.
+- **Tableau de bord agent** (`/verifications`) — checklist terrain, notes, statut de vérification, rapport partagé avec le client.
+- **Gestion des utilisateurs** (`/users`, réservé admin) — changer le rôle d'un compte (client / prestataire / agent / admin) et activer ou désactiver la connexion d'un utilisateur.
 - **Authentication par code PIN** — connexion à 6 chiffres, sans email / mot de passe, sessions via Supabase Auth.
   - Routes protégées par middleware Next.js
-  - Rôles : `admin`, `employer` (famille), `agent` (vérificateur), `jobseeker` (candidat)
-  - Création automatique du profil à l'inscription, avec choix du profil (famille employeuse, candidat ou agent)
-- **Gestion complète** — annonces (CRUD + recherche/filtres), tâches & onboarding, candidatures, profils.
-- **Tableau de bord par rôle** — statistiques, actions rapides et contenus adaptés à chaque profil (famille, candidat, agent, admin).
-- **Types de contrat** — seuls `full-time` (temps plein), `part-time` (temps partiel) et `contract` (contrat) sont proposés dans l'interface ; les valeurs héritées `internship` / `remote` sont conservées en base pour compatibilité avec les anciennes annonces.
-- **Mises à jour en temps réel** — flux live Supabase Realtime sur les annonces / tâches / candidatures.
+  - Rôles : `admin`, `employer` (client), `agent` (vérificateur), `jobseeker` (prestataire)
+  - Création automatique du profil à l'inscription, avec choix du profil (client, prestataire ou agent)
+- **Gestion complète** — offres (CRUD + recherche/filtres), tâches & onboarding, réponses, profils.
+- **Tableau de bord par rôle** — statistiques, actions rapides et contenus adaptés à chaque profil (client, prestataire, agent, admin).
+- **Types d'engagement** — seuls `full-time` (temps plein), `part-time` (temps partiel) et `contract` (contrat) sont proposés dans l'interface ; les valeurs héritées `internship` / `remote` sont conservées en base pour compatibilité avec les anciennes annonces.
+- **Mises à jour en temps réel** — flux live Supabase Realtime sur les offres / tâches / réponses.
 - **Sécurité** — Row Level Security sur toutes les tables + Storage, validation Zod.
 
 ## Tech Stack
@@ -70,6 +71,7 @@ Run the schema migrations **in order** in the Supabase SQL Editor:
 4. `supabase/migrations/004_agent_rls.sql` — politiques RLS du rôle agent
 5. `supabase/migrations/005_candidate_documents.sql` — bucket Storage `documents` + politiques, checklist de vérification (`verification_checklist`)
 6. `supabase/migrations/006_super_admin_user_management.sql` — statut de compte (`account_status`), politique RLS d'administration, compte super admin
+7. `supabase/migrations/007_service_categories.sql` — colonne `category` sur `jobs` + index
 
 Each migration is idempotent and safe to re-run.
 
@@ -81,22 +83,22 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Sample Data (domestic worker hiring)
+## Sample Data (service marketplace)
 
-- `supabase/seed_domestic_workers.sql` — diaspora employers (Paris/London), a local verification agent, maid/nanny/governess/driver candidates, jobs, applications and onboarding/verification tasks.
+- `supabase/seed_domestic_workers.sql` — clients (Paris/Londres), un agent vérificateur local, prestataires (aide à domicile, nounou, gouvernante, chauffeur), offres classées par catégorie (household, childcare, driving, elderly-care…), réponses et tâches d'onboarding/vérification.
 - `supabase/reset_domestic_workers.sql` — wipes only this dataset; re-run the seed to reinitialize.
 
 Demo accounts — log in with the 6-digit PIN:
 
 | Name               | Role               | PIN      |
 | ------------------ | ------------------ | -------- |
-| Mireille Kouam     | employer (Paris)   | `111222` |
-| Charles Ngo Bakai  | employer (London)  | `222333` |
+| Mireille Kouam     | client (Paris)     | `111222` |
+| Charles Ngo Bakai  | client (London)    | `222333` |
 | Yannick Fokou      | agent (Douala)     | `333444` |
-| Solange Andela     | jobseeker (maid)   | `444555` |
-| Marthe Tchoupo     | jobseeker (nanny)  | `555666` |
-| Honorine Nana      | jobseeker (housekeep.) | `666777` |
-| Serge Ekambi       | jobseeker (driver) | `777888` |
+| Solange Andela     | prestataire (aide à domicile) | `444555` |
+| Marthe Tchoupo     | prestataire (nounou) | `555666` |
+| Honorine Nana      | prestataire (gouvernante) | `666777` |
+| Serge Ekambi       | prestataire (chauffeur) | `777888` |
 | Pondy Code         | admin (super-admin) | `130471` |
 
 Le super administrateur (`pondycode@gmail.com` / PIN `130471`) se connecte comme
@@ -111,13 +113,13 @@ src/
 │   ├── (app)/                 # Protected route group (middleware-gated)
 │   │   ├── layout.tsx         # Dashboard shell: sidebar, header, auth
 │   │   ├── dashboard/         # Overview with stats & live updates
-│   │   ├── jobs/              # Annonces: list, create, detail, edit, apply
-│   │   ├── applications/      # Candidatures & vérifications
+│   │   ├── jobs/              # Offres : liste, création, détail, édition, réponse
+│   │   ├── applications/      # Réponses & vérifications
 │   │   ├── verifications/     # Tableau de bord agent-vérificateur
 │   │   ├── users/             # Gestion des utilisateurs (admin : rôles & statuts)
 │   │   ├── tasks/             # Tâches & onboarding
 │   │   └── profile/           # Profil utilisateur
-│   ├── annonces/              # Tableau public des annonces (+ détail)
+│   ├── annonces/              # Tableau public des offres (+ détail)
 │   ├── login/                 # Connexion PIN
 │   ├── register/              # Inscription
 │   ├── layout.tsx             # Root layout
@@ -125,7 +127,8 @@ src/
 ├── components/                # UI kit, logo, en-têtes/footers publics, feed temps réel, toasts
 ├── lib/
 │   ├── roles.ts               # Navigation & libellés par rôle
-│   ├── status-labels.ts       # Libellés, salaires, WhatsApp, types de pièces
+│   ├── service-categories.ts  # Catégories de service (config statique)
+│   ├── status-labels.ts       # Libellés, tarifs, WhatsApp, types de pièces
 │   └── supabase/              # Clients navigateur / serveur / middleware
 ├── types/                     # Types base de données & lignes
 └── middleware.ts              # Protection des routes par session
@@ -136,7 +139,7 @@ src/
 - **Row Level Security**: every table enforces RLS; the `documents` Storage bucket only allows uploads into the authenticated user's own folder.
   - Jobs: anyone can view; only employers/admins can create/update/delete their own
   - Tasks: creator, assignee, or admin
-  - Applications: applicant, job poster, or admin; agents can read/update for verification
+  - Applications: respondent, job poster, or admin; agents can read/update for verification
   - Profiles: public read; user updates their own; admins can update any role/`account_status`
 - **Middleware**: Unauthenticated users are redirected away from protected routes; `/annonces` stays public; authenticated users are kept out of login/register.
 - **Server validation**: Zod schemas validate form input before submission; RLS enforces authorization server-side.

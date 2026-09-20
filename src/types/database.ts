@@ -105,6 +105,7 @@ export interface Database {
           salary_min: number | null;
           salary_max: number | null;
           employment_type: "full-time" | "part-time" | "contract";
+          category: string;
           status: "open" | "closed" | "draft";
           posted_by: string;
           company_id: string | null;
@@ -121,6 +122,7 @@ export interface Database {
           salary_min?: number | null;
           salary_max?: number | null;
           employment_type: "full-time" | "part-time" | "contract";
+          category?: string;
           status?: "open" | "closed" | "draft";
           posted_by: string;
           company_id?: string | null;
@@ -137,6 +139,7 @@ export interface Database {
           salary_min?: number | null;
           salary_max?: number | null;
           employment_type?: "full-time" | "part-time" | "contract";
+          category?: string;
           status?: "open" | "closed" | "draft";
           posted_by?: string;
           company_id?: string | null;

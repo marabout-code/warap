@@ -115,7 +115,7 @@ export default function TasksPage() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">Tâches &amp; onboarding</h1>
           <p className="mt-1 text-sm text-slate-500">
-            Suivez les étapes de vérification et d&apos;onboarding liées à vos annonces.
+            Suivez les étapes de vérification et d&apos;onboarding liées à vos offres.
           </p>
         </div>
         <Link href="/tasks/new" className="btn-primary shrink-0">

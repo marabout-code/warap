@@ -5,6 +5,7 @@ import { useRouter, useParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { useForm } from "react-hook-form";
 import { jobSchema, type JobInput } from "@/lib/validations";
+import { categoryOptions } from "@/lib/service-categories";
 import Link from "next/link";
 
 export default function EditJobPage() {
@@ -69,6 +70,7 @@ export default function EditJobPage() {
         salary_min: data.salary_min || undefined,
         salary_max: data.salary_max || undefined,
         employment_type: data.employment_type,
+        category: data.category,
         status: data.status,
         contact_phone: data.contact_phone || "",
       });
@@ -91,6 +93,7 @@ export default function EditJobPage() {
         salary_min: data.salary_min || null,
         salary_max: data.salary_max || null,
         employment_type: data.employment_type,
+        category: data.category,
         status: data.status,
         contact_phone: data.contact_phone || null,
       })
@@ -127,8 +130,8 @@ export default function EditJobPage() {
           </svg>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Modifier l&apos;annonce</h1>
-          <p className="mt-1 text-sm text-slate-500">Mettez à jour les détails de votre annonce.</p>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Modifier l&apos;offre</h1>
+          <p className="mt-1 text-sm text-slate-500">Mettez à jour les détails de votre offre.</p>
         </div>
       </div>
 
@@ -141,14 +144,23 @@ export default function EditJobPage() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label className="input-label">Poste recherché *</label>
+            <label className="input-label">Service recherché *</label>
             <input {...register("title")} type="text" className="input-field" />
             {errors.title && <p className="form-error">{errors.title.message}</p>}
           </div>
           <div>
-            <label className="input-label">Famille / Employeur *</label>
+            <label className="input-label">Client *</label>
             <input {...register("company")} type="text" className="input-field" />
             {errors.company && <p className="form-error">{errors.company.message}</p>}
+          </div>
+          <div>
+            <label className="input-label">Catégorie de service *</label>
+            <select {...register("category")} className="input-field">
+              {categoryOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+            {errors.category && <p className="form-error">{errors.category.message}</p>}
           </div>
           <div>
             <label className="input-label">Lieu (ville / quartier) *</label>
@@ -156,7 +168,7 @@ export default function EditJobPage() {
             {errors.location && <p className="form-error">{errors.location.message}</p>}
           </div>
           <div>
-            <label className="input-label">Type de contrat *</label>
+            <label className="input-label">Type d&apos;engagement *</label>
             <select {...register("employment_type")} className="input-field">
               <option value="full-time">Temps plein</option>
               <option value="part-time">Temps partiel</option>
@@ -164,11 +176,11 @@ export default function EditJobPage() {
             </select>
           </div>
           <div>
-            <label className="input-label">Salaire minimum (FCFA / mois)</label>
+            <label className="input-label">Tarif minimum (FCFA)</label>
             <input {...register("salary_min", { valueAsNumber: true })} type="number" min="0" className="input-field" />
           </div>
           <div>
-            <label className="input-label">Salaire maximum (FCFA / mois)</label>
+            <label className="input-label">Tarif maximum (FCFA)</label>
             <input {...register("salary_max", { valueAsNumber: true })} type="number" min="0" className="input-field" />
           </div>
         </div>
@@ -179,7 +191,7 @@ export default function EditJobPage() {
         </div>
 
         <div>
-          <label className="input-label">Description du poste *</label>
+          <label className="input-label">Description du service *</label>
           <textarea {...register("description")} rows={6} className="input-field" />
           {errors.description && <p className="form-error">{errors.description.message}</p>}
         </div>

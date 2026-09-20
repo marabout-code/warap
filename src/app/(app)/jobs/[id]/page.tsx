@@ -14,6 +14,10 @@ import {
   formatSalary,
   whatsappHref,
 } from "@/lib/status-labels";
+import {
+  categoryLabel,
+  categoryEmoji,
+} from "@/lib/service-categories";
 
 type AppRow = Application & { applicant?: Profile };
 
@@ -97,7 +101,7 @@ export default function JobDetailPage() {
   }, [jobId, supabase]);
 
   const handleDelete = async () => {
-    if (!confirm("Voulez-vous vraiment supprimer cette annonce ?")) return;
+    if (!confirm("Voulez-vous vraiment supprimer cette offre ?")) return;
     await supabase.from("jobs").delete().eq("id", jobId);
     router.push("/jobs");
     router.refresh();
@@ -128,7 +132,7 @@ export default function JobDetailPage() {
     if (app.verification_status === "unverified") {
       updates.verification_status = "in_review";
     } else {
-      setActionError("Une vérification est déjà mentionnée sur cette candidature.");
+      setActionError("Une vérification est déjà mentionnée sur cette réponse.");
       return;
     }
 
@@ -145,8 +149,8 @@ export default function JobDetailPage() {
       const { error: taskError } = await supabase
         .from("tasks")
         .insert({
-          title: `Vérifier la candidature de ${app.applicant?.full_name ?? "le candidat"}`,
-          description: `Contrôle de l'identité, de l'adresse et des pièces du dossier pour l'annonce « ${job?.title} ».`,
+          title: `Vérifier le dossier de ${app.applicant?.full_name ?? "ce prestataire"}`,
+          description: `Contrôle de l'identité, de l'adresse et des pièces du dossier pour l'offre « ${job?.title} ».`,
           priority: "high",
           job_id: jobId,
           assigned_to: selectedAgent,
@@ -186,7 +190,7 @@ export default function JobDetailPage() {
         </div>
         <p className="mt-4 text-sm font-semibold text-slate-700">Annonce introuvable</p>
         <Link href="/jobs" className="btn-primary mt-4">
-          Retour aux annonces
+          Retour aux offres
         </Link>
       </div>
     );
@@ -243,6 +247,9 @@ export default function JobDetailPage() {
             <div className="flex flex-wrap items-center gap-3">
               <h1 className="text-2xl font-bold tracking-tight text-slate-900">{job.title}</h1>
               {getStatusBadge(job.status)}
+              <span className="badge badge-neutral">
+                {categoryEmoji(job.category)} {categoryLabel(job.category)}
+              </span>
             </div>
             <p className="mt-1 text-sm text-slate-500">
               {job.company} &middot; {job.location}
@@ -283,7 +290,7 @@ export default function JobDetailPage() {
                 <div className="flex items-center gap-2.5">
                   <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
                   <h2 className="text-base font-bold tracking-tight text-slate-900">
-                    Candidatures reçues
+                    Réponses reçues
                   </h2>
                   <span className="rounded-full bg-slate-100 px-2.5 py-0.5 text-xs font-bold text-slate-600">
                     {applications.length}
@@ -293,7 +300,7 @@ export default function JobDetailPage() {
                   href="/applications"
                   className="text-sm font-semibold text-primary-600 transition-colors hover:text-primary-500"
                 >
-                  Voir toutes mes candidatures
+                  Voir toutes les réponses
                 </Link>
               </div>
 
@@ -327,7 +334,7 @@ export default function JobDetailPage() {
               {applications.length === 0 ? (
                 <div className="mt-5 rounded-xl border border-dashed border-slate-200 p-8 text-center">
                   <p className="text-sm text-slate-500">
-                    Aucune candidature pour l&apos;instant. Partagez votre annonce
+                    Aucune réponse pour l&apos;instant. Partagez votre offre
                     pour recevoir les premiers dossiers.
                   </p>
                 </div>
@@ -345,10 +352,10 @@ export default function JobDetailPage() {
                           </div>
                           <div className="min-w-0">
                             <p className="font-semibold text-slate-900">
-                              {app.applicant?.full_name || "Candidat inconnu"}
+                              {app.applicant?.full_name || "Prestataire inconnu"}
                             </p>
                             <p className="mt-0.5 text-xs text-slate-500">
-                              Postulée le{" "}
+                              Réponse envoyée le{" "}
                               {new Date(app.created_at).toLocaleDateString("fr-FR", {
                                 year: "numeric",
                                 month: "short",
@@ -447,7 +454,7 @@ export default function JobDetailPage() {
             <div className="mt-4 space-y-3">
               {tasks.length === 0 ? (
                 <div className="rounded-xl border border-dashed border-slate-200 p-6 text-center">
-                  <p className="text-sm text-slate-500">Aucune tâche associée à cette annonce pour le moment.</p>
+                  <p className="text-sm text-slate-500">Aucune tâche associée à cette offre pour le moment.</p>
                 </div>
               ) : (
                 tasks.map((task) => (
@@ -486,14 +493,14 @@ export default function JobDetailPage() {
             <div className="card overflow-hidden border-0 bg-brand-gradient p-0">
               <div className="p-6">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/70">
-                  Vous cherchez ce poste ?
+                  Vous proposez ce service ?
                 </p>
                 <h2 className="mt-2 text-lg font-bold text-white">
-                  Postulez à cette annonce
+                  Postulez à cette offre
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-white/80">
                   Envoyez votre motivation et vos pièces. Un agent local les
-                  vérifie avant l&apos;embauche.
+                  vérifie avant l&apos;engagement.
                 </p>
                 <Link
                   href={`/jobs/${job.id}/apply`}
@@ -507,12 +514,12 @@ export default function JobDetailPage() {
           <div className="card">
             <div className="flex items-center gap-2.5">
               <span className="flex h-2 w-2 rounded-full bg-gradient-to-r from-primary-500 to-accent-500" />
-              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">Détails de l&apos;annonce</h2>
+              <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">Détails de l&apos;offre</h2>
             </div>
             <dl className="mt-5 space-y-4">
               {[
-                { label: "Type de contrat", value: employmentTypeLabels[job.employment_type] || job.employment_type.replace("-", " ") },
-                { label: "Salaire", value: formatSalary(job.salary_min, job.salary_max) },
+                { label: "Type d'engagement", value: employmentTypeLabels[job.employment_type] || job.employment_type.replace("-", " ") },
+                { label: "Tarif (FCFA)", value: formatSalary(job.salary_min, job.salary_max) },
                 { label: "Contact (WhatsApp)", value: job.contact_phone || "Non spécifié" },
                 { label: "Publiée le", value: new Date(job.created_at).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" }) },
                 { label: "Mise à jour", value: new Date(job.updated_at).toLocaleDateString("fr-FR", { year: "numeric", month: "long", day: "numeric" }) },

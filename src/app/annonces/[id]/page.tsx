@@ -9,6 +9,7 @@ import {
   formatSalary,
   whatsappHref,
 } from "@/lib/status-labels";
+import { categoryLabel, categoryEmoji } from "@/lib/service-categories";
 
 export const dynamic = "force-dynamic";
 
@@ -24,10 +25,10 @@ export async function generateMetadata({
     .eq("id", params.id)
     .single();
   return {
-    title: data ? `${data.title} — ${data.location}` : "Annonce",
+    title: data ? `${data.title} — ${data.location}` : "Offre",
     description: data
-      ? `Recrutement ${data.title} (${data.company}) à ${data.location} — vérifié par un agent local.`
-      : "Annonce de recrutement",
+      ? `Offre de service ${data.title} (${data.company}) à ${data.location} — vérifié par un agent local.`
+      : "Offre de service",
   };
 }
 
@@ -88,7 +89,7 @@ export default async function PublicJobDetailPage({
           <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18" />
           </svg>
-          Toutes les annonces
+          Toutes les offres
         </Link>
 
         <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
@@ -101,7 +102,10 @@ export default async function PublicJobDetailPage({
                 </h1>
                 <span className="badge-success">
                   <span className="badge-dot" />
-                  Annonce ouverte
+                  Offre ouverte
+                </span>
+                <span className="badge badge-neutral">
+                  {categoryEmoji(job.category)} {categoryLabel(job.category)}
                 </span>
               </div>
               <p className="mt-2 text-sm font-medium text-slate-500">
@@ -110,7 +114,7 @@ export default async function PublicJobDetailPage({
 
               <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3">
                 <div className="rounded-xl bg-slate-50 px-4 py-3">
-                  <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Salaire</dt>
+                  <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Tarif</dt>
                   <dd className="mt-0.5 text-sm font-bold text-slate-900">
                     {job.salary_min || job.salary_max
                       ? formatSalary(job.salary_min, job.salary_max)
@@ -118,7 +122,7 @@ export default async function PublicJobDetailPage({
                   </dd>
                 </div>
                 <div className="rounded-xl bg-slate-50 px-4 py-3">
-                  <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Contrat</dt>
+                  <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Engagement</dt>
                   <dd className="mt-0.5 text-sm font-semibold text-slate-900">
                     {employmentTypeLabels[job.employment_type] || job.employment_type.replace("-", " ")}
                   </dd>
@@ -136,7 +140,7 @@ export default async function PublicJobDetailPage({
               </div>
 
               <h2 className="mt-8 text-base font-bold tracking-tight text-slate-900">
-                Description du poste
+                Description du service
               </h2>
               <p className="mt-3 whitespace-pre-wrap text-sm leading-relaxed text-slate-600">
                 {job.description}
@@ -149,26 +153,26 @@ export default async function PublicJobDetailPage({
             <div className="card overflow-hidden border-0 bg-brand-gradient p-0">
               <div className="p-6">
                 <p className="text-xs font-bold uppercase tracking-[0.18em] text-white/70">
-                  Prêt à postuler ?
+                  Prêt à répondre ?
                 </p>
                 <h2 className="mt-2 text-lg font-bold text-white">
                   Postulez avec votre dossier vérifié
                 </h2>
                 <p className="mt-2 text-sm leading-relaxed text-white/80">
                   Ajoutez votre CV, CNI, références et autres pièces. Un agent
-                  local les vérifie avant l&apos;embauche.
+                  local les vérifie avant l&apos;engagement.
                 </p>
                 <Link
                   href={user ? `/jobs/${job.id}/apply` : "/login"}
                   className="btn-accent mt-5 w-full !py-3"
                 >
-                  {user ? "Postuler à cette annonce" : "Se connecter pour postuler"}
+                  {user ? "Postuler à cette offre" : "Se connecter pour postuler"}
                 </Link>
                 {!user && (
                   <p className="mt-3 text-center text-xs text-white/70">
                     Pas encore de compte ?{" "}
                     <Link href="/register" className="font-bold text-white underline underline-offset-2">
-                      Créer un profil candidat
+                      Créer un profil prestataire
                     </Link>
                   </p>
                 )}
@@ -177,7 +181,7 @@ export default async function PublicJobDetailPage({
 
             <div className="card">
               <h2 className="text-sm font-bold uppercase tracking-wider text-slate-900">
-                Recruteur
+                Client
               </h2>
               <div className="mt-4 flex items-center gap-3">
                 <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-brand-gradient text-sm font-bold text-white">
@@ -188,7 +192,7 @@ export default async function PublicJobDetailPage({
                     {employer?.full_name || job.company}
                   </p>
                   <p className="truncate text-xs text-slate-500">
-                    Famille basée à l&apos;étranger
+                    Client sur warap
                   </p>
                 </div>
               </div>
@@ -216,7 +220,7 @@ export default async function PublicJobDetailPage({
                   <svg className="mt-0.5 h-4 w-4 shrink-0 text-primary-600" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
                   </svg>
-                  <span>Candidature envoyée en direct, sans intermédiaire.</span>
+                  <span>Votre réponse envoyée en direct, sans intermédiaire.</span>
                 </li>
                 <li className="flex gap-2.5">
                   <svg className="mt-0.5 h-4 w-4 shrink-0 text-primary-600" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">

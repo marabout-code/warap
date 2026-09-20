@@ -31,12 +31,13 @@ export const changePinSchema = z.object({
 export const jobSchema = z.object({
   title: z.string().min(3, "Le titre doit contenir au moins 3 caractères"),
   description: z.string().min(10, "La description doit contenir au moins 10 caractères"),
-  company: z.string().min(2, "Le nom de la famille ou de l'employeur est requis"),
+  company: z.string().min(2, "Le nom du client est requis"),
   location: z.string().min(2, "Le lieu est requis"),
   contact_phone: z.string().optional().or(z.literal("")),
-  salary_min: z.number().min(0, "Le salaire doit être positif").optional(),
-  salary_max: z.number().min(0, "Le salaire doit être positif").optional(),
+  salary_min: z.number().min(0, "Le tarif doit être positif").optional(),
+  salary_max: z.number().min(0, "Le tarif doit être positif").optional(),
   employment_type: z.enum(["full-time", "part-time", "contract"]),
+  category: z.string().min(1, "Choisissez une catégorie de service"),
   status: z.enum(["open", "closed", "draft"]).default("open"),
 });
 

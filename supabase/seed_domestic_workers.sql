@@ -1,22 +1,25 @@
 -- =====================================================================
--- warap - Données de démonstration : recrutement de personnel
---           domestique au Cameroun depuis l'étranger (diaspora)
+-- warap - Données de démonstration : offres de service vérifiées
 -- ---------------------------------------------------------------------
 -- À exécuter dans le SQL Editor du dashboard Supabase, APRÈS avoir
--- exécuté les migrations 001, 002, 003 et 004.
+-- exécuté les migrations 001 à 007 (dont 007_service_categories.sql).
+--
+-- Les offres de démonstration illustrent l'ancien positionnement
+-- (aide à domicile / personnel domestique) mais restent utilisables pour
+-- tout type de service : la colonne `category` classe chaque offre.
 --
 -- Réexécutable (UUID fixes + ON CONFLICT DO NOTHING).
 -- Pour REINITIALISER : exécuter reset_domestic_workers.sql, puis ce
 -- script à nouveau.
 --
 -- Comptes démo (login = PIN à 6 chiffres) :
---   Mireille Kouam      (employeur, diaspora Paris)   PIN 111222
---   Charles Ngo Bakai   (employeur, diaspora Londres) PIN 222333
---   Yannick Fokou       (agent vérificateur, Douala)  PIN 333444
---   Solange Andela      (aide ménagère, Douala)       PIN 444555
---   Marthe Tchoupo      (nounou, Yaoundé)             PIN 555666
---   Honorine Nana       (gouvernante, Douala)         PIN 666777
---   Serge Ekambi        (chauffeur, Douala)           PIN 777888
+--   Mireille Kouam      (client, Paris)            PIN 111222
+--   Charles Ngo Bakai   (client, Londres)          PIN 222333
+--   Yannick Fokou       (agent vérificateur, Dla)  PIN 333444
+--   Solange Andela      (prestataire, Douala)      PIN 444555
+--   Marthe Tchoupo      (prestataire, Yaoundé)     PIN 555666
+--   Honorine Nana       (prestataire, Douala)      PIN 666777
+--   Serge Ekambi        (prestataire, Douala)      PIN 777888
 -- =====================================================================
 
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
@@ -236,14 +239,14 @@ WHERE id = '66666667-7777-4777-8777-666666666667';
 -- 3. Offres (particuliers - diaspora, sans société, company_id NULL)
 -- =====================================================================
 
-INSERT INTO jobs (id, title, description, company, location, salary_min, salary_max, employment_type, status, posted_by, company_id, contact_phone, created_at, updated_at) VALUES
+INSERT INTO jobs (id, title, description, company, location, salary_min, salary_max, employment_type, category, status, posted_by, company_id, contact_phone, created_at, updated_at) VALUES
   (
     'bbbbbb02-0000-4000-8000-000000000001',
     'Aide ménagère à domicile (famille expatriée)',
     'Recherche d''une aide ménagère expérimentée pour un domicile à Douala (Bonapriso).\r\n\r\nMissions :\r\n- Entretien de la maison et lessive\r\n- Préparation des repas simples\r\n- Courses et rangement\r\n\r\nProfil : personne de confiance, références vérifiables, dispo 5 jours/semaine.\r\nSalaire en fonction du profil.', 
     'Particulier – Mme Mireille Kouam',
     'Douala (Bonapriso), Cameroun',
-    50000, 80000, 'full-time', 'open',
+    50000, 80000, 'full-time', 'household', 'open',
     '66666661-1111-4111-8111-666666666661',
     NULL,
     '+237 6 77 11 22 33',
@@ -255,7 +258,7 @@ INSERT INTO jobs (id, title, description, company, location, salary_min, salary_
     'Nous cherchons une nounou ou gouvernante pour deux enfants (3 et 5 ans) à Yaoundé (Bastos).\r\n\r\nMissions :\r\n- Garde des enfants et aide aux devoirs\r\n- Préparation des repas des enfants\r\n- Entretien de la maison\r\n\r\nSeuls les profils avec références et pièces vérifiées par notre agent local seront considérés.',
     'Particulier – M. Charles Ngo Bakai',
     'Yaoundé (Bastos), Cameroun',
-    70000, 120000, 'contract', 'open',
+    70000, 120000, 'contract', 'childcare', 'open',
     '66666662-2222-4222-8222-666666666662',
     NULL,
     '+237 6 99 88 77 66',
@@ -267,7 +270,7 @@ INSERT INTO jobs (id, title, description, company, location, salary_min, salary_
     'Poste à Douala pour le transport de la famille et l''entretien de la voiture.\r\n\r\nExigences :\r\n- Permis B valide et expérience confirmée\r\n- Sobriété et ponctualité\r\n- Disponible les week-ends\r\n\r\nVérification du permis par notre agent local avant recrutement.',
     'Particulier – Mme Mireille Kouam',
     'Douala (Akwa), Cameroun',
-    80000, 130000, 'full-time', 'open',
+    80000, 130000, 'full-time', 'driving', 'open',
     '66666661-1111-4111-8111-666666666661',
     NULL,
     '+237 6 77 11 22 33',
@@ -279,7 +282,7 @@ INSERT INTO jobs (id, title, description, company, location, salary_min, salary_
     'Aide à domicile pour une personne âgée à Douala (Makepe).\r\n\r\nMissions :\r\n- Présence et compagnie\r\n- Aide aux repas et médicaments\r\n- Entretien courant\r\n\r\nProfil bienveillant et patient, références appréciées.',
     'Particulier – M. Charles Ngo Bakai',
     'Douala (Maképé), Cameroun',
-    40000, 65000, 'part-time', 'open',
+    40000, 65000, 'part-time', 'elderly-care', 'open',
     '66666662-2222-4222-8222-666666666662',
     NULL,
     '+237 6 99 88 77 66',
@@ -475,7 +478,7 @@ ON CONFLICT (id) DO NOTHING;
 -- =====================================================================
 -- Validation rapide
 -- =====================================================================
-SELECT 'offres domestiques' AS section, COUNT(*) AS total FROM jobs WHERE company_id IS NULL
+SELECT 'offres de service' AS section, COUNT(*) AS total FROM jobs WHERE company_id IS NULL
 UNION ALL
 SELECT 'candidatures', COUNT(*) FROM applications WHERE job_id::text LIKE 'bbbbbb02%'
 UNION ALL

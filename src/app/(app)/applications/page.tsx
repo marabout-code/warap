@@ -228,12 +228,12 @@ export default function ApplicationsPage() {
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-slate-900">
-            {role === "jobseeker" ? "Mes candidatures" : "Candidatures"}
+            {role === "jobseeker" ? "Mes réponses" : "Réponses"}
           </h1>
           <p className="mt-1 text-sm text-slate-500">
             {role === "jobseeker"
-              ? "Suivez l&apos;avancement de vos candidatures et de la vérification de votre dossier."
-              : "Examinez les candidatures reçues et suivez la vérification de chaque dossier avant l&apos;embauche."}
+              ? "Suivez l&apos;avancement de vos réponses et de la vérification de votre dossier."
+              : "Examinez les réponses reçues et suivez la vérification de chaque dossier avant l&apos;engagement."}
           </p>
         </div>
         {canVerify && (
@@ -247,7 +247,7 @@ export default function ApplicationsPage() {
       {/* Stat tiles */}
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
         {[
-          { name: "Candidatures", value: applications.length, href: "/applications", gradient: "from-primary-600 to-primary-500", icon: "M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" },
+          { name: "Réponses", value: applications.length, href: "/applications", gradient: "from-primary-600 to-primary-500", icon: "M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" },
           { name: "En attente", value: applications.filter((a) => a.status === "pending").length, href: "/applications", gradient: "from-amber-500 to-orange-500", icon: "M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" },
           { name: "En vérification", value: applications.filter((a) => a.verification_status === "in_review").length, href: "/applications", gradient: "from-accent-600 to-accent-400", icon: "M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" },
           { name: "Vérifiées", value: applications.filter((a) => a.verification_status === "verified").length, href: "/applications", gradient: "from-emerald-500 to-emerald-600", icon: "M9 12l3 3 5-6" },
@@ -278,8 +278,8 @@ export default function ApplicationsPage() {
           <table className="card-table w-full">
             <thead>
               <tr>
-                <th className="th">Candidat</th>
-                <th className="th">Annonce</th>
+                <th className="th">Prestataire</th>
+                <th className="th">Offre</th>
                 <th className="th">Statut</th>
                 <th className="th">Vérification</th>
                 <th className="th text-right">
@@ -298,10 +298,12 @@ export default function ApplicationsPage() {
                         </svg>
                       </div>
                       <p className="mt-4 text-sm font-semibold text-slate-700">
-                        Aucune candidature pour le moment
+                        Aucune réponse pour le moment
                       </p>
                       <p className="mt-1 text-xs text-slate-500">
-                        Les candidatures apparaîtront ici dès que les candidats commenceront à postuler.
+                        {role === "jobseeker"
+                          ? "Vos réponses apparaîtront ici dès que vous aurez répondu à une offre."
+                          : "Les réponses apparaîtront ici dès que des prestataires auront répondu à vos offres."}
                       </p>
                     </div>
                   </td>
@@ -319,7 +321,7 @@ export default function ApplicationsPage() {
                             </div>
                             <div className="min-w-0">
                               <p className="truncate text-sm font-semibold text-slate-900">
-                                {app.applicant?.full_name || "Candidat inconnu"}
+                                {app.applicant?.full_name || "Prestataire inconnu"}
                               </p>
                               <p className="truncate text-xs text-slate-500">
                                 {app.contact_phone || app.applicant?.phone ? (

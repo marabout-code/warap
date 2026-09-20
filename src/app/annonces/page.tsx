@@ -5,31 +5,24 @@ import { PublicHeader } from "@/components/public-header";
 import Footer from "@/components/public-footer";
 import { employmentTypeLabels, formatSalary } from "@/lib/status-labels";
 import { cameroonCities } from "@/lib/status-labels";
+import {
+  SERVICE_CATEGORIES,
+  categoryEmoji,
+  categoryShort,
+} from "@/lib/service-categories";
 
 export const metadata: Metadata = {
-  title: "Annonces — Personnel domestique vérifié",
+  title: "Annonces — Services vérifiés",
   description:
-    "Parcourez les offres de personnel domestique au Cameroun : aides ménagères, nounous, chauffeurs et gouvernantes proposés par les familles de la diaspora.",
+    "Parcourez les offres de service au Cameroun : aide à domicile, cours, conduite, soins, bricolage… Tous les prestataires sont vérifiés en personne par un agent local.",
 };
 
 export const dynamic = "force-dynamic";
 
-function roleHint(title: string): string {
-  const t = title.toLowerCase();
-  if (t.includes("ménag")) return "Aide ménagère";
-  if (t.includes("nounou") || t.includes("enfant")) return "Nounou";
-  if (t.includes("chauff")) return "Chauffeur";
-  if (t.includes("gouvern")) return "Gouvernante";
-  if (t.includes("cuisin")) return "Cuisinier (ère)";
-  if (t.includes("malad")) return "Garde-malade";
-  if (t.includes("jardin")) return "Jardinier";
-  return "Personnel domestique";
-}
-
 export default async function PublicJobsPage({
   searchParams,
 }: {
-  searchParams: { q?: string; city?: string };
+  searchParams: { q?: string; city?: string; cat?: string };
 }) {
   const supabase = await createClient();
   const {
@@ -38,6 +31,7 @@ export default async function PublicJobsPage({
 
   const q = (searchParams.q ?? "").trim();
   const city = (searchParams.city ?? "").trim();
+  const cat = (searchParams.cat ?? "").trim();
 
   let query = supabase
     .from("jobs")
@@ -47,6 +41,10 @@ export default async function PublicJobsPage({
 
   if (city) {
     query = query.eq("location", city);
+  }
+
+  if (cat) {
+    query = query.eq("category", cat);
   }
 
   if (q) {
@@ -66,13 +64,13 @@ export default async function PublicJobsPage({
         {/* Hero */}
         <section className="relative overflow-hidden bg-slate-950 bg-hero-mesh py-12 lg:py-16">
           <div className="mx-auto max-w-6xl px-4 lg:px-6">
-            <p className="eyebrow text-primary-300">Tableau d&apos;annonces</p>
+            <p className="eyebrow text-primary-300">Tableau des offres</p>
             <h1 className="mt-3 max-w-2xl text-3xl font-bold tracking-tight text-white lg:text-4xl">
-              Postes de personnel domestique au Cameroun
+              Offres de service au Cameroun
             </h1>
             <p className="mt-3 max-w-2xl text-sm leading-relaxed text-slate-300 lg:text-base">
-              Des familles de la diaspora recrutent des aides ménagères, nounous,
-              chauffeurs et gouvernantes dans les grandes villes. Chaque candidat
+              Aide à domicile, cours, conduite, soins, bricolage : des clients
+              publient leurs besoins dans les grandes villes. Chaque prestataire
               est vérifié en personne par un agent local.
             </p>
 
@@ -96,7 +94,7 @@ export default async function PublicJobsPage({
                   type="text"
                   name="q"
                   defaultValue={q}
-                  placeholder="Poste, famille, description…"
+                  placeholder="Service, client, description…"
                   className="input-field bg-white/10 pl-10 text-white placeholder:text-slate-400"
                 />
               </div>
@@ -117,8 +115,34 @@ export default async function PublicJobsPage({
               </button>
             </form>
 
+            <div className="mt-4 flex flex-wrap gap-2">
+              <a
+                href="/annonces"
+                className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${
+                  !cat
+                    ? "bg-white text-slate-900 shadow-md"
+                    : "bg-white/10 text-slate-300 hover:bg-white/20"
+                }`}
+              >
+                Toutes
+              </a>
+              {SERVICE_CATEGORIES.map((c) => (
+                <a
+                  key={c.id}
+                  href={cat === c.id ? "/annonces" : `/annonces?cat=${c.id}`}
+                  className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${
+                    cat === c.id
+                      ? "bg-white text-slate-900 shadow-md"
+                      : "bg-white/10 text-slate-300 hover:bg-white/20"
+                  }`}
+                >
+                  {c.emoji} {c.short}
+                </a>
+              ))}
+            </div>
+
             <div className="mt-4 flex flex-wrap items-center gap-2 text-xs text-slate-400">
-              <span>{list.length} annonce(s) ouverte(s)</span>
+              <span>{list.length} offre(s) ouverte(s)</span>
               <span className="h-1 w-1 rounded-full bg-slate-600" />
               <span>Vérification par agents locaux</span>
             </div>
@@ -134,10 +158,10 @@ export default async function PublicJobsPage({
                   <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v3.75m9-.75a9 9 0 11-18 0 9 9 0 0118 0zm-9 3.75h.008v.008H12v-.008z" />
                 </svg>
               </div>
-              <h2 className="mt-4 text-base font-bold text-slate-900">Aucune annonce trouvée</h2>
+              <h2 className="mt-4 text-base font-bold text-slate-900">Aucune offre trouvée</h2>
               <p className="mx-auto mt-1 max-w-sm text-sm text-slate-500">
-                Essayez un autre quartier ou un autre mot-clé. De nouvelles
-                annonces sont ajoutées chaque semaine.
+                Essayez un autre quartier, une autre catégorie ou un autre mot-clé. De nouvelles
+                offres sont ajoutées chaque semaine.
               </p>
             </div>
           ) : (
@@ -150,7 +174,7 @@ export default async function PublicJobsPage({
                   style={{ animationDelay: `${Math.min(i * 60, 400)}ms` }}
                 >
                   <div className="flex items-center justify-between gap-3">
-                    <span className="doc-pill">{roleHint(job.title)}</span>
+                    <span className="doc-pill">{categoryEmoji(job.category)} {categoryShort(job.category)}</span>
                     <span className="badge-success">
                       <span className="badge-dot" />
                       Ouvert
@@ -167,7 +191,7 @@ export default async function PublicJobsPage({
                   </p>
                   <dl className="mt-5 flex items-center justify-between gap-3 border-t border-slate-100 pt-4">
                     <div>
-                      <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Salaire</dt>
+                      <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Tarif</dt>
                       <dd className="mt-0.5 text-sm font-bold text-slate-900">
                         {job.salary_min || job.salary_max
                           ? formatSalary(job.salary_min, job.salary_max)
@@ -175,7 +199,7 @@ export default async function PublicJobsPage({
                       </dd>
                     </div>
                     <div className="text-right">
-                      <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Contrat</dt>
+                      <dt className="text-[10px] font-bold uppercase tracking-wider text-slate-400">Engagement</dt>
                       <dd className="mt-0.5 text-sm font-semibold text-slate-700">
                         {employmentTypeLabels[job.employment_type] || job.employment_type.replace("-", " ")}
                       </dd>
@@ -191,10 +215,10 @@ export default async function PublicJobsPage({
             <div className="flex flex-col items-start justify-between gap-5 p-8 sm:flex-row sm:items-center lg:p-10">
               <div>
                 <h2 className="text-xl font-bold text-white lg:text-2xl">
-                  Une annonce nous attend peut-être pour vous.
+                  Une offre vous attend peut-être.
                 </h2>
                 <p className="mt-1.5 max-w-lg text-sm text-white/80">
-                  Créez votre profil de candidat, ajoutez vos pièces et postulez
+                  Créez votre profil de prestataire, ajoutez vos pièces et répondez
                   en quelques minutes. Un agent local vous accompagne.
                 </p>
               </div>
@@ -203,7 +227,7 @@ export default async function PublicJobsPage({
                   href={user ? "/jobs" : "/register"}
                   className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-2.5 text-sm font-bold text-primary-800 shadow-lg transition-all hover:-translate-y-0.5 hover:shadow-xl"
                 >
-                  {user ? "Rechercher dans mon espace" : "Créer mon profil candidat"}
+                  {user ? "Rechercher dans mon espace" : "Créer mon profil prestataire"}
                   <svg className="h-4 w-4" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 8.25L21 12m0 0l-3.75 3.75M21 12H3" />
                   </svg>

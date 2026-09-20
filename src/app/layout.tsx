@@ -6,19 +6,19 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: {
-    default: "warap — Personnel domestique vérifié au Cameroun",
+    default: "warap — Services vérifiés au Cameroun",
     template: "%s · warap",
   },
   description:
-    "Depuis la diaspora, recrutez une aide ménagère, une nounou, un chauffeur ou une gouvernante au Cameroun. Chaque candidat est vérifié en personne par un agent local avant l'embauche.",
+    "Publiez une offre de service au Cameroun ou trouvez le prestataire qu'il vous faut : aide à domicile, soins, cours, conduite, bricolage. Chaque prestataire est vérifié en personne par un agent local avant l'engagement.",
   keywords: [
+    "services Cameroun",
+    "prestataires vérifiés",
+    "offres de service",
+    "aide à domicile",
+    "cours particuliers",
+    "agent vérificateur",
     "recrutement Cameroun",
-    "personnel domestique",
-    "diaspora",
-    "aide ménagère",
-    "nounou",
-    "gouvernante",
-    "chauffeur",
     "vérification",
   ],
 };

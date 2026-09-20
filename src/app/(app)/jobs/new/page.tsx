@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { useForm } from "react-hook-form";
 import { jobSchema, type JobInput } from "@/lib/validations";
+import { categoryOptions } from "@/lib/service-categories";
 import Link from "next/link";
 
 export default function NewJobPage() {
@@ -59,6 +60,7 @@ export default function NewJobPage() {
       salary_min: data.salary_min || null,
       salary_max: data.salary_max || null,
       employment_type: data.employment_type,
+      category: data.category,
       status: data.status,
       contact_phone: data.contact_phone || null,
       posted_by: userId,
@@ -84,18 +86,18 @@ export default function NewJobPage() {
             </svg>
           </div>
           <h1 className="mt-4 text-lg font-bold text-slate-900">
-            Réservé aux familles employeuses
+            Réservé aux clients
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Ce formulaire permet de publier une offre. Pour postuler, parcourez
-            les annonces publiques ou votre espace candidat.
+            Ce formulaire permet de publier une offre de service. Pour y
+            répondre, parcourez les offres publiques ou votre espace prestataire.
           </p>
           <div className="mt-5 flex justify-center gap-3">
             <Link href="/annonces" className="btn-primary">
-              Voir les annonces publiques
+              Voir les offres publiques
             </Link>
             <Link href="/applications" className="btn-secondary">
-              Mes candidatures
+              Mes réponses
             </Link>
           </div>
         </div>
@@ -115,9 +117,9 @@ export default function NewJobPage() {
           </svg>
         </Link>
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Publier une annonce</h1>
+          <h1 className="text-2xl font-bold tracking-tight text-slate-900">Publier une offre</h1>
           <p className="mt-1 text-sm text-slate-500">
-            Décrivez le poste à pourvoir au Cameroun et le profil recherché.
+            Décrivez le service à proposer au Cameroun et le profil recherché.
           </p>
         </div>
       </div>
@@ -131,14 +133,24 @@ export default function NewJobPage() {
 
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
           <div>
-            <label className="input-label">Poste recherché *</label>
-            <input {...register("title")} type="text" className="input-field" placeholder="Aide ménagère à domicile" />
+            <label className="input-label">Service recherché *</label>
+            <input {...register("title")} type="text" className="input-field" placeholder="Aide à domicile, cours de mathématiques, réparations…" />
             {errors.title && <p className="form-error">{errors.title.message}</p>}
           </div>
           <div>
-            <label className="input-label">Famille / Employeur *</label>
+            <label className="input-label">Client *</label>
             <input {...register("company")} type="text" className="input-field" placeholder="Particulier – Famille Kouam" />
             {errors.company && <p className="form-error">{errors.company.message}</p>}
+          </div>
+          <div>
+            <label className="input-label">Catégorie de service *</label>
+            <select {...register("category")} className="input-field">
+              <option value="">Choisissez une catégorie…</option>
+              {categoryOptions.map((opt) => (
+                <option key={opt.value} value={opt.value}>{opt.label}</option>
+              ))}
+            </select>
+            {errors.category && <p className="form-error">{errors.category.message}</p>}
           </div>
           <div>
             <label className="input-label">Lieu (ville / quartier) *</label>
@@ -146,7 +158,7 @@ export default function NewJobPage() {
             {errors.location && <p className="form-error">{errors.location.message}</p>}
           </div>
           <div>
-            <label className="input-label">Type de contrat *</label>
+            <label className="input-label">Type d&apos;engagement *</label>
             <select {...register("employment_type")} className="input-field">
               <option value="full-time">Temps plein</option>
               <option value="part-time">Temps partiel</option>
@@ -155,12 +167,12 @@ export default function NewJobPage() {
             {errors.employment_type && <p className="form-error">{errors.employment_type.message}</p>}
           </div>
           <div>
-            <label className="input-label">Salaire minimum (FCFA / mois)</label>
+            <label className="input-label">Tarif minimum (FCFA)</label>
             <input {...register("salary_min", { valueAsNumber: true })} type="number" min="0" className="input-field" placeholder="50000" />
             {errors.salary_min && <p className="form-error">{errors.salary_min.message}</p>}
           </div>
           <div>
-            <label className="input-label">Salaire maximum (FCFA / mois)</label>
+            <label className="input-label">Tarif maximum (FCFA)</label>
             <input {...register("salary_max", { valueAsNumber: true })} type="number" min="0" className="input-field" placeholder="80000" />
             {errors.salary_max && <p className="form-error">{errors.salary_max.message}</p>}
           </div>
@@ -173,8 +185,8 @@ export default function NewJobPage() {
         </div>
 
         <div>
-          <label className="input-label">Description du poste *</label>
-          <textarea {...register("description")} rows={6} className="input-field" placeholder="Décrivez les tâches, les horaires, l'hébergement éventuel et les références demandées..." />
+          <label className="input-label">Description du service *</label>
+          <textarea {...register("description")} rows={6} className="input-field" placeholder="Décrivez les tâches, les horaires, les contraintes éventuelles et les qualifications demandées…" />
           {errors.description && <p className="form-error">{errors.description.message}</p>}
         </div>
 
@@ -201,7 +213,7 @@ export default function NewJobPage() {
                 Publication…
               </>
             ) : (
-              "Publier l'annonce"
+              "Publier l'offre"
             )}
           </button>
         </div>

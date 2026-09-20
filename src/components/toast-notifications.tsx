@@ -31,7 +31,7 @@ export default function ToastNotifications() {
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "applications" },
         (payload) => {
-          addToast("applications", "INSERT", "Nouvelle candidature reçue");
+          addToast("applications", "INSERT", "Nouvelle réponse reçue");
         }
       )
       .subscribe();

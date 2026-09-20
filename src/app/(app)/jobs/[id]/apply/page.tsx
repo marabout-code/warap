@@ -150,7 +150,7 @@ export default function ApplyPage() {
       } catch (err) {
         setError(
           err instanceof Error && err.message.includes("duplicate")
-            ? "Vous avez déjà postulé à cette annonce."
+            ? "Vous avez déjà répondu à cette offre."
             : "Une erreur est survenue pendant l'envoi. Veuillez réessayer."
         );
         setSubmitting(false);
@@ -174,7 +174,7 @@ export default function ApplyPage() {
       } catch (err) {
         setError(
           err instanceof Error && err.message.includes("duplicate")
-            ? "Vous avez déjà postulé à cette annonce."
+            ? "Vous avez déjà répondu à cette offre."
             : "Une erreur est survenue pendant l'envoi. Veuillez réessayer."
         );
         setSubmitting(false);
@@ -194,9 +194,9 @@ export default function ApplyPage() {
   if (!job) {
     return (
       <div className="flex flex-col items-center justify-center py-16 text-center">
-        <p className="text-sm font-semibold text-slate-700">Annonce introuvable</p>
+        <p className="text-sm font-semibold text-slate-700">Offre introuvable</p>
         <Link href="/annonces" className="btn-primary mt-4">
-          Voir les annonces
+          Voir les offres
         </Link>
       </div>
     );
@@ -212,14 +212,14 @@ export default function ApplyPage() {
             </svg>
           </div>
           <h1 className="mt-4 text-lg font-bold text-slate-900">
-            Réservé aux candidats
+            Réservé aux prestataires
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Ce formulaire s&apos;adresse aux personnes qui cherchent un poste au
-            Cameroun. Consultez les candidatures reçues depuis votre espace.
+            Ce formulaire permet de répondre à une offre de service au
+            Cameroun. Consultez les réponses reçues depuis votre espace.
           </p>
           <Link href="/jobs" className="btn-primary mt-5">
-            Retour aux annonces
+            Retour aux offres
           </Link>
         </div>
       </div>
@@ -236,14 +236,14 @@ export default function ApplyPage() {
             </svg>
           </div>
           <h1 className="mt-4 text-lg font-bold text-slate-900">
-            Candidature déjà envoyée
+            Réponse déjà envoyée
           </h1>
           <p className="mt-1 text-sm text-slate-500">
-            Vous avez déjà postulé à cette annonce. Vous pouvez suivre son statut
-            depuis votre espace candidat.
+            Vous avez déjà répondu à cette offre. Vous pouvez suivre son statut
+            depuis votre espace prestataire.
           </p>
           <Link href="/applications" className="btn-primary mt-5">
-            Voir mes candidatures
+            Voir mes réponses
           </Link>
         </div>
       </div>
@@ -286,12 +286,12 @@ export default function ApplyPage() {
             value={coverLetter}
             onChange={(e) => setCoverLetter(e.target.value)}
             rows={5}
-            placeholder="Ex. Aide ménagère expérimentée à Douala Bonapriso, disponible immédiatement, famille stable, 5 ans de références…"
+            placeholder="Ex. Aide à domicile expérimentée à Douala Bonapriso, disponible immédiatement, références vérifiables…"
             className="input-field mt-4 resize-y"
           />
           <div className="mt-4">
             <label htmlFor="contact-phone" className="input-label">
-              Numéro WhatsApp du candidat
+              Numéro WhatsApp du prestataire
             </label>
             <input
               id="contact-phone"
@@ -302,7 +302,7 @@ export default function ApplyPage() {
               className="input-field"
             />
             <p className="mt-1.5 text-xs text-slate-400">
-              Utilisé par la famille pour vous contacter directement.
+              Utilisé par le client pour vous contacter directement.
             </p>
           </div>
         </div>
@@ -413,8 +413,8 @@ export default function ApplyPage() {
 
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <p className="text-xs text-slate-400">
-            En envoyant, vous acceptez d&apos;être contacté(e) par la famille via
-            WhatsApp. Vos pièces sont partagées avec la famille et l&apos;agent
+            En envoyant, vous acceptez d&apos;être contacté(e) par le client via
+            WhatsApp. Vos pièces sont partagées avec le client et l&apos;agent
             vérificateur.
           </p>
           <button type="submit" disabled={submitting} className="btn-accent !px-6">
@@ -427,7 +427,7 @@ export default function ApplyPage() {
                 Envoi en cours…
               </>
             ) : (
-              "Envoyer ma candidature"
+              "Envoyer ma réponse"
             )}
           </button>
         </div>

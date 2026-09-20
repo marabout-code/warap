@@ -33,6 +33,16 @@ export default async function PublicJobsPage({
   const city = (searchParams.city ?? "").trim();
   const cat = (searchParams.cat ?? "").trim();
 
+  const boardHref = (overrides: Record<string, string | undefined>) => {
+    const params = new URLSearchParams();
+    const merged = { q, city, cat, ...overrides };
+    for (const [k, v] of Object.entries(merged)) {
+      if (v) params.set(k, v);
+    }
+    const s = params.toString();
+    return s ? `/annonces?${s}` : "/annonces";
+  };
+
   let query = supabase
     .from("jobs")
     .select("*")
@@ -40,7 +50,7 @@ export default async function PublicJobsPage({
     .order("created_at", { ascending: false });
 
   if (city) {
-    query = query.eq("location", city);
+    query = query.ilike("location", `${city}%`);
   }
 
   if (cat) {
@@ -80,6 +90,7 @@ export default async function PublicJobsPage({
               method="GET"
               className="mt-7 flex flex-col gap-3 sm:flex-row"
             >
+              {cat && <input type="hidden" name="cat" value={cat} />}
               <div className="relative flex-1">
                 <svg
                   className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400"
@@ -117,7 +128,7 @@ export default async function PublicJobsPage({
 
             <div className="mt-4 flex flex-wrap gap-2">
               <a
-                href="/annonces"
+                href={boardHref({ cat: undefined })}
                 className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${
                   !cat
                     ? "bg-white text-slate-900 shadow-md"
@@ -129,7 +140,7 @@ export default async function PublicJobsPage({
               {SERVICE_CATEGORIES.map((c) => (
                 <a
                   key={c.id}
-                  href={cat === c.id ? "/annonces" : `/annonces?cat=${c.id}`}
+                  href={boardHref({ cat: cat === c.id ? undefined : c.id })}
                   className={`rounded-xl px-3 py-1.5 text-xs font-semibold transition-all duration-200 ${
                     cat === c.id
                       ? "bg-white text-slate-900 shadow-md"

@@ -3,6 +3,7 @@ export interface ServiceCategory {
   label: string;
   emoji: string;
   short: string;
+  sort_order?: number;
 }
 
 export const SERVICE_CATEGORIES: ServiceCategory[] = [
@@ -76,26 +77,41 @@ export const SERVICE_CATEGORIES: ServiceCategory[] = [
 
 export const DEFAULT_CATEGORY = "other";
 
-export const categoryOptions = SERVICE_CATEGORIES.map((c) => ({
-  value: c.id,
-  label: `${c.emoji} ${c.label}`,
-}));
+export const categoryOptions = (
+  list: ServiceCategory[] = SERVICE_CATEGORIES
+): { value: string; label: string }[] =>
+  list.map((c) => ({
+    value: c.id,
+    label: `${c.emoji} ${c.label}`,
+  }));
 
-export function getCategory(id?: string | null): ServiceCategory | undefined {
-  return SERVICE_CATEGORIES.find((c) => c.id === (id ?? DEFAULT_CATEGORY));
+export function getCategory(
+  id?: string | null,
+  list: ServiceCategory[] = SERVICE_CATEGORIES
+): ServiceCategory | undefined {
+  return list.find((c) => c.id === (id ?? DEFAULT_CATEGORY));
 }
 
-export function categoryLabel(id?: string | null): string {
-  const cat = getCategory(id);
+export function categoryLabel(
+  id?: string | null,
+  list: ServiceCategory[] = SERVICE_CATEGORIES
+): string {
+  const cat = getCategory(id, list);
   return cat ? cat.label : "Autre service";
 }
 
-export function categoryEmoji(id?: string | null): string {
-  const cat = getCategory(id);
+export function categoryEmoji(
+  id?: string | null,
+  list: ServiceCategory[] = SERVICE_CATEGORIES
+): string {
+  const cat = getCategory(id, list);
   return cat ? cat.emoji : "✨";
 }
 
-export function categoryShort(id?: string | null): string {
-  const cat = getCategory(id);
+export function categoryShort(
+  id?: string | null,
+  list: ServiceCategory[] = SERVICE_CATEGORIES
+): string {
+  const cat = getCategory(id, list);
   return cat ? cat.short : "Autre";
 }

@@ -18,10 +18,12 @@ import {
   categoryLabel,
   categoryEmoji,
 } from "@/lib/service-categories";
+import { useServiceCategories } from "@/lib/use-service-categories";
 
 type AppRow = Application & { applicant?: Profile };
 
 export default function JobDetailPage() {
+  const categories = useServiceCategories();
   const params = useParams();
   const router = useRouter();
   const jobId = params.id as string;
@@ -248,7 +250,7 @@ export default function JobDetailPage() {
               <h1 className="text-2xl font-bold tracking-tight text-slate-900">{job.title}</h1>
               {getStatusBadge(job.status)}
               <span className="badge badge-neutral">
-                {categoryEmoji(job.category)} {categoryLabel(job.category)}
+                {categoryEmoji(job.category, categories)} {categoryLabel(job.category, categories)}
               </span>
             </div>
             <p className="mt-1 text-sm text-slate-500">

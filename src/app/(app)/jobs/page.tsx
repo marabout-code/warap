@@ -7,12 +7,13 @@ import { useRouter } from "next/navigation";
 import type { Job } from "@/types";
 import { employmentTypeLabels, formatSalary } from "@/lib/status-labels";
 import {
-  SERVICE_CATEGORIES,
   categoryShort,
   categoryEmoji,
 } from "@/lib/service-categories";
+import { useServiceCategories } from "@/lib/use-service-categories";
 
 export default function JobsPage() {
+  const categories = useServiceCategories();
   const [jobs, setJobs] = useState<Job[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState<string>("all");
@@ -155,9 +156,9 @@ export default function JobsPage() {
         {/* Category chips */}
         <div className="flex flex-wrap gap-2">
           {[
-            { value: "all", label: "Toutes catégories" },
-            ...SERVICE_CATEGORIES.map((c) => ({ value: c.id, label: `${c.emoji} ${c.short}` })),
-          ].map((cat) => (
+    { value: "all", label: "Toutes catégories" },
+    ...categories.map((c) => ({ value: c.id, label: `${c.emoji} ${c.short}` })),
+  ].map((cat) => (
             <button
               key={cat.value}
               onClick={() => setCategory(cat.value)}
@@ -250,7 +251,7 @@ export default function JobsPage() {
                     </td>
                     <td className="td">
                       <span className="badge badge-neutral">
-                        {categoryEmoji(job.category)} {categoryShort(job.category)}
+                        {categoryEmoji(job.category, categories)} {categoryShort(job.category, categories)}
                       </span>
                     </td>
                     <td className="td">

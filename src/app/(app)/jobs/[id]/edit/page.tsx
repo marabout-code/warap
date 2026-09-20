@@ -6,9 +6,11 @@ import { createClient } from "@/lib/supabase/client";
 import { useForm } from "react-hook-form";
 import { jobSchema, type JobInput } from "@/lib/validations";
 import { categoryOptions } from "@/lib/service-categories";
+import { useServiceCategories } from "@/lib/use-service-categories";
 import Link from "next/link";
 
 export default function EditJobPage() {
+  const categories = useServiceCategories();
   const params = useParams();
   const router = useRouter();
   const jobId = params.id as string;
@@ -156,7 +158,7 @@ export default function EditJobPage() {
           <div>
             <label className="input-label">Catégorie de service *</label>
             <select {...register("category")} className="input-field">
-              {categoryOptions.map((opt) => (
+              {categoryOptions(categories).map((opt) => (
                 <option key={opt.value} value={opt.value}>{opt.label}</option>
               ))}
             </select>

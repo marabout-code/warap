@@ -1,8 +1,10 @@
 import Link from "next/link";
 import Logo from "./logo";
-import { SERVICE_CATEGORIES } from "@/lib/service-categories";
+import { getServiceCategories } from "@/lib/service-categories.server";
 
-export default function Footer() {
+export default async function Footer() {
+  const categories = await getServiceCategories();
+
   return (
     <footer className="border-t border-slate-200 bg-white">
       <div className="mx-auto max-w-6xl px-4 py-10 lg:px-6">
@@ -40,7 +42,8 @@ export default function Footer() {
                 Catégories
               </p>
               <ul className="mt-3 space-y-2.5 text-sm">
-                {SERVICE_CATEGORIES.filter((c) => c.id !== "other")
+                {categories
+                  .filter((c) => c.id !== "other")
                   .slice(0, 6)
                   .map((c) => (
                     <li key={c.id}>

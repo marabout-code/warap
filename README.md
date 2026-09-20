@@ -10,6 +10,7 @@ Built with **Next.js 14** (App Router), **TypeScript**, and **Supabase**.
 
 - **Offres de service** — publier une offre de service, tarifs en FCFA, contact WhatsApp direct.
 - **Catégories de service** — chaque offre est classée dans une catégorie (domicile, garde d'enfants, soins, conduite, cuisine, cours, bricolage, jardinage, sécurité, autre…), filtrable sur le tableau public et dans l'espace client.
+- **Gestion des catégories** (`/categories`, réservé admin) — ajouter, renommer, réordonner ou supprimer les catégories depuis l'application. Les catégories sont stockées dans la table `service_categories` et reprises sur le tableau public, le pied de page et les formulaires ; la suppression réaffecte les offres concernées à « Autre ».
 - **Tableau d'offres public** (`/annonces`) — les prestataires au Cameroun découvrent les offres ouvertes par ville, catégorie et mot-clé, sans compte.
 - **Réponse avec dossier** — le prestataire répond à une offre et téléverse ses pièces (CNI, références, casier judiciaire, diplômes…) ; les documents sont stockés dans un bucket Supabase Storage dédié.
 - **Revue par offre** — le client consulte, trie (examinée / présélectionnée / rejetée / acceptée) et lance une demande de vérification auprès d'un agent, avec création de tâche.
@@ -72,6 +73,7 @@ Run the schema migrations **in order** in the Supabase SQL Editor:
 5. `supabase/migrations/005_candidate_documents.sql` — bucket Storage `documents` + politiques, checklist de vérification (`verification_checklist`)
 6. `supabase/migrations/006_super_admin_user_management.sql` — statut de compte (`account_status`), politique RLS d'administration, compte super admin
 7. `supabase/migrations/007_service_categories.sql` — colonne `category` sur `jobs` + index
+8. `supabase/migrations/008_service_categories_table.sql` — table `service_categories` (lecture publique, écriture admin), politique d'administration sur les offres, catégories par défaut
 
 Each migration is idempotent and safe to re-run.
 
@@ -117,6 +119,7 @@ src/
 │   │   ├── applications/      # Réponses & vérifications
 │   │   ├── verifications/     # Tableau de bord agent-vérificateur
 │   │   ├── users/             # Gestion des utilisateurs (admin : rôles & statuts)
+│   │   ├── categories/        # Gestion des catégories (admin : CRUD & ordre)
 │   │   ├── tasks/             # Tâches & onboarding
 │   │   └── profile/           # Profil utilisateur
 │   ├── annonces/              # Tableau public des offres (+ détail)
@@ -127,7 +130,9 @@ src/
 ├── components/                # UI kit, logo, en-têtes/footers publics, feed temps réel, toasts
 ├── lib/
 │   ├── roles.ts               # Navigation & libellés par rôle
-│   ├── service-categories.ts  # Catégories de service (config statique)
+│   ├── service-categories.ts  # Catégories de service (config statique de secours + helpers)
+│   ├── service-categories.server.ts  # Chargement serveur des catégories depuis la base
+│   ├── use-service-categories.ts     # Hook client des catégories (fetch + fallback statique)
 │   ├── status-labels.ts       # Libellés, tarifs, WhatsApp, types de pièces
 │   └── supabase/              # Clients navigateur / serveur / middleware
 ├── types/                     # Types base de données & lignes

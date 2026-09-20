@@ -10,6 +10,7 @@ import {
   whatsappHref,
 } from "@/lib/status-labels";
 import { categoryLabel, categoryEmoji } from "@/lib/service-categories";
+import { getServiceCategories } from "@/lib/service-categories.server";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +42,8 @@ export default async function PublicJobDetailPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  const categories = await getServiceCategories();
 
   const { data: job, error } = await supabase
     .from("jobs")
@@ -105,7 +108,7 @@ export default async function PublicJobDetailPage({
                   Offre ouverte
                 </span>
                 <span className="badge badge-neutral">
-                  {categoryEmoji(job.category)} {categoryLabel(job.category)}
+                  {categoryEmoji(job.category, categories)} {categoryLabel(job.category, categories)}
                 </span>
               </div>
               <p className="mt-2 text-sm font-medium text-slate-500">

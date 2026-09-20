@@ -6,10 +6,10 @@ import Footer from "@/components/public-footer";
 import { employmentTypeLabels, formatSalary } from "@/lib/status-labels";
 import { cameroonCities } from "@/lib/status-labels";
 import {
-  SERVICE_CATEGORIES,
   categoryEmoji,
   categoryShort,
 } from "@/lib/service-categories";
+import { getServiceCategories } from "@/lib/service-categories.server";
 
 export const metadata: Metadata = {
   title: "Annonces — Services vérifiés",
@@ -28,6 +28,8 @@ export default async function PublicJobsPage({
   const {
     data: { user },
   } = await supabase.auth.getUser();
+
+  const categories = await getServiceCategories();
 
   const q = (searchParams.q ?? "").trim();
   const city = (searchParams.city ?? "").trim();
@@ -137,7 +139,7 @@ export default async function PublicJobsPage({
               >
                 Toutes
               </a>
-              {SERVICE_CATEGORIES.map((c) => (
+              {categories.map((c) => (
                 <a
                   key={c.id}
                   href={boardHref({ cat: cat === c.id ? undefined : c.id })}
@@ -185,7 +187,7 @@ export default async function PublicJobsPage({
                   style={{ animationDelay: `${Math.min(i * 60, 400)}ms` }}
                 >
                   <div className="flex items-center justify-between gap-3">
-                    <span className="doc-pill">{categoryEmoji(job.category)} {categoryShort(job.category)}</span>
+                    <span className="doc-pill">{categoryEmoji(job.category, categories)} {categoryShort(job.category, categories)}</span>
                     <span className="badge-success">
                       <span className="badge-dot" />
                       Ouvert

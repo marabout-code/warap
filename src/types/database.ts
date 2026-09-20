@@ -148,6 +148,32 @@ export interface Database {
           updated_at?: string;
         };
       };
+      service_categories: {
+        Row: {
+          id: string;
+          label: string;
+          short: string;
+          emoji: string;
+          sort_order: number;
+          created_at: string;
+        };
+        Insert: {
+          id: string;
+          label: string;
+          short: string;
+          emoji?: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+        Update: {
+          id?: string;
+          label?: string;
+          short?: string;
+          emoji?: string;
+          sort_order?: number;
+          created_at?: string;
+        };
+      };
       tasks: {
         Row: {
           id: string;
